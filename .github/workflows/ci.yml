@@ -1,0 +1,41 @@
+name: Verify
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.10.0'
+      - run: npm test
+  contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.10.0'
+      - uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: stable
+      - run: npm install --prefix contracts --ignore-scripts --package-lock=false
+      - run: forge fmt --root contracts --check
+      - run: forge test --root contracts -vvv
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.10.0'
+      - run: npm ci --ignore-scripts
+        working-directory: 'ui '
+      - run: npm run lint
+        working-directory: 'ui '
+      - run: npm run build
+        working-directory: 'ui '

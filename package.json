@@ -1,0 +1,10 @@
+{
+  "name": "countersign",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --dir 'ui ' dev",
+    "build:web": "pnpm --dir 'ui ' build",
+    "test:contracts": "forge test --root contracts -vvv",
+    "test": "node --test packages/merchant/test/*.test.mjs apps/api/test/*.test.mjs"
+  }
+}

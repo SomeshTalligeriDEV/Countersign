@@ -1,0 +1,10 @@
+.git
+**/node_modules
+**/.next
+**/.env
+**/.env.*
+**/*.sqlite*
+contracts/out
+contracts/cache
+ui /chupke
+ui /chupke.zip

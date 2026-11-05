@@ -1,0 +1,5 @@
+packages:
+  - 'ui '
+  - 'apps/*'
+  - 'packages/*'
+  - 'contracts'
