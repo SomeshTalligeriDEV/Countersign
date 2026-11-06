@@ -1,0 +1,19 @@
+FIXTURE / MOCKED-WALLET run (no real wallet, API mocked via page.route). Command: PW_PROD=1 PW_PORT=3107 PW_CHANNEL=chrome npx playwright test (Chrome channel; bundled Chromium download hung). Run 2026-11-06 IST.
+
+Running 8 tests using 2 workers
+
+  ✓  2 owner-approval.spec.mjs:4:1 › owner setup reviews a fixture plan without sending before confirmation (1.8s)
+  ✓  1 routes-w5.spec.mjs:7:1 › W5 /owner renders setup form with mocked wallet connected (1.8s)
+  ✓  4 routes-w5.spec.mjs:11:1 › W5 /approve/[id] shows world_ok fixture approval (667ms)
+  ✓  3 owner-approval.spec.mjs:11:1 › approval page signs only world_ok terms and reports submitted without claiming settled (735ms)
+  ✓  6 owner-approval.spec.mjs:17:1 › approval network failure never exposes an actionable signing button (273ms)
+  ✓  5 routes-w5.spec.mjs:16:1 › W5 /merchant reads fixture registry profile and payment history (695ms)
+  ✓  7 routes-w5.spec.mjs:22:1 › W5 /demo runs a fixture scenario and surfaces tx hash (354ms)
+  ✓  8 routes-w5.spec.mjs:28:1 › W5 /r/[paymentId] shows fixture receipt; invalid id rejected (253ms)
+
+  8 passed (10.8s)
+
+To open last HTML report run:
+[36m[39m
+[36m  npx playwright show-report[39m
+[36m[39m
