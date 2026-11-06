@@ -2,7 +2,19 @@
 
 Bounded USDT payments for AI agents, targeting Whitechain Sepolia (1874). A treasury owner defines a mandate; its agent signs exact payment terms. The contract checks merchant payout/version, limits, nonce, order, epoch and expiry. Payments at the human threshold additionally require a fresh World identity attestation and owner-wallet approval.
 
-**Status (2026-11-06):** nothing is deployed on-chain yet (WAITING-ON-HUMAN: keystore/funds, [HUMAN-RUN.md](docs/proof/HUMAN-RUN.md) H1-H3). No real official-USDT payment, real World sign-in, ENS write or live URL has been recorded. Component tests are not end-to-end deployment evidence. See [STATUS.md](STATUS.md).
+**Status (2026-11-06):** contracts are deployed on Whitechain testnet (1874) and real official-USDT payments have settled ([INTEGRATION-REPORT.md](docs/proof/INTEGRATION-REPORT.md)). Source verification is **blocked by an explorer outage** ([VERIFY-OUTAGE.md](docs/proof/VERIFY-OUTAGE.md)). The services (API, relayer, attestor, observer, demo merchant) run **locally only and are not yet publicly hosted**. Real World sign-in is WAITING-ON-HUMAN; ENS is read-only (no writes). See [STATUS.md](STATUS.md).
+
+## Live on Whitechain testnet
+
+| | Address / tx |
+|---|---|
+| MerchantRegistry | [0x2686f693A2C959568e650e0A5563E6244f2329E2](https://explorer.testnet.whitechain.io/address/0x2686f693A2C959568e650e0A5563E6244f2329E2) (deploy [0x3bf2…d707](https://explorer.testnet.whitechain.io/tx/0x3bf28526ba2ac7629d0b70c030d1f64cd2ba873aa634a1b240a867df9a2cd707)) |
+| Mandate | [0x923298375911A173da34C715da2718c0c9889EbA](https://explorer.testnet.whitechain.io/address/0x923298375911A173da34C715da2718c0c9889EbA) (deploy [0x6351…3a91](https://explorer.testnet.whitechain.io/tx/0x6351883c2e30cf2dbb6d247701b8f2e8cfe36f300ca007c7ec8b2a75fb503a91)) |
+| Official USDT | 0xcedfB56113143d55b2358b8CFbB0dEB5Ad2f55a7 |
+| First real payment (0.50 official USDT) | [0x68629137bf52b628824e92723b299d2b6dcf5703920eda318c4f402af1734021](https://explorer.testnet.whitechain.io/tx/0x68629137bf52b628824e92723b299d2b6dcf5703920eda318c4f402af1734021) |
+| Source verification | BLOCKED: explorer returned "Contract verification is temporarily unavailable." on every attempt ([VERIFY-OUTAGE.md](docs/proof/VERIFY-OUTAGE.md)) |
+
+Feature acceptance on the live chain: [ACCEPTANCE.md](docs/proof/ACCEPTANCE.md) (11 PASS incl. webhooks, A15 partial, A7 not run, A2/A14/A16 WAITING-ON-HUMAN). Six-step demo run twice, 5/6 PASS each (order-40 waits on World): [G6-demo-run.txt](docs/proof/G6-demo-run.txt). All setup txs: [G2-onchain.md](docs/proof/G2-onchain.md).
 
 ## Why on-chain stablecoin settlement on Whitechain
 
@@ -43,8 +55,12 @@ Submitted is not settled: the observer requires three subsequent blocks and read
 | Chain 1874, RPC, explorer, solc 0.8.30, prague | REAL config | packages/shared/src/chain.mjs; [INTEGRATION-SOURCES.md](docs/proof/INTEGRATION-SOURCES.md); relay-errors test `single chain definition matches official Whitechain Sepolia docs` |
 | Official USDT metadata, 6 decimals | REAL read-only | [USDT-CAPABILITIES.md](docs/proof/USDT-CAPABILITIES.md) (cast calls) |
 | USDT EIP-2612 permit / EIP-3009 present | REAL read-only probe | USDT-CAPABILITIES.md; no signed permit/3009 transfer executed (UNEXECUTED). Countersign uses approve + transferFrom |
-| Mandate / MerchantRegistry contracts | local forge only | 118/118 in G1-forge-test.txt; NOT deployed (MISSING-NEEDS-DEPLOY) |
-| USDT payment, explorer link | none | MISSING-NEEDS-DEPLOY |
+| Mandate / MerchantRegistry contracts | REAL deployed; forge 118/118 locally | addresses above; source verification BLOCKED (explorer outage) |
+| USDT payment, explorer link | REAL | first pay() [0x6862…4021](https://explorer.testnet.whitechain.io/tx/0x68629137bf52b628824e92723b299d2b6dcf5703920eda318c4f402af1734021) + 3 relayed payments ([A12-payments.csv](docs/proof/A12-payments.csv)) |
+| Relayer + GasGuard sponsored pay(), agent holds 0 USDT / 0 WBT | REAL | [G2-onchain.md](docs/proof/G2-onchain.md) I2/D5, [G6-demo-run.txt](docs/proof/G6-demo-run.txt) |
+| On-chain reverts (BadIntentSig, RegistryMismatch, OverPerTx, Paused, OverRefund) | REAL | tx links in [INTEGRATION-REPORT.md](docs/proof/INTEGRATION-REPORT.md) |
+| Refund, revoke, pause, webhooks (HMAC), CSV, receipt == chain | REAL (services local) | [ACCEPTANCE.md](docs/proof/ACCEPTANCE.md), [A11-webhooks.txt](docs/proof/A11-webhooks.txt) |
+| Public hosting of services | MISSING | runs on loopback only |
 | RPC error handling (429, nonce, replacement) | FIXTURE (mocked RPC) | apps/api/test/relay-errors.test.mjs |
 
 ## World
@@ -54,7 +70,7 @@ Submitted is not settled: the observer requires three subsequent blocks and read
 | Sandbox + production discovery, PKCE S256, RS256 JWKS, auth_time, device grant endpoint | REAL read-only | [F2-world-smoke.txt](docs/proof/F2-world-smoke.txt): RESULT PASS for both issuers |
 | Code + PKCE, `max_age=0`, jose JWT/JWKS checks, owner binding | FIXTURE (signed local JWTs) | apps/api/test/world-http, owner-binding, approvals tests |
 | Device flow (headless) | FIXTURE; implemented in apps/api/src/world-device.mjs, not yet routed in server.mjs | world-device test `FIXTURE device flow polls pending/slow_down, verifies nonce-less token, rejects 503 and denial` |
-| Real user sign-in, success + denied path | none | WAITING-ON-HUMAN (HUMAN-RUN-world.md) |
+| Real user sign-in, success + denied path, over-limit approval | none | WAITING-ON-HUMAN: no sandbox app registered (`world.configured:false`); ACCEPTANCE A2/A16 |
 
 ## ENS
 
@@ -63,6 +79,7 @@ Submitted is not settled: the observer requires three subsequent blocks and read
 | Policy read via ENS Universal Resolver (viem, Sepolia) | REAL read-only | [F3-ens-smoke.txt](docs/proof/F3-ens-smoke.txt): `nick.eth` PASS, plus web route `mode:"live"` |
 | UI badge Live/Fixture | REAL mode flag | web/src/components/countersign/EnsIdentity.tsx |
 | Subname, resolver, text records, revoke tx builders | FIXTURE (encoding tests only) | packages/ens/test/ens.test.mjs |
+| Countersign agent policy read-back | PARTIAL (read-only; no subname exists) | ACCEPTANCE.md A15 |
 | `pnpm ens:setup` writes on Sepolia | UNEXECUTED (needs Sepolia ETH + owned parent) | scripts/ens-setup.mjs; [ENS-NOTES.md](docs/ENS-NOTES.md) |
 
 ## Security properties mapped to tests
@@ -86,13 +103,13 @@ Executed 2026-11-06 on the laptop: forge 118 passed / 0 failed / 6 suites ([G1-f
 
 ## Relayer and GasGuard
 
-The relayer ([apps/api/src/facilitator.mjs](apps/api/src/facilitator.mjs)) only submits `pay` calls to the Mandate after authoritative simulation; the agent holds no gas token. GasGuard ([apps/api/src/gasguard.mjs](apps/api/src/gasguard.mjs)) enforces allowlisted target/selector, per-mandate and global gas budgets, fee caps and pause. Tests: gasguard `A-02/A-03 deny arbitrary calls and failed simulations with audit records`, `A-04 reservations survive restart and prevent budget overspend and duplicates`, `pause, fee caps and global budget fail closed`; facilitator `A-03 authoritative simulation rejection never broadcasts`; relay-ledger `relay persists before broadcast and restart rebroadcasts identical signed bytes`, `recovery retains unknown nonce outcome instead of signing or spending again`. All against mocked RPC; **no sponsored payment has been broadcast**.
+The relayer ([apps/api/src/facilitator.mjs](apps/api/src/facilitator.mjs)) only submits `pay` calls to the Mandate after authoritative simulation; the agent holds no gas token. GasGuard ([apps/api/src/gasguard.mjs](apps/api/src/gasguard.mjs)) enforces allowlisted target/selector, per-mandate and global gas budgets, fee caps and pause. Tests: gasguard `A-02/A-03 deny arbitrary calls and failed simulations with audit records`, `A-04 reservations survive restart and prevent budget overspend and duplicates`, `pause, fee caps and global budget fail closed`; facilitator `A-03 authoritative simulation rejection never broadcasts`; relay-ledger `relay persists before broadcast and restart rebroadcasts identical signed bytes`, `recovery retains unknown nonce outcome instead of signing or spending again`. These tests run against mocked RPC; on the live chain the relayer has broadcast sponsored pay() calls and GasGuard has issued real denials (`gas_price_or_limit`, `not_allowlisted_call`), see [G2-onchain.md](docs/proof/G2-onchain.md) and [G6-demo-run.txt](docs/proof/G6-demo-run.txt).
 
 ## Limitations
 
-- Nothing deployed; no real USDT payment, World sign-in, ENS write, live URL, public repo or video yet.
+- Contracts deployed but source not verified (explorer outage). Services not publicly hosted. No real World sign-in, ENS write, public repo or video yet.
 - Reservations cover execution gas, not complete OP fee components. Single relayer process/signer required.
-- Automatic deep-reorg recovery, multi-process production, identity recovery/rebinding and full webhook transport are unfinished.
+- Automatic deep-reorg recovery, multi-process production and identity recovery/rebinding are unfinished. Webhooks deliver only to an operator-configured URL.
 - Browser tests use a mocked wallet (W5 Playwright 8/8 FIXTURE, docs/proof/W5-playwright.txt); real-wallet run not done.
 - Contracts do not read ENS; ENS is identity/policy display.
 - No independent audit or production-security claim. Off-chain merchant billing is a proposed business model, not implemented.
@@ -100,7 +117,7 @@ The relayer ([apps/api/src/facilitator.mjs](apps/api/src/facilitator.mjs)) only 
 
 ## Deployment and submission
 
-[HUMAN-RUN.md](docs/proof/HUMAN-RUN.md) has deploy/verify/first-payment, World and browser steps. No contract addresses, tx links or hosted URLs are invented here; `pnpm evidence` fills the block below from docs/proof/deployed.json after execution. Prize mapping: [PRIZE-REQUIREMENTS.md](docs/proof/PRIZE-REQUIREMENTS.md).
+[HUMAN-RUN.md](docs/proof/HUMAN-RUN.md) has deploy/verify/first-payment, World and browser steps. Addresses and tx links above come from docs/proof/deployed.json and G2-onchain.md. No hosted URLs exist yet. `pnpm evidence` regenerates the block below from deployed.json. Prize mapping: [PRIZE-REQUIREMENTS.md](docs/proof/PRIZE-REQUIREMENTS.md).
 
 ## Prior work disclosure
 
@@ -119,34 +136,10 @@ From [W9-prior-code-inventory.md](docs/proof/W9-prior-code-inventory.md):
 <!-- COUNTERSIGN-EVIDENCE:START -->
 ## Recorded deployment evidence
 
-Human-recorded inputs only. Links have not been independently checked against RPC by this generator. Empty fields are TODO-HUMAN.
-
-- MerchantRegistry: TODO-HUMAN address
-- MerchantRegistry deployment: TODO-HUMAN deployment transaction
-- MerchantRegistry source verification: TODO-HUMAN verify source
-- Mandate: TODO-HUMAN address
-- Mandate deployment: TODO-HUMAN deployment transaction
-- Mandate source verification: TODO-HUMAN verify source
-- createMandate: TODO-HUMAN transaction or explicit API-only rejection proof (no tx)
-- limitedAllowance: TODO-HUMAN transaction or explicit API-only rejection proof (no tx)
-- refund: TODO-HUMAN transaction or explicit API-only rejection proof (no tx)
-- firstPayment: TODO-HUMAN transaction or explicit API-only rejection proof (no tx)
-- tamperAmount: TODO-HUMAN transaction or explicit API-only rejection proof (no tx)
-- tamperPayout: TODO-HUMAN transaction or explicit API-only rejection proof (no tx)
-- registryChanged: TODO-HUMAN transaction or explicit API-only rejection proof (no tx)
-- overBudget: TODO-HUMAN transaction or explicit API-only rejection proof (no tx)
-- humanApprovedPayment: TODO-HUMAN transaction or explicit API-only rejection proof (no tx)
-- revoke: TODO-HUMAN transaction or explicit API-only rejection proof (no tx)
-- replayAfterRevoke: TODO-HUMAN transaction or explicit API-only rejection proof (no tx)
-- arbitraryRelayerCall: TODO-HUMAN transaction or explicit API-only rejection proof (no tx)
-- web: TODO-HUMAN public URL
-- api: TODO-HUMAN public URL
-- repo: TODO-HUMAN public URL
-
-TODO-HUMAN: real World success and denied evidence, two ordered demo runs, browser/video proof, source eligibility decision, final CI URL.
+See "Live on Whitechain testnet" above and [INTEGRATION-REPORT.md](docs/proof/INTEGRATION-REPORT.md). Still TODO-HUMAN: source verification (explorer outage), World success + denied evidence, public web/API URLs, public repo, video, final CI URL, source eligibility decision.
 
 <!-- COUNTERSIGN-EVIDENCE:END -->
 
 ## Risk-reduction commands
 
-`pnpm doctor` checks public configuration, chain/token/balances/contracts/budget, provider discovery, service health, flags and Git cleanliness without printing secrets. `pnpm human:deploy` runs the keystore-based stepwise deployment and first payment in a normal terminal, persisting docs/proof/deployed.json. These live adapters are UNEXECUTED. Adversarial Solidity tests in contracts/test/AdversarialEdges.t.sol (43 incl. inherited) pass (G1-forge-test.txt). See [CLAIM-AUDIT.md](docs/CLAIM-AUDIT.md).
+`pnpm doctor` checks public configuration, chain/token/balances/contracts/budget, provider discovery, service health, flags and Git cleanliness without printing secrets. `pnpm human:deploy` runs the keystore-based stepwise deployment and first payment in a normal terminal, persisting docs/proof/deployed.json. `pnpm human:deploy` was executed for the deployment and first payment (verification skipped during the outage). Adversarial Solidity tests in contracts/test/AdversarialEdges.t.sol (43 incl. inherited) pass (G1-forge-test.txt). See [CLAIM-AUDIT.md](docs/CLAIM-AUDIT.md).
