@@ -1,3 +1,5 @@
+import type { Metadata } from 'next';
+export const metadata: Metadata = { title: 'Payment receipt', robots: { index: false, follow: false } };
 import { Suspense } from 'react';
 import ReceiptView from '@/components/countersign/ReceiptView';
 import EnsIdentity from '@/components/countersign/EnsIdentity';

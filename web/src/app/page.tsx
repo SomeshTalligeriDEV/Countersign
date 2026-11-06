@@ -1,4 +1,6 @@
 import Link from "next/link";
+import LiveStatus from "@/components/countersign/LiveStatus";
+import { SITE_URL } from "@/lib/site";
 
 // Countersign landing. Dark surface scoped to .cs-landing so /owner, /merchant, /demo keep the paper theme.
 const GITHUB = "https://github.com/SomeshTalligeriDEV/ETHGLOBAL";
@@ -43,9 +45,23 @@ function Ext({ href, children, className }: { href: string; children: React.Reac
   return <a href={href} target="_blank" rel="noopener noreferrer" className={className}>{children}</a>;
 }
 
+const faq = [
+  ["What is Countersign?", "Countersign gives an AI agent a USDT budget. The agent signs exact payment terms, a relayer pays the gas, and the Mandate smart contract enforces the owner's limits at the moment USDT moves. It is a testnet development preview."],
+  ["How are spending limits enforced?", "On-chain by the Mandate contract: it checks signatures, merchant payout, per-transaction limit, period budget, nonce, order, epoch, expiry and pause before moving USDT, and reverts otherwise. Neither the agent, the relayer nor the API can exceed them."],
+  ["How does World ID approval work?", "Payments above the owner's threshold are held until the owner completes a fresh World ID sign-in and signs with their wallet. A separate attestor then co-signs, and the contract verifies both signatures for that exact payment."],
+  ["How is ENS used?", "The agent is published as agent1.countersign.eth on ENSv2 (Sepolia) with its policy mirrored in text records. The app runs a live drift check that compares the ENS records with the Mandate contract and shows MATCH or MISMATCH."],
+  ["Which chain and token does it use?", "Whitechain Sepolia testnet (chain ID 1874) with the official test USDT token at 0xcedfB56113143d55b2358b8CFbB0dEB5Ad2f55a7."],
+];
+
+const jsonLd = [
+  { "@context": "https://schema.org", "@type": "SoftwareApplication", name: "Countersign", url: SITE_URL, applicationCategory: "FinanceApplication", operatingSystem: "Web", description: "Spending mandates for AI agents: USDT payments enforced by a Whitechain smart contract, with World ID human approval and an ENS agent identity.", codeRepository: GITHUB, offers: { "@type": "Offer", price: "0", priceCurrency: "USD" } },
+  { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faq.map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })) },
+];
+
 export default function Home() {
   return (
     <div className="cs-landing">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
       <header className="cs-wrap cs-nav">
         <Link href="/" className="cs-logo">Countersign</Link>
         <nav aria-label="Primary" className="cs-navlinks">
@@ -71,17 +87,20 @@ export default function Home() {
             <Ext href={GITHUB} className="cs-btn cs-btn-ghost">View on GitHub</Ext>
           </div>
         </div>
+        <div className="cs-term">
+          <div className="cs-term-bar"><i /><i /><i /><span>{ENS_NAME} · live</span></div>
+          <LiveStatus />
         {/* ponytail: static illustration of the flow, not live data; labelled as such. */}
-        <figure className="cs-term" aria-label="Illustrative payment flow">
-          <div className="cs-term-bar"><i /><i /><i /><span>{ENS_NAME}</span></div>
+        <figure aria-label="Illustrative payment flow (not live data)">
           <ol>
             <li><span className="cs-tag">signed</span>agent signs exact amount, merchant, payout</li>
             <li><span className="cs-tag">relayed</span>relayer + GasGuard submit to chain 1874</li>
             <li><span className="cs-tag cs-tag-warn">over threshold</span>waiting for World ID approval</li>
             <li><span className="cs-tag cs-tag-ok">settled</span>USDT paid, receipt on explorer</li>
           </ol>
-          <figcaption>Illustrative flow · testnet</figcaption>
+          <figcaption>Illustrative flow, not live data · testnet</figcaption>
         </figure>
+        </div>
         </section>
 
         <section className="cs-sec" aria-labelledby="how">
@@ -134,11 +153,19 @@ export default function Home() {
             ))}
           </dl>
         </section>
+        <section className="cs-sec" aria-labelledby="faq">
+          <h2 id="faq">Questions</h2>
+          <dl className="cs-refusals">
+            {faq.map(([q, a]) => (
+              <div key={q}><dt><strong>{q}</strong></dt><dd><p>{a}</p></dd></div>
+            ))}
+          </dl>
+        </section>
         <section className="cs-sec cs-cta" aria-labelledby="try">
           <h2 id="try">See an agent get countersigned.</h2>
           <div className="cs-ctas">
             <Link href="/demo" className="cs-btn cs-btn-primary">Run the live demo</Link>
-            <Link href="/merchant" className="cs-btn">Merchant registry</Link>
+            <Link href="/merchant" className="cs-btn">Open merchant registry</Link>
           </div>
         </section>
       </main>

@@ -127,3 +127,38 @@ dd, pre { overflow-wrap: anywhere; }
 .cs-cta { text-align: center; }
 .cs-cta h2 { font-size: clamp(1.75rem, 4vw, 2.5rem); }
 .cs-cta .cs-ctas { justify-content: center; margin-top: 0; }
+.cs-refusals > div { display: block; padding: 1rem 1.15rem; border: 1px solid var(--l-line); border-radius: .75rem; background: var(--l-card); }
+.cs-refusals dd p { margin-top: .35rem; }
+/* Live hero status: polled from same-origin API routes; dot pulses only while live (opacity only). */
+.cs-live { display: flex; gap: .6rem; align-items: baseline; padding: 1rem 1rem .25rem; color: #d6d3d1; }
+.cs-live ul { list-style: none; padding: 0; display: grid; gap: .35rem; }
+.cs-live b { color: var(--l-ink); font-weight: 600; }
+.cs-live-dot { flex: none; width: .55rem; height: .55rem; border-radius: 999px; background: #71717a; }
+.cs-live[data-state="live"] .cs-live-dot { background: #86efac; animation: cs-pulse 2s ease-in-out infinite; }
+.cs-live[data-state="offline"] { color: #fca5a5; }
+.cs-live[data-state="offline"] .cs-live-dot { background: #f87171; }
+@keyframes cs-pulse { 50% { opacity: .35; } }
+.cs-term figure { margin: 0; border-top: 1px dashed var(--l-line); margin-top: .75rem; }
+
+/* Mobile (360-400px): no horizontal scroll, >=44px tap targets, 16px inputs (no iOS zoom), tables scroll in place. */
+html, body { overflow-x: clip; max-width: 100%; }
+table { max-width: 100%; }
+.overflow-x-auto { -webkit-overflow-scrolling: touch; }
+@media (max-width: 640px) {
+  .cs-nav { flex-wrap: wrap; }
+  .cs-navlinks { flex-wrap: wrap; gap: 0 .75rem; }
+  .cs-navlinks a, .cs-link, .cs-foot a { display: inline-flex; align-items: center; min-height: 44px; }
+  .cs-btn { min-height: 44px; }
+  .cs-ctas .cs-btn { flex: 1 1 100%; justify-content: center; }
+  main button, main a.underline, main a.rounded-full, .cs-copy { min-height: 44px; }
+  .cs-copy { min-width: 44px; }
+  main > a.underline:first-child { display: inline-flex; align-items: center; }
+  input, select, textarea { font-size: 16px !important; min-height: 44px; }
+  main { padding-left: 1rem !important; padding-right: 1rem !important; }
+  .cs-landing main { padding: 0 !important; }
+  .cs-wrap { padding-left: 1rem; padding-right: 1rem; }
+  .cs-proof > div { padding: 1rem; }
+  .cs-term { font-size: .8rem; }
+  table { font-size: .8125rem; }
+  pre { font-size: .8125rem; }
+}
