@@ -2,6 +2,7 @@
 import {subscribeRealtime} from '@/lib/countersign-realtime';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import {CopyButton,ExplorerLink} from './ui';
 type Receipt = { paymentId: string; amount: string; refunded: string; decimals: number; status: string; mandateId: string; merchantId: string; payout: string; humanApproved: boolean; txHash: string; checkedAt: string };
 function amount(value: string, decimals: number) {
   const padded = value.padStart(decimals + 1, '0');
@@ -31,19 +32,19 @@ export default function ReceiptView({ paymentId }: { paymentId: string }) {
     <Link href="/" className="text-sm underline">Countersign</Link>
     <p className="mt-10 text-sm uppercase tracking-widest">Whitechain Sepolia · testnet</p>
     <h1 className="mt-3 font-serif text-4xl">Payment receipt</h1>
-    <p className="mt-4 break-all text-sm text-neutral-600">{paymentId}</p>
+    <p className="mt-4 break-all text-sm text-neutral-600">{paymentId}<CopyButton value={paymentId} label="Copy payment ID"/></p>
     <div aria-live="polite" className="mt-8 rounded-2xl border border-neutral-300 bg-white/70 p-6">
-      {!receipt ? <p role="status">{message}</p> : <>
+      {!receipt ? <p role="status" className={message.endsWith('…') ? 'cs-skeleton' : undefined}>{message}</p> : <>
         <p className="text-3xl font-semibold">{amount(receipt.amount, receipt.decimals)} USDT</p>
         <p className="mt-2">{({ settled: 'Payment confirmed', partially_refunded: 'Partially refunded', refunded: 'Fully refunded' } as Record<string, string>)[receipt.status]}</p>
         <dl className="mt-6 grid gap-4 text-sm">
           <div><dt className="text-neutral-500">Refunded</dt><dd>{amount(receipt.refunded, receipt.decimals)} USDT</dd></div>
           <div><dt className="text-neutral-500">Payer mandate</dt><dd className="break-all">{receipt.mandateId}</dd></div>
           <div><dt className="text-neutral-500">Merchant</dt><dd className="break-all">{receipt.merchantId}</dd></div>
-          <div><dt className="text-neutral-500">Payout wallet</dt><dd className="break-all"><a className="underline" href={`https://explorer.testnet.whitechain.io/address/${receipt.payout}`} target="_blank" rel="noopener noreferrer">{receipt.payout}</a></dd></div>
+          <div><dt className="text-neutral-500">Payout wallet</dt><dd className="break-all"><ExplorerLink address={receipt.payout}/><CopyButton value={receipt.payout} label="Copy payout wallet"/></dd></div>
           <div><dt className="text-neutral-500">Human approval recorded by contract</dt><dd>{receipt.humanApproved ? 'Yes' : 'No: automatic payment'}</dd></div>
         </dl>
-        <a className="mt-6 inline-block underline" href={`https://explorer.testnet.whitechain.io/tx/${receipt.txHash}`} target="_blank" rel="noopener noreferrer">View settlement transaction ↗</a>
+        <p className="mt-6"><ExplorerLink tx={receipt.txHash} className="inline-block underline">View settlement transaction ↗</ExplorerLink><CopyButton value={receipt.txHash} label="Copy transaction hash"/></p>
         <p className="mt-4 text-xs text-neutral-500">Last checked {new Date(receipt.checkedAt).toLocaleTimeString()}. Refreshes every five seconds.</p>
       </>}
     </div>

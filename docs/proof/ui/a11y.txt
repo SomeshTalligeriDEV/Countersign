@@ -1,0 +1,13 @@
+axe-core scan (wcag2a, wcag2aa) 2026-11-06T08:27:15.311Z
+
+/: 0 violation(s)
+
+/owner: 0 violation(s)
+
+/approve/12345678-1234-1234-1234-123456789012: 0 violation(s)
+
+/merchant: 0 violation(s)
+
+/demo: 0 violation(s)
+
+/r/0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa: 0 violation(s)

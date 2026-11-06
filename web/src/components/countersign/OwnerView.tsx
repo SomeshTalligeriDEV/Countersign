@@ -1,4 +1,5 @@
 'use client';
+import {WorldModeBadge} from './ui';
 import {subscribeRealtime} from '@/lib/countersign-realtime';
 import Link from 'next/link';
 import OwnerIdentity from './OwnerIdentity';
@@ -27,7 +28,7 @@ export default function OwnerView(){
   async function update(){if(inFlight)return;inFlight=true;clearTimeout(timer);try{const response=await fetch(`/api/countersign/mandates/${id}`,{cache:'no-store',signal:controller.signal});const data=await response.json();if(!response.ok){setSnapshot(null);setMessage(data.error);}else{setSnapshot(data);setMessage('Live mandate read from Whitechain.');}}catch{if(!controller.signal.aborted){setSnapshot(null);setMessage('Connection unavailable. Budget is not being assumed.');}}inFlight=false;if(!controller.signal.aborted)timer=setTimeout(update,5000);}
   const unsubscribe=subscribeRealtime(()=>{void update();});void update();return()=>{unsubscribe();controller.abort();clearTimeout(timer);};
  },[id]);
- return <main className="mx-auto max-w-3xl px-6 py-16"><Link href="/" className="underline">Countersign</Link><h1 className="mt-10 font-serif text-4xl">Your spending mandate</h1><p className="mt-3">Whitechain Sepolia · testnet</p>
+ return <main className="mx-auto max-w-3xl px-6 py-16"><Link href="/" className="underline">Countersign</Link><h1 className="mt-10 font-serif text-4xl">Your spending mandate</h1><div className="mt-3 flex flex-wrap items-center gap-3"><p>Whitechain Sepolia · testnet</p><WorldModeBadge/></div>
  <button onClick={connect} className="mt-6 rounded-full bg-neutral-900 px-6 py-3 text-white">{wallet?'Reconnect wallet':'Connect wallet'}</button><p className="mt-3 break-all text-sm">{wallet}</p>
  <form className="mt-8" onSubmit={event=>{event.preventDefault();setSnapshot(null);if(/^0x[\da-fA-F]{64}$/.test(input))setId(input);else {setId('');setMessage('Enter a valid bytes32 mandate ID.');}}}><label htmlFor="mandate">Mandate ID</label><input id="mandate" value={input} onChange={e=>setInput(e.target.value)} className="mt-2 block w-full rounded-xl border p-3" placeholder="0x…"/><button className="mt-3 rounded-full border border-neutral-800 px-5 py-2">Read mandate</button></form>
  <p role="status" className="mt-6">{message}</p>
