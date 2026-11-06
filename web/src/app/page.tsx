@@ -125,7 +125,7 @@ export default function Home() {
           <div className="cs-wrap">
           <p className="cs-eyebrow">Limits</p>
           <h2 id="limits" className="cs-twotone">Small payments, <span>hard limits.</span></h2>
-          <p className="cs-lede">The agent pays cents for data; the Mandate contract caps every payment, the period budget and when a human must approve.</p>
+          <p className="cs-lede">The agent pays small amounts for data; the Mandate contract caps every payment, the period budget and when a human must approve.</p>
           <figure className="cs-bars">
             <dl>
               {bars.map(b => (
