@@ -14,7 +14,8 @@ jobs:
       - run: |
           set -o pipefail
           ex=(':!*test*' ':!*fixture*' ':!*vectors*' ':!pnpm-lock.yaml' ':!*package-lock.json')
-          a=$(git grep -nIE '0x[0-9a-fA-F]{64}' -- . "${ex[@]}" ':!docs/proof' | cut -d: -f1,2 || true)
+          # public tx hashes in explorer links (`/tx/0x..` and their `[0x..](..../tx/0x..)` link text) are not secrets
+          a=$(git grep -nIE '0x[0-9a-fA-F]{64}' -- . "${ex[@]}" ':!docs/proof' | perl -pe 's{\[0x[0-9a-fA-F]{64}\]\(https://explorer\.testnet\.whitechain\.io/tx/0x[0-9a-fA-F]{64}\)}{}g; s{/tx/0x[0-9a-fA-F]{64}}{}g' | grep -E '0x[0-9a-fA-F]{64}' | cut -d: -f1,2 || true)
           b=$(git grep -nIiE '(priv(ate)?_?key|secret|mnemonic)[^0-9a-zA-Z]{0,6}0x[0-9a-fA-F]{64}' -- . "${ex[@]}" | cut -d: -f1,2 || true)
           hits=$(printf '%s\n%s\n' "$a" "$b" | sed '/^$/d' | sort -u)
           if [ -n "$hits" ]; then echo "possible private keys:"; echo "$hits"; exit 1; fi
