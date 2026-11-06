@@ -1,5 +1,7 @@
 # Countersign status — verified 2026-11-06
 
+## ▶ Deploy loop 19 (15:05 IST Fri): D1 ABORTED, WAITING-ON-HUMAN — see docs/proof/D1-preflight.md
+
 ## ▶ Final build loop 18 (14:00 IST Fri): F1–F9 done or WAITING-ON-HUMAN/BLOCKED — see docs/proof/FINAL-LOOP-SUMMARY.md
 
 ## ▶ Loop 17 (orchestrator, 13:35 IST Fri — stopped: all remaining work WAITING-ON-HUMAN/BLOCKED)
