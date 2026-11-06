@@ -11,5 +11,6 @@ Explorer read APIs stayed up throughout (`/api/v2/smart-contracts/<addr>` 200, `
 | 2026-11-06T11:42:39Z | MerchantRegistry | orchestrator | temporarily unavailable |
 | 2026-11-06T12:29:12Z | MerchantRegistry | human (human-deploy) | temporarily unavailable |
 | 2026-11-06T12:38:15Z | MerchantRegistry | orchestrator | temporarily unavailable |
+| 2026-11-06T14:04:06Z | MerchantRegistry | orchestrator | temporarily unavailable |
 
 Mandate 0x923298375911A173da34C715da2718c0c9889EbA was never reached because the script verifies MerchantRegistry first. Status: **BLOCKED by external outage**; retried every cycle. Deployed bytecode and receipts are on the explorer (G2-onchain.md).
