@@ -7,7 +7,14 @@ Done already: contracts deployed, first real 0.50 USDT pay() (G2-onchain.md), al
 2. **World sandbox app (I3) — now the main blocker for A2/A16/order-40.** The demo order price is set to 1.50 USDT (between the 1.00 approval threshold and 2.00 per-tx cap). In the World developer portal create a sandbox app; register BOTH redirect URIs `http://localhost:3011/auth/world/callback` and `http://localhost:3011/auth/world/onboard/callback` (the API on :3011 serves them; add the same two paths on the public API origin after I6). Put all four of WORLD_ISSUER=https://sandbox.auth.world.org, WORLD_CLIENT_ID, WORLD_CLIENT_SECRET, WORLD_REDIRECT_URI=http://localhost:3011/auth/world/callback into `apps/api/.env` yourself (all four or none: a partial set stops the API) (never paste them here). Then tell the agent "world app ready"; it will open an approval link and you sign in once with World App on your phone. Expected: approval page shows world_ok.
 3. **ENS (I4): read-only for this submission.** The 18:00 IST cut-off passed with ENSv2 Sepolia addresses/role bitmap unverified and no `ens-owner` keystore. No ENS writes will be made. Nothing to do unless you want to attempt it after the demo.
 4. **Public host (I6).** Choose where web/API/attestor run (a VPS with Docker, or a host account). Tell the agent the hostnames; Docker on this laptop is still down (colima).
-5. **Real-wallet owner actions (A14).** Later: open /owner with a browser wallet on chain 1874 using the deployer account; the agent will list the exact clicks.
+5. **Real-wallet owner actions (A14) — WAITING-ON-HUMAN.** Start web: `pnpm --filter web dev` → open http://localhost:3000/owner in a browser with a wallet holding the deployer account on Whitechain testnet (chain 1874, RPC https://rpc.testnet.whitechain.io). Save each screenshot into docs/proof/ with the name shown.
+   1. Connect wallet → page shows owner 0x1079…5c7D and the existing mandate 0x5123…43fe. `A14-1-connected.png`
+   2. Allowance: set 1 USDT (never unlimited) → wallet confirm → allowance shows 1.00 and an explorer tx link. `A14-2-allowance.png`
+   3. Merchant allowlist: confirm the demo merchant 0x2760…42a5 is listed as allowed. `A14-3-merchants.png`
+   4. Pause → confirm → status Paused + tx link; then Unpause → Active. `A14-4-pause.png`
+   5. Create mandate: a second test mandate (per-tx 0.50, period 1.00, same agent) → confirm → new mandate id + tx link. `A14-5-create.png`
+   6. Revoke that second mandate → confirm → epoch increments, tx link. `A14-6-revoke.png`
+   Paste the tx hashes back; the agent records A14.
 
 
 ## ▶ NEXT LOOP INPUTS (F8, ordered; everything the deploy/verify loop needs)
