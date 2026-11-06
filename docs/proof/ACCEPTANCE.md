@@ -6,7 +6,7 @@ Environment: deployed Mandate 0x9232…9EbA + MerchantRegistry 0x2686…29E2; of
 | # | Feature | Result | Evidence |
 |---|---|---|---|
 | A1 | Small payment auto-settles | **PASS** | relayed pay() [0x713f…39ae](https://explorer.testnet.whitechain.io/tx/0x713fdfa883b7ed7acaebfc5a281f9a77c7cb10cc0622f6626c07420b677939ae), [0xcc8d…9eb3](https://explorer.testnet.whitechain.io/tx/0xcc8d0d3d0941fa8e2072f8a08dbc45e9e664fbc82ebcae435a295cb248089eb3), [0x80a2…8078](https://explorer.testnet.whitechain.io/tx/0x80a23cc2a8da4d8209f5dc2cb2c479874ab175332e052b04d9ad31e043e48078); first direct pay [0x6862…4021](https://explorer.testnet.whitechain.io/tx/0x68629137bf52b628824e92723b299d2b6dcf5703920eda318c4f402af1734021) |
-| A2 | Over-limit payment waits for approval then settles | **WAITING-ON-HUMAN** | needs World sandbox app + phone (World configured=false) |
+| A2 | Over-limit payment waits for approval then settles | **PASS** | real World sandbox sign-in → owner sig → attestor → pay() [0x98fa…b531](https://explorer.testnet.whitechain.io/tx/0x98fa814e805ab35e55124370539bc0c1889aef519d5c408800be2efc709cb531) (A2-world-approval.md) |
 | A3 | Tamper amount reverts | **PASS** | API: bad_intent_sig (G6 runs 1+2); on-chain revert BadIntentSig [0xac0d…f17f](https://explorer.testnet.whitechain.io/tx/0xac0dc1c00dbd1b738b9f8c959b4375dd696dce9a9f139c76f0bf0c94484df17f) |
 | A4 | Tamper payout reverts | **PASS** | API: bad_intent_sig; on-chain revert RegistryMismatch [0xebf5…217f](https://explorer.testnet.whitechain.io/tx/0xebf520a6cccc825ec3b9f383299731552198715c8be98d0f3a912ffc3bd8217f) |
 | A5 | Over budget reverts | **PASS** | API: OverPerTx; on-chain revert OverPerTx [0x4759…464c](https://explorer.testnet.whitechain.io/tx/0x47599f29d943ac96b708f43655c8aa4b2b55ab640173e2b260d491c13bbb464c) |
@@ -20,6 +20,6 @@ Environment: deployed Mandate 0x9232…9EbA + MerchantRegistry 0x2686…29E2; of
 | A13 | Receipt matches chain | **PASS** | /v1/payments/0x13d9… == Mandate.payments() storage: mandate, merchant, payout, amount 500000, refunded 250000 |
 | A14 | Owner dashboard actions via real wallet | **WAITING-ON-HUMAN** | wallet clicks on /owner (HUMAN-RUN.md) |
 | A15 | ENS policy read-back | **PARTIAL (read-only)** | ens:smoke live Sepolia resolve PASS; no agent subname written (writes not verified/unfunded) |
-| A16 | World real approval + one real failure | **WAITING-ON-HUMAN** | World sandbox app not registered |
+| A16 | World real approval + one real failure | **PASS** | success above; failures: stale auth after real sign-in → refused, expired approval → no tx (A2-world-approval.md) |
 
 Six-step demo twice: docs/proof/G6-demo-run.txt (5/6 PASS per run; order-40 waiting on World).

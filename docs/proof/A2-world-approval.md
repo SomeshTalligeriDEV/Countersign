@@ -11,3 +11,7 @@ Issuer: `https://sandbox.auth.world.org` (real World IdP; World states sandbox p
 # A16 (failure path): approval expired → payment did not occur (REAL)
 
 Approval b7e78758-0fa4-4d97-82eb-b042036987ee created 2026-11-06T19:35:04Z by agent `order-40` (1.50 USDT, needs human). No World sign-in completed within the 120 s window → API status `expired` (19:36:59Z); agent output: `Approval failed: expired`. `relay_transactions` count stayed 4 (the 3 earlier relayed payments + the approved 0x98fa…b531): no pay() was sent. (An earlier approval f5197816… also lapsed unused.) A World-token-backed failure (stale_auth after sign-in) is covered by tests (FIXTURE) and was attempted live but the sign-in was not completed in time.
+
+# A16 (failure path with a real World token): stale authentication → payment refused (REAL)
+
+Approval 25d71501-895b-403f-9934-acf3624e8bbe: owner completed the real World sign-in → `world_ok` (2026-11-06T19:41:21Z). We waited 130 s (> the 120 s freshness bound on `auth_time`) and then submitted a valid owner EIP-712 signature (19:43:32Z) → API `{"error":"approval_not_ready"}`; no attestation consumed, no pay() sent (`relay_transactions` still 4). The protected action did not occur.
