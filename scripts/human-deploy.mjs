@@ -48,7 +48,7 @@ async function main(){
  const save=dry?()=>{}:value=>{writeFileSync(file+'.tmp',JSON.stringify(value,null,2)+'\n',{mode:0o600});renameSync(file+'.tmp',file);};
  if(!state.setup){const salt='0x'+randomBytes(32).toString('hex');state.setup={salt,mandateId:mandateIdFor(env.OWNER_ADDRESS,salt),merchantId:resourceHash('GET','/demo/'+salt),orderId:resourceHash('GET','/report/'+salt),payout:env.DEMO_PAYOUT,attestor:env.ATTESTOR_ADDRESS};save(state);}
  if(state.setup.payout.toLowerCase()!==env.DEMO_PAYOUT.toLowerCase()||state.setup.attestor.toLowerCase()!==env.ATTESTOR_ADDRESS.toLowerCase())throw new Error('Saved setup differs from current payout/attestor');
- const addressFor=account=>command(['cast','wallet','address','--account',account]);
+ const addressFor=account=>command(['cast','wallet','address','--account',account,...pw(account===env.AGENT_ACCOUNT?env.AGENT_PASSWORD_FILE:env.DEPLOYER_PASSWORD_FILE)],true);
  if(dry){for(const [alias,addr] of [[env.DEPLOYER_ACCOUNT,env.OWNER_ADDRESS],[env.AGENT_ACCOUNT,env.AGENT_ADDRESS]]){let got=null;try{got=addressFor(alias);}catch{}console.log(got===null?`WARN (dry-run) keystore alias '${alias}' not found locally (cast wallet import ${alias} --interactive)`:`PASS keystore '${alias}' ${got.toLowerCase()===addr.toLowerCase()?'matches':'MISMATCHES'} ${addr}`);}}
  else if(addressFor(env.DEPLOYER_ACCOUNT).toLowerCase()!==env.OWNER_ADDRESS.toLowerCase()||addressFor(env.AGENT_ACCOUNT).toLowerCase()!==env.AGENT_ADDRESS.toLowerCase())throw new Error('Keystore account mismatch');
  if(!await rpc.getCode({address:TOKEN})||(await rpc.getCode({address:TOKEN}))==='0x')throw new Error('Official token absent');
