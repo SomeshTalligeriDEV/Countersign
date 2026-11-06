@@ -1,16 +1,16 @@
 # Countersign status — verified 2026-11-06
 
-## ▶ Current (orchestrator cycle 1, 13:45 IST Fri)
+## ▶ Current (orchestrator, 13:35 IST Fri — stopped: all remaining work WAITING-ON-HUMAN/BLOCKED)
 | WS | State | Evidence |
 |---|---|---|
 | W1 contracts | DONE: 118/118 incl. 9 adversarial + T-30 invariant | docs/proof/G1-forge-test.txt |
 | W2 deploy | WAITING-ON-HUMAN: no `deployer` keystore, no funds, no .env | HUMAN-RUN.md H1–H3 |
 | W3 services live | WAITING-ON-HUMAN (needs W2) | |
 | W4 World | WAITING-ON-HUMAN: World dev MCP not available; app registration + phone sign-in needed | HUMAN-RUN.md H4 |
-| W5 frontend | IN PROGRESS | |
+| W5 frontend | DONE (FIXTURE/mocked wallet): Playwright 8/8, 5 screenshots; real-wallet checklist WAITING-ON-HUMAN | docs/proof/W5-* |
 | W6 demo runs | WAITING-ON-HUMAN (needs W2–W4) | |
-| W7 docs | PENDING | |
-| W8 ship | IN PROGRESS (local); remote CI/live URL need a git remote (H5) | |
+| W7 docs | DONE for current evidence; re-run claim audit after W2/W6 | README, CLAIM-AUDIT |
+| W8 ship | PARTIAL: CI steps pass locally; Docker BLOCKED (colima, H6); remote CI + live URL need H5 | docs/proof/W8-* |
 | W9 eligibility | DONE, NEEDS HUMAN DECISION on landing page, EzPayz, removals | docs/proof/W9-prior-code-inventory.md |
 | W10 ENS | SKIPPED unless W1–W6 green before Fri 18:00 IST | |
 

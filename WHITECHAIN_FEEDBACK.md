@@ -8,6 +8,8 @@ Only friction actually recorded in STATUS.md, docs/proof/LOOP-LOG.md and proof f
 - The official whitechain-dev SKILL.md was fetchable from GitHub (whitechain-labs/skills) and confirmed testnet-only defaults (STATUS.md).
 
 ## Friction (recorded)
+
+- Whitechain Foundry docs page could not be fetched by the agent in either `.md` or HTML form (STATUS.md, "Live sources consulted"); the Hardhat page loaded and was used for solc 0.8.30 / Prague / chain 1874.
 - Earlier sandboxed agent: Foundry 1.9.0 `forge build`/`forge test` failed resolving DNS while downloading compiler metadata from raw.githubusercontent.com (STATUS.md). Workspace network restriction, not a Whitechain fault; resolved by running on the laptop.
 - The whitechain-dev skill was not in the agent's installed skill catalog; it had to be found and read manually, and its network/deployment/verification reference files were still to be read (STATUS.md).
 

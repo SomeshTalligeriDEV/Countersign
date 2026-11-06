@@ -70,3 +70,6 @@ Final shared local checkpoint:75 backend/helper tests, signed JWT fixtures, shar
 - `pnpm test`: 75/75 pass. `pnpm doctor`: PASS RPC chain 1874, official USDT code+decimals=6, API health; FAIL deployer funds, contracts, World config, attestor, relayer flags (no .env, no `deployer` keystore).
 - Security finding fixed: rate-limit bucket was shared by all users behind the web proxy → per-endpoint keys + TRUSTED_PROXY_IPS. Remaining: web routes do not yet send x-countersign-client-ip.
 - W9 DONE (inventory, decisions open). W2/W3/W4/W6 WAITING-ON-HUMAN (HUMAN-RUN.md H1–H5). W5, W8 subagents running.
+
+## 2026-11-06 13:33 IST — Orchestrator stop
+W5 rerun on prod build port 3107 (user's own dev server on :3000 left running): Playwright 8/8 FIXTURE. W7/W8/W9 committed. Stop condition: all remaining workstreams WAITING-ON-HUMAN or BLOCKED. BUILD_REPORT.md written.
