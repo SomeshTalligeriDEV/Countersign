@@ -82,3 +82,6 @@ Cycle 2 committed F4 (UI, Playwright 14/14, axe 0), F6+F9 (docs, prize, dummy au
 
 ## 2026-11-06 15:05 IST — Deploy loop 19 cycle 1
 pnpm 93/93, forge 118/118, world:smoke PASS, ens:smoke PASS, chain-id 1874. D1 aborted: no keystores/.env/remote/docker. See D1-preflight.md.
+
+## 2026-11-06 19:37 IST — Loop 20 cycle
+D4 real pay + 5 USDT cap; services live locally (observer fixed: transient retry + ranged fast-forward; GasGuard cap 10 gwei; merchant timeout 60s); webhooks wired; demo twice 5/6; on-chain reverts x5; acceptance 11/16 PASS. pnpm 95/95. Verify still unavailable 14:04Z. Waiting: World app, remote, host.
