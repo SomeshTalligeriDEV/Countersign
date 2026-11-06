@@ -1,3 +1,4 @@
+import {cimdDocument} from './world-cimd.mjs';
 import {clientIp} from './client-ip.mjs';
 import {merchantService} from './merchant-service.mjs';
 import {createOwnerBinding} from './owner-binding.mjs';
@@ -34,7 +35,9 @@ const chain=rpc&&process.env.MANDATE_ADDRESS&&process.env.REGISTRY_ADDRESS?creat
 const observerName=chain&&process.env.DEPLOYMENT_BLOCK?`1874:${process.env.MANDATE_ADDRESS.toLowerCase()}`:null;
 const freshness=observerFreshness();
 const stopObserver=observerName?runObserver(new ChainObserver({db,chain,name:observerName,startBlock:process.env.DEPLOYMENT_BLOCK}),{onSuccess:result=>freshness.success(result),onRetry:(e,n)=>{freshness.failure();console.error(`Observer transient RPC error (retry ${n}): ${e?.shortMessage??e?.message}`);},onError:e=>{freshness.failure();console.error(`Observer stopped; inspect chain and reconcile cursor before restart: ${e?.shortMessage??e?.message}`);}}):async()=>{};
-const worldKeys=['WORLD_ISSUER','WORLD_CLIENT_ID','WORLD_CLIENT_SECRET','WORLD_REDIRECT_URI'];
+// WORLD_CLIENT_SECRET is optional only for a CIMD client (WORLD_CLIENT_ID = https URL of the metadata document this API serves).
+const worldCimd=/^https:\/\//.test(process.env.WORLD_CLIENT_ID??'');
+const worldKeys=['WORLD_ISSUER','WORLD_CLIENT_ID',...(worldCimd?[]:['WORLD_CLIENT_SECRET']),'WORLD_REDIRECT_URI'];
 const worldConfigured=worldKeys.every(key=>Boolean(process.env[key]));
 const world=worldEnv();
 if(worldKeys.some(key=>Boolean(process.env[key]))&&!worldConfigured)throw new Error('Incomplete World configuration');
@@ -79,6 +82,9 @@ const server=createServer(async(req,res)=>{
   const init={method:req.method,headers:req.headers};
   if(!['GET','HEAD'].includes(req.method)){init.body=Readable.toWeb(req);init.duplex='half';}
   const request=new Request(new URL(req.url,'http://localhost'),init);
+  if(worldConfigured&&worldCimd&&req.method==='GET'&&new URL(req.url,'http://localhost').pathname===new URL(process.env.WORLD_CLIENT_ID).pathname){
+   res.writeHead(200,{'content-type':'application/json','cache-control':'no-store'});res.end(JSON.stringify(cimdDocument(process.env.WORLD_CLIENT_ID,process.env.WORLD_REDIRECT_URI)));return;
+  }
   const response=await handle(request,{ip:clientIp(req.socket.remoteAddress??'unknown',req.headers['x-countersign-client-ip'],process.env.TRUSTED_PROXY_IPS)});
   res.writeHead(response.status,Object.fromEntries(response.headers));
   res.end(Buffer.from(await response.arrayBuffer()));

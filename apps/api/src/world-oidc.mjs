@@ -3,7 +3,9 @@ import {worldSubjectHash} from '../../../packages/shared/src/crypto.mjs';
 /** Production verifier is always jose; no injectable bypass for JWT validation. */
 export async function createWorldOidc({approvals,issuer,clientId,clientSecret,redirectUri,acr,fetchImpl=fetch,clock=()=>Math.floor(Date.now()/1000)}){
  if(!['https://sandbox.auth.world.org','https://auth.world.org'].includes(issuer))throw new Error('unsupported_world_issuer');
- if(!clientId||!clientSecret)throw new Error('world_credentials_required');
+ // CIMD public client: client_id is our HTTPS metadata URL, no secret; PKCE (S256) still binds the code.
+ const cimd=/^https:\/\/[^/]+\/.+/.test(clientId??'');
+ if(!clientId||(!clientSecret&&!cimd))throw new Error('world_credentials_required');
  const redirect=new URL(redirectUri);
  if(redirect.protocol!=='https:'&&!(redirect.protocol==='http:'&&['127.0.0.1','localhost'].includes(redirect.hostname)))throw new Error('invalid_world_redirect');
  if(redirect.username||redirect.password||redirect.hash)throw new Error('invalid_world_redirect');
@@ -32,7 +34,7 @@ export async function createWorldOidc({approvals,issuer,clientId,clientSecret,re
    if(error){approvals.deny(row.id,clock());throw new Error(error==='access_denied'?'denied':'world_authorization_failed');}
    try{
     if(typeof code!=='string'||!code||code.length>4096)throw new Error('invalid_authorization_code');
-    const tokenResponse=await fetchImpl(metadata.token_endpoint,{method:'POST',headers:{'content-type':'application/x-www-form-urlencoded'},body:new URLSearchParams({grant_type:'authorization_code',client_id:clientId,client_secret:clientSecret,redirect_uri:redirectUri,code,code_verifier:row.verifier}),redirect:'error',signal:AbortSignal.timeout(10000)});
+    const tokenResponse=await fetchImpl(metadata.token_endpoint,{method:'POST',headers:{'content-type':'application/x-www-form-urlencoded'},body:new URLSearchParams({grant_type:'authorization_code',client_id:clientId,...(clientSecret?{client_secret:clientSecret}:{}),redirect_uri:redirectUri,code,code_verifier:row.verifier}),redirect:'error',signal:AbortSignal.timeout(10000)});
     if(!tokenResponse.ok)throw new Error('world_token_exchange_failed');
     const tokens=await tokenResponse.json();
     if(typeof tokens.id_token!=='string')throw new Error('world_id_token_missing');
