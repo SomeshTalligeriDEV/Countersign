@@ -9,7 +9,7 @@ Whitechain on-chain evidence is real (below); public code permalinks, ratings, h
 **Deployed (Whitechain testnet 1874):**
 - MerchantRegistry [0x2686f693A2C959568e650e0A5563E6244f2329E2](https://explorer.testnet.whitechain.io/address/0x2686f693A2C959568e650e0A5563E6244f2329E2)
 - Mandate [0x923298375911A173da34C715da2718c0c9889EbA](https://explorer.testnet.whitechain.io/address/0x923298375911A173da34C715da2718c0c9889EbA)
-- Source verification: BLOCKED by explorer outage ("Contract verification is temporarily unavailable.", proof/VERIFY-OUTAGE.md)
+- Source verification: VERIFIED on Blockscout (both contracts, after an explorer outage; proof/VERIFY-OUTAGE.md)
 - First official-USDT payment 0.50: [0x6862…4021](https://explorer.testnet.whitechain.io/tx/0x68629137bf52b628824e92723b299d2b6dcf5703920eda318c4f402af1734021)
 - Relayed payments: [0x80a2…8078](https://explorer.testnet.whitechain.io/tx/0x80a23cc2a8da4d8209f5dc2cb2c479874ab175332e052b04d9ad31e043e48078), [0x713f…39ae](https://explorer.testnet.whitechain.io/tx/0x713fdfa883b7ed7acaebfc5a281f9a77c7cb10cc0622f6626c07420b677939ae), [0xcc8d…9eb3](https://explorer.testnet.whitechain.io/tx/0xcc8d0d3d0941fa8e2072f8a08dbc45e9e664fbc82ebcae435a295cb248089eb3); refund 0.25 [0x921d…6fe3](https://explorer.testnet.whitechain.io/tx/0x921d428645cbf91100523d79be8dc102aacccec8f354aaca343f576d8b706fe3)
 - On-chain reverts and all other txs: [INTEGRATION-REPORT.md](proof/INTEGRATION-REPORT.md); services run locally only (no public URL yet).
@@ -61,6 +61,6 @@ No extra partner integration is claimed. EzPayz code is not used (rewritten from
 - Live web/API: TODO-HUMAN (services run locally only).
 - Public repo and actual commit: TODO-HUMAN.
 - Six-step results twice: [G6-demo-run.txt](proof/G6-demo-run.txt) (5/6 PASS each; World step WAITING-ON-HUMAN). Video URL: TODO-HUMAN.
-- Contract and transaction links: see Whitechain section above; verification BLOCKED (explorer outage).
+- Contract and transaction links: see Whitechain section above; both source-verified on the explorer.
 - AI tools: OpenAI Codex (earlier sandbox: implementation, local Node tests, doc lookup); Claude Code (laptop: forge 118/118, pnpm test 93/93, doctor, world:smoke, ens:smoke, USDT read-only probe, docs). No fabricated history or real-world success.
 - Prior code: [W9 inventory](proof/W9-prior-code-inventory.md) (chupke removed, EzPayz-derived code rewritten, create-next-app scaffold configs disclosed). TODO-HUMAN creation dates, licenses, prior submissions and fresh/Continuity decision. Pactra relationship remains unanswered.

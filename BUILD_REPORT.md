@@ -1,6 +1,6 @@
 # Countersign build report — Fri 6 Nov 2026 19:50 IST (loop 20, in progress)
 
-**Live on Whitechain testnet (1874):** MerchantRegistry [0x2686…29E2](https://explorer.testnet.whitechain.io/address/0x2686f693A2C959568e650e0A5563E6244f2329E2), Mandate [0x9232…9EbA](https://explorer.testnet.whitechain.io/address/0x923298375911A173da34C715da2718c0c9889EbA). Verification **BLOCKED** by explorer outage (docs/proof/VERIFY-OUTAGE.md).
+**Live on Whitechain testnet (1874):** MerchantRegistry [0x2686…29E2](https://explorer.testnet.whitechain.io/address/0x2686f693A2C959568e650e0A5563E6244f2329E2), Mandate [0x9232…9EbA](https://explorer.testnet.whitechain.io/address/0x923298375911A173da34C715da2718c0c9889EbA). Both source-verified on Blockscout at 2026-11-06T17:55:24Z after the explorer outage ended (docs/proof/VERIFY-OUTAGE.md).
 - First real official-USDT pay(): [0x6862…4021](https://explorer.testnet.whitechain.io/tx/0x68629137bf52b628824e92723b299d2b6dcf5703920eda318c4f402af1734021); 3 more relayed via API/GasGuard; agent holds 0 USDT/0 WBT.
 - Acceptance: **11/16 PASS**, A15 partial (ENS read-only), A7 not run, A2/A14/A16 WAITING-ON-HUMAN (docs/proof/ACCEPTANCE.md).
 - Six-step demo twice: 5/6 PASS per run; order-40 waits on World (docs/proof/G6-demo-run.txt). On-chain reverts: BadIntentSig, RegistryMismatch, OverPerTx, Paused, OverRefund.

@@ -4,13 +4,13 @@
     "MerchantRegistry": {
       "address": "0x2686f693A2C959568e650e0A5563E6244f2329E2",
       "deploymentTx": "0x3bf28526ba2ac7629d0b70c030d1f64cd2ba873aa634a1b240a867df9a2cd707",
-      "verified": false,
+      "verified": true,
       "block": "12366488"
     },
     "Mandate": {
       "address": "0x923298375911A173da34C715da2718c0c9889EbA",
       "deploymentTx": "0x6351883c2e30cf2dbb6d247701b8f2e8cfe36f300ca007c7ec8b2a75fb503a91",
-      "verified": false,
+      "verified": true,
       "block": "12366502"
     }
   },

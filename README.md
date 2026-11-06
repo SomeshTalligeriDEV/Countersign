@@ -2,7 +2,7 @@
 
 Bounded USDT payments for AI agents, targeting Whitechain Sepolia (1874). A treasury owner defines a mandate; its agent signs exact payment terms. The contract checks merchant payout/version, limits, nonce, order, epoch and expiry. Payments at the human threshold additionally require a fresh World identity attestation and owner-wallet approval.
 
-**Status (2026-11-06):** contracts are deployed on Whitechain testnet (1874) and real official-USDT payments have settled ([INTEGRATION-REPORT.md](docs/proof/INTEGRATION-REPORT.md)). Source verification is **blocked by an explorer outage** ([VERIFY-OUTAGE.md](docs/proof/VERIFY-OUTAGE.md)). The services (API, relayer, attestor, observer, demo merchant) run **locally only and are not yet publicly hosted**. Real World sign-in is WAITING-ON-HUMAN; ENS is read-only (no writes). See [STATUS.md](STATUS.md).
+**Status (2026-11-06):** contracts are deployed on Whitechain testnet (1874) and real official-USDT payments have settled ([INTEGRATION-REPORT.md](docs/proof/INTEGRATION-REPORT.md)). Both contracts are source-verified on Blockscout (2026-11-06T17:55:24Z, after an explorer outage: [VERIFY-OUTAGE.md](docs/proof/VERIFY-OUTAGE.md)). The services (API, relayer, attestor, observer, demo merchant) run **locally only and are not yet publicly hosted**. Real World sign-in is WAITING-ON-HUMAN; ENS is read-only (no writes). See [STATUS.md](STATUS.md).
 
 ## Live on Whitechain testnet
 
@@ -12,7 +12,7 @@ Bounded USDT payments for AI agents, targeting Whitechain Sepolia (1874). A trea
 | Mandate | [0x923298375911A173da34C715da2718c0c9889EbA](https://explorer.testnet.whitechain.io/address/0x923298375911A173da34C715da2718c0c9889EbA) (deploy [0x6351…3a91](https://explorer.testnet.whitechain.io/tx/0x6351883c2e30cf2dbb6d247701b8f2e8cfe36f300ca007c7ec8b2a75fb503a91)) |
 | Official USDT | 0xcedfB56113143d55b2358b8CFbB0dEB5Ad2f55a7 |
 | First real payment (0.50 official USDT) | [0x68629137bf52b628824e92723b299d2b6dcf5703920eda318c4f402af1734021](https://explorer.testnet.whitechain.io/tx/0x68629137bf52b628824e92723b299d2b6dcf5703920eda318c4f402af1734021) |
-| Source verification | BLOCKED: explorer returned "Contract verification is temporarily unavailable." on every attempt ([VERIFY-OUTAGE.md](docs/proof/VERIFY-OUTAGE.md)) |
+| Source verification | VERIFIED both contracts 2026-11-06T17:55:24Z (earlier attempts hit an explorer outage: [VERIFY-OUTAGE.md](docs/proof/VERIFY-OUTAGE.md)) |
 
 Feature acceptance on the live chain: [ACCEPTANCE.md](docs/proof/ACCEPTANCE.md) (11 PASS incl. webhooks, A15 partial, A7 not run, A2/A14/A16 WAITING-ON-HUMAN). Six-step demo run twice, 5/6 PASS each (order-40 waits on World): [G6-demo-run.txt](docs/proof/G6-demo-run.txt). All setup txs: [G2-onchain.md](docs/proof/G2-onchain.md).
 
@@ -55,7 +55,7 @@ Submitted is not settled: the observer requires three subsequent blocks and read
 | Chain 1874, RPC, explorer, solc 0.8.30, prague | REAL config | packages/shared/src/chain.mjs; [INTEGRATION-SOURCES.md](docs/proof/INTEGRATION-SOURCES.md); relay-errors test `single chain definition matches official Whitechain Sepolia docs` |
 | Official USDT metadata, 6 decimals | REAL read-only | [USDT-CAPABILITIES.md](docs/proof/USDT-CAPABILITIES.md) (cast calls) |
 | USDT EIP-2612 permit / EIP-3009 present | REAL read-only probe | USDT-CAPABILITIES.md; no signed permit/3009 transfer executed (UNEXECUTED). Countersign uses approve + transferFrom |
-| Mandate / MerchantRegistry contracts | REAL deployed; forge 118/118 locally | addresses above; source verification BLOCKED (explorer outage) |
+| Mandate / MerchantRegistry contracts | REAL deployed; forge 118/118 locally | addresses above; source verified on Blockscout |
 | USDT payment, explorer link | REAL | first pay() [0x6862…4021](https://explorer.testnet.whitechain.io/tx/0x68629137bf52b628824e92723b299d2b6dcf5703920eda318c4f402af1734021) + 3 relayed payments ([A12-payments.csv](docs/proof/A12-payments.csv)) |
 | Relayer + GasGuard sponsored pay(), agent holds 0 USDT / 0 WBT | REAL | [G2-onchain.md](docs/proof/G2-onchain.md) I2/D5, [G6-demo-run.txt](docs/proof/G6-demo-run.txt) |
 | On-chain reverts (BadIntentSig, RegistryMismatch, OverPerTx, Paused, OverRefund) | REAL | tx links in [INTEGRATION-REPORT.md](docs/proof/INTEGRATION-REPORT.md) |
@@ -107,7 +107,7 @@ The relayer ([apps/api/src/facilitator.mjs](apps/api/src/facilitator.mjs)) only 
 
 ## Limitations
 
-- Contracts deployed but source not verified (explorer outage). Services not publicly hosted. No real World sign-in, ENS write, public repo or video yet.
+- Contracts deployed and source-verified. Services not publicly hosted. No real World sign-in, ENS write, public repo or video yet.
 - Reservations cover execution gas, not complete OP fee components. Single relayer process/signer required.
 - Automatic deep-reorg recovery, multi-process production and identity recovery/rebinding are unfinished. Webhooks deliver only to an operator-configured URL.
 - Browser tests use a mocked wallet (W5 Playwright 8/8 FIXTURE, docs/proof/W5-playwright.txt); real-wallet run not done.
@@ -136,10 +136,10 @@ From [W9-prior-code-inventory.md](docs/proof/W9-prior-code-inventory.md):
 <!-- COUNTERSIGN-EVIDENCE:START -->
 ## Recorded deployment evidence
 
-See "Live on Whitechain testnet" above and [INTEGRATION-REPORT.md](docs/proof/INTEGRATION-REPORT.md). Still TODO-HUMAN: source verification (explorer outage), World success + denied evidence, public web/API URLs, public repo, video, final CI URL, source eligibility decision.
+See "Live on Whitechain testnet" above and [INTEGRATION-REPORT.md](docs/proof/INTEGRATION-REPORT.md). Still TODO-HUMAN: World success + denied evidence, public web/API URLs, public repo, video, final CI URL, source eligibility decision.
 
 <!-- COUNTERSIGN-EVIDENCE:END -->
 
 ## Risk-reduction commands
 
-`pnpm doctor` checks public configuration, chain/token/balances/contracts/budget, provider discovery, service health, flags and Git cleanliness without printing secrets. `pnpm human:deploy` runs the keystore-based stepwise deployment and first payment in a normal terminal, persisting docs/proof/deployed.json. `pnpm human:deploy` was executed for the deployment and first payment (verification skipped during the outage). Adversarial Solidity tests in contracts/test/AdversarialEdges.t.sol (43 incl. inherited) pass (G1-forge-test.txt). See [CLAIM-AUDIT.md](docs/CLAIM-AUDIT.md).
+`pnpm doctor` checks public configuration, chain/token/balances/contracts/budget, provider discovery, service health, flags and Git cleanliness without printing secrets. `pnpm human:deploy` runs the keystore-based stepwise deployment and first payment in a normal terminal, persisting docs/proof/deployed.json. `pnpm human:deploy` was executed for the deployment and first payment (verification skipped during the outage, then run with forge verify-contract once it ended). Adversarial Solidity tests in contracts/test/AdversarialEdges.t.sol (43 incl. inherited) pass (G1-forge-test.txt). See [CLAIM-AUDIT.md](docs/CLAIM-AUDIT.md).
