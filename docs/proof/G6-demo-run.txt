@@ -12,3 +12,14 @@ Rejections below are API/GasGuard pre-flight rejections (nothing broadcast), NOT
 + arbitrary-relayer-call PASS GasGuard rejected: not_allowlisted_call (no broadcast)
 + earlier real GasGuard denial: gas_price_or_limit (1 gwei cap < 5 gwei base fee), see G2-onchain.md
 Run-1 notes: first attempts at 19:10 failed on venue-network RPC timeouts (Cloudflare itself 5.4 s); the CLI now prints redacted reasons.
+
+=== RUN 2 — 2026-11-06 19:28–19:29 IST (immediately after run 1) ===
+1 buy-report            PASS  relayed pay() 0.50 USDT  https://explorer.testnet.whitechain.io/tx/0xcc8d0d3d0941fa8e2072f8a08dbc45e9e664fbc82ebcae435a295cb248089eb3  paymentId 0x2e42…93c7; report delivered after observer confirmation
+2 tamper-amount         PASS  rejected: bad_intent_sig
+3 tamper-payout         PASS  rejected: bad_intent_sig
+4 order-40              NOT RUN — WAITING-ON-HUMAN (World)
+5 over-budget           PASS  rejected: OverPerTx
+6 replay-after-revoke   PASS  owner revoke tx https://explorer.testnet.whitechain.io/tx/0xc4309699e5dec0d9489db228b9ce6632ee1e23c22ac16890f8e5691463ab8983, replay rejected: StaleEpoch
++ arbitrary-relayer-call PASS GasGuard rejected: not_allowlisted_call
+
+SUMMARY: 2 consecutive runs, 5/6 steps PASS each; order-40 (World human approval) WAITING-ON-HUMAN.
