@@ -1,4 +1,16 @@
-# Countersign build report — Fri 6 Nov 2026 13:35 IST (orchestrator stop: remaining items need the human)
+# Countersign build report — Fri 6 Nov 2026 14:00 IST (after final build loop 18)
+
+**Code complete for the next (deploy/verify) loop.** Summary with REAL vs FIXTURE per sponsor, prize status, dummy audit and next-loop inputs: [docs/proof/FINAL-LOOP-SUMMARY.md](docs/proof/FINAL-LOOP-SUMMARY.md).
+
+- Tests: pnpm 93/93 · forge 118/118 · Playwright 14/14 (FIXTURE) · axe 0 violations · world:smoke PASS · ens:smoke PASS.
+- Nothing deployed on chain; no live URL; no git remote.
+- Prior code: chupke landing/components/stubs removed; EzPayz-derived amount.mjs + approvals idempotency rewritten from scratch; remaining starter config disclosed in README "Prior work disclosure" and docs/proof/W9-prior-code-inventory.md.
+- Six-step demo: not run on chain (dry-run plan only: docs/proof/F8-demo-dryrun.txt).
+
+---
+
+## Earlier report (orchestrator loop 17)
+
 
 Repo: local only, **no remote yet** (HUMAN-RUN H5). Commits: see `git rev-list --count HEAD`. Live URL: **none** (needs H5 + H6).
 

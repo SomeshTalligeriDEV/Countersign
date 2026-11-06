@@ -1,6 +1,8 @@
 # Countersign status — verified 2026-11-06
 
-## ▶ Current (orchestrator, 13:35 IST Fri — stopped: all remaining work WAITING-ON-HUMAN/BLOCKED)
+## ▶ Final build loop 18 (14:00 IST Fri): F1–F9 done or WAITING-ON-HUMAN/BLOCKED — see docs/proof/FINAL-LOOP-SUMMARY.md
+
+## ▶ Loop 17 (orchestrator, 13:35 IST Fri — stopped: all remaining work WAITING-ON-HUMAN/BLOCKED)
 | WS | State | Evidence |
 |---|---|---|
 | W1 contracts | DONE: 118/118 incl. 9 adversarial + T-30 invariant | docs/proof/G1-forge-test.txt |

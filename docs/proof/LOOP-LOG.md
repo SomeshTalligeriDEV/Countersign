@@ -76,3 +76,6 @@ W5 rerun on prod build port 3107 (user's own dev server on :3000 left running): 
 
 ## 2026-11-06 13:43 IST — Final loop (18) cycle 1
 Baseline: git clean, no remote, no .env, no deployer keystore. pnpm test 75/75; forge 118/118. ENS GO (before 18:00). Spawned F1 (Whitechain + prize reqs), F2 (World OIDC + world:smoke), F3 (ENS), F5+F7 (eligibility cleanup + IP forwarding/audit). Queued for cycle 2: F4 polish, F6 prize gaps, F8 deploy readiness, F9 docs, DUMMY-AUDIT.
+
+## 2026-11-06 14:00 IST — Final loop 18 stop
+Cycle 2 committed F4 (UI, Playwright 14/14, axe 0), F6+F9 (docs, prize, dummy audit), F8 (Dockerfile fix, dry-runs, public overlay). Security fixes: XFF hop, ENS SSRF + revoke. Final: pnpm 93/93, forge 118/118 x2 seeds, world:smoke PASS, ens:smoke PASS. Stop: remaining items need deploy/human.
