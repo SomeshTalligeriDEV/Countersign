@@ -1,4 +1,14 @@
-# Countersign status — verified 2026-11-06
+# Countersign status — verified 2026-11-07
+
+## ▶ Current (2026-11-07)
+- Whitechain: contracts deployed + verified, real official-USDT payments settled (docs/proof/INTEGRATION-REPORT.md).
+- World: sandbox sign-in + human-approved payment REAL (docs/proof/A2-world-approval.md).
+- ENS: countersign.eth + agent1.countersign.eth on ENSv2 Sepolia, own UserRegistry + PermissionedResolver, policy records, agent key scoped to two records, drift 7/8 MATCH (merchantsHash MISSING by design); revoke built, NOT executed (docs/proof/A15-ens-onchain.md).
+- Hosting: web https://web-rouge-one-10.vercel.app (Vercel); API/relayer/attestor via Cloudflare quick tunnel from the build laptop, live only while it is up.
+- Repo: https://github.com/SomeshTalligeriDEV/ETHGLOBAL (public, CI green). Acceptance 14/16 PASS (A7 not run, A14 waiting on human wallet clicks). pnpm 97/97, forge 118/118.
+- Still missing: demo video.
+
+The loop sections below are historical and superseded where they conflict.
 
 ## ▶ Deploy loop 19 (15:05 IST Fri): D1 ABORTED, WAITING-ON-HUMAN — see docs/proof/D1-preflight.md
 

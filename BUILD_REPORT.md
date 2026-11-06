@@ -1,13 +1,13 @@
-# Countersign build report — Fri 6 Nov 2026 19:50 IST (loop 20, in progress)
+# Countersign build report — Sat 7 Nov 2026 01:30 IST (final sprint)
 
 **Live on Whitechain testnet (1874):** MerchantRegistry [0x2686…29E2](https://explorer.testnet.whitechain.io/address/0x2686f693A2C959568e650e0A5563E6244f2329E2), Mandate [0x9232…9EbA](https://explorer.testnet.whitechain.io/address/0x923298375911A173da34C715da2718c0c9889EbA). Both source-verified on Blockscout at 2026-11-06T17:55:24Z after the explorer outage ended (docs/proof/VERIFY-OUTAGE.md).
 - First real official-USDT pay(): [0x6862…4021](https://explorer.testnet.whitechain.io/tx/0x68629137bf52b628824e92723b299d2b6dcf5703920eda318c4f402af1734021); 3 more relayed via API/GasGuard; agent holds 0 USDT/0 WBT.
-- Acceptance: **13/16 PASS** (incl. A2/A16 real World sandbox), A15 partial (ENS read-only), A7 not run, A14 WAITING-ON-HUMAN (docs/proof/ACCEPTANCE.md).
+- Acceptance: **14/16 PASS** (incl. A2/A16 real World sandbox, A15 real ENSv2 Sepolia `agent1.countersign.eth`, drift 7/8 MATCH), A7 not run, A14 WAITING-ON-HUMAN (docs/proof/ACCEPTANCE.md).
 - Six-step demo twice: 5/6 PASS per run; order-40 waited on World in those runs (docs/proof/G6-demo-run.txt); it was later approved via real World sandbox sign-in and settled [0x98fa…b531](https://explorer.testnet.whitechain.io/tx/0x98fa814e805ab35e55124370539bc0c1889aef519d5c408800be2efc709cb531) (docs/proof/A2-world-approval.md). Failure paths (stale_auth, expired) sent no payment. On-chain reverts: BadIntentSig, RegistryMismatch, OverPerTx, Paused, OverRefund.
-- Tests: pnpm 95/95, forge 118/118. CI steps pass locally; remote CI needs a git remote.
-- Live URL: **none yet** (services run locally; host + remote WAITING-ON-HUMAN). Integration report: docs/proof/INTEGRATION-REPORT.md.
+- Tests: pnpm 97/97, forge 118/118. Remote CI green: https://github.com/SomeshTalligeriDEV/ETHGLOBAL/actions (repo public, 72 commits).
+- Live URL: **https://web-rouge-one-10.vercel.app** (Vercel web; API/relayer/attestor run on the build laptop behind a Cloudflare quick tunnel, so the demo is live only while that laptop and tunnel are up; docs/proof/I6-live-url.txt). Integration report: docs/proof/INTEGRATION-REPORT.md.
 - Security note: attestor and payout test keys were pasted in chat; testnet only, rotate before any production use.
-- Remaining human steps: git remote/push; public host; owner wallet clicks (A14); record video; submit form before 06:00 IST.
+- Remaining human steps: record video (2–4 min), submit form before 06:00 IST; optional owner wallet clicks (A14). Keep laptop awake + tunnel up through judging. Rotate the World developer API key and test keys pasted in chat.
 
 ---
 

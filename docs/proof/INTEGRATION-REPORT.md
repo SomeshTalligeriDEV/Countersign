@@ -1,10 +1,10 @@
-# Integration report: REAL vs FIXTURE vs MISSING (2026-11-06)
+# Integration report: REAL vs FIXTURE vs MISSING (updated 2026-11-07)
 
-Sources: G2-onchain.md, G6-demo-run.txt, ACCEPTANCE.md, A11-webhooks.txt, A12-payments.csv, VERIFY-OUTAGE.md, deployed.json, I2-services.md, I7-ci-local.txt, F2-world-smoke.txt, F3-ens-smoke.txt, USDT-CAPABILITIES.md, git log. Explorer: `https://explorer.testnet.whitechain.io`.
+Sources: G2-onchain.md, G6-demo-run.txt, ACCEPTANCE.md, A11-webhooks.txt, A12-payments.csv, VERIFY-OUTAGE.md, deployed.json, I2-services.md, I7-ci-local.txt, F2-world-smoke.txt, F3-ens-smoke.txt, A15-ens-onchain.md, A15-ens-live.txt, I6-live-url.txt, USDT-CAPABILITIES.md, git log. Explorer: `https://explorer.testnet.whitechain.io`.
 
 Key: **REAL** = executed against the live network/service (tx link or log). **FIXTURE** = local tests/mocks only. **MISSING** = not done. **BLOCKED** = attempted, external cause. **WAITING-ON-HUMAN** = needs a human step.
 
-Services (API + relayer + GasGuard :3011, attestor :3002, observer, demo merchant :4000) ran **locally on loopback only**; there is no public URL yet (I2-services.md, ACCEPTANCE.md). The git repo has no public remote yet.
+Web is hosted on Vercel (https://web-rouge-one-10.vercel.app, all routes 200 in I6-live-url.txt). Services (API + relayer + GasGuard, attestor, observer, demo merchant) run on the build laptop behind a Cloudflare quick tunnel (https://detector-absorption-calculate-methodology.trycloudflare.com); they are live only while the laptop and tunnel are up. Public repo: https://github.com/SomeshTalligeriDEV/ETHGLOBAL (CI green).
 
 ## Whitechain (testnet, chain 1874)
 
@@ -27,9 +27,9 @@ Services (API + relayer + GasGuard :3011, attestor :3002, observer, demo merchan
 | Owner dashboard actions via real wallet | WAITING-ON-HUMAN | ACCEPTANCE.md A14 |
 | Over-limit payment approved by human then settled | REAL | ACCEPTANCE.md A2, A2-world-approval.md |
 | Registry change after approval reverts (live) | MISSING (NOT RUN) | ACCEPTANCE.md A7; FIXTURE forge test only |
-| Contract suite | FIXTURE | forge 118/118, `pnpm test` 93/93 (I7-ci-local.txt) |
+| Contract suite | FIXTURE | forge 118/118, `pnpm test` 97/97 (I7-ci-local.txt) |
 | USDT permit / EIP-3009 | REAL read-only probe, not used | USDT-CAPABILITIES.md |
-| Publicly hosted services | MISSING | runs locally only |
+| Public hosting | PARTIAL | web REAL on Vercel; backend via Cloudflare quick tunnel from build laptop (not durable); I6-live-url.txt |
 
 ## World (Agent Pass / OIDC)
 
@@ -47,6 +47,10 @@ Services (API + relayer + GasGuard :3011, attestor :3002, observer, demo merchan
 | Claim | Status | Evidence |
 |---|---|---|
 | Live read via Universal Resolver + web route `mode:"live"` | REAL read-only | F3-ens-smoke.txt (`nick.eth`) |
-| Countersign policy read-back | PARTIAL | ACCEPTANCE.md A15: read-only; no agent subname exists, so records are null |
-| Subname / resolver / text-record / revoke writes | MISSING (UNEXECUTED) | tx builders FIXTURE-tested only; no Sepolia ETH / owned parent |
+| `countersign.eth` registered on ENSv2 Sepolia with our own UserRegistry subregistry | REAL | [A15-ens-onchain.md](A15-ens-onchain.md) |
+| `agent1.countersign.eth` with its own PermissionedResolver; addr = agent 0x91E3…A293 | REAL | [A15-ens-onchain.md](A15-ens-onchain.md) |
+| Policy text records (limits, merchants, attestor, mandate, epoch) | REAL | [A15-ens-onchain.md](A15-ens-onchain.md) |
+| Agent key scoped to two records via grantSetterRoles (Enhanced Access Control) | REAL | [A15-ens-onchain.md](A15-ens-onchain.md) |
+| Live drift check vs Whitechain Mandate | REAL: 7/8 MATCH; merchantsHash MISSING by design (Mandate stores a mapping) | [A15-ens-live.txt](A15-ens-live.txt) |
+| Revoke (ENS clear + Mandate epoch bump) | BUILT, UNEXECUTED (keeps demo name live) | `pnpm ens:setup -- --revoke` |
 | Contract reads ENS | No (by design) | ENS is identity/policy display only |

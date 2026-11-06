@@ -1,8 +1,10 @@
 # Countersign
 
+**Live demo:** https://web-rouge-one-10.vercel.app (Vercel). API/relayer/attestor run on the build laptop behind a Cloudflare quick tunnel (https://detector-absorption-calculate-methodology.trycloudflare.com), live only while the laptop and tunnel are up. **ENS agent:** `agent1.countersign.eth` on Sepolia ENSv2. **Repo:** https://github.com/SomeshTalligeriDEV/ETHGLOBAL (public, CI green).
+
 Bounded USDT payments for AI agents, targeting Whitechain Sepolia (1874). A treasury owner defines a mandate; its agent signs exact payment terms. The contract checks merchant payout/version, limits, nonce, order, epoch and expiry. Payments at the human threshold additionally require a fresh World identity attestation and owner-wallet approval.
 
-**Status (2026-11-06):** contracts are deployed on Whitechain testnet (1874) and real official-USDT payments have settled ([INTEGRATION-REPORT.md](docs/proof/INTEGRATION-REPORT.md)). Both contracts are source-verified on Blockscout (2026-11-06T17:55:24Z, after an explorer outage: [VERIFY-OUTAGE.md](docs/proof/VERIFY-OUTAGE.md)). The services (API, relayer, attestor, observer, demo merchant) run **locally only and are not yet publicly hosted**. Real World sign-in works against the World sandbox issuer (mocked identities per World) via a CIMD public client over a Cloudflare quick tunnel: a 1.50 USDT human-approved payment settled ([0x98fa…b531](https://explorer.testnet.whitechain.io/tx/0x98fa814e805ab35e55124370539bc0c1889aef519d5c408800be2efc709cb531)) and two real failure paths sent no payment ([A2-world-approval.md](docs/proof/A2-world-approval.md)); ENS is read-only (no writes). See [STATUS.md](STATUS.md).
+**Status (2026-11-07):** contracts are deployed on Whitechain testnet (1874) and real official-USDT payments have settled ([INTEGRATION-REPORT.md](docs/proof/INTEGRATION-REPORT.md)). Both contracts are source-verified on Blockscout (2026-11-06T17:55:24Z, after an explorer outage: [VERIFY-OUTAGE.md](docs/proof/VERIFY-OUTAGE.md)). The web app is hosted on Vercel (https://web-rouge-one-10.vercel.app); the services (API, relayer, attestor, observer, demo merchant) run on the build laptop behind a Cloudflare quick tunnel, so they are live only while that laptop and tunnel are up ([I6-live-url.txt](docs/proof/I6-live-url.txt)). Real World sign-in works against the World sandbox issuer (mocked identities per World) via a CIMD public client over a Cloudflare quick tunnel: a 1.50 USDT human-approved payment settled ([0x98fa…b531](https://explorer.testnet.whitechain.io/tx/0x98fa814e805ab35e55124370539bc0c1889aef519d5c408800be2efc709cb531)) and two real failure paths sent no payment ([A2-world-approval.md](docs/proof/A2-world-approval.md)); ENS: `countersign.eth` registered on ENSv2 Sepolia with our own UserRegistry; `agent1.countersign.eth` has its own PermissionedResolver, policy text records, addr = agent, and the agent key scoped to two records; live drift check 7/8 MATCH vs the Whitechain Mandate ([A15-ens-onchain.md](docs/proof/A15-ens-onchain.md)). See [STATUS.md](STATUS.md).
 
 ## Live on Whitechain testnet
 
@@ -14,7 +16,7 @@ Bounded USDT payments for AI agents, targeting Whitechain Sepolia (1874). A trea
 | First real payment (0.50 official USDT) | [0x68629137bf52b628824e92723b299d2b6dcf5703920eda318c4f402af1734021](https://explorer.testnet.whitechain.io/tx/0x68629137bf52b628824e92723b299d2b6dcf5703920eda318c4f402af1734021) |
 | Source verification | VERIFIED both contracts 2026-11-06T17:55:24Z (earlier attempts hit an explorer outage: [VERIFY-OUTAGE.md](docs/proof/VERIFY-OUTAGE.md)) |
 
-Feature acceptance on the live chain: [ACCEPTANCE.md](docs/proof/ACCEPTANCE.md) (13 PASS incl. webhooks and World A2/A16, A15 partial, A7 not run, A14 WAITING-ON-HUMAN). Six-step demo run twice, 5/6 PASS each (order-40 waited on World; later approved for real, see A2-world-approval.md): [G6-demo-run.txt](docs/proof/G6-demo-run.txt). All setup txs: [G2-onchain.md](docs/proof/G2-onchain.md).
+Feature acceptance on the live chain: [ACCEPTANCE.md](docs/proof/ACCEPTANCE.md) (14/16 PASS incl. webhooks, World A2/A16 and ENS A15; A7 not run, A14 WAITING-ON-HUMAN). Six-step demo run twice, 5/6 PASS each (order-40 waited on World; later approved for real, see A2-world-approval.md): [G6-demo-run.txt](docs/proof/G6-demo-run.txt). All setup txs: [G2-onchain.md](docs/proof/G2-onchain.md).
 
 ## Why on-chain stablecoin settlement on Whitechain
 
@@ -25,7 +27,7 @@ The agent's spending limits, merchant payout binding, replay protection and the 
 Node >=24.10, pnpm, Foundry, Solidity 0.8.30.
 
 ```sh
-pnpm test                         # root Node suite: 93 pass, 0 fail (2026-11-06)
+pnpm test                         # root Node suite: 97 pass, 0 fail
 forge test --root contracts -vvv  # 118 pass (docs/proof/G1-forge-test.txt)
 pnpm doctor                       # read-only chain/token/config checks
 pnpm world:smoke                  # live World discovery + JWKS (read-only)
@@ -60,7 +62,7 @@ Submitted is not settled: the observer requires three subsequent blocks and read
 | Relayer + GasGuard sponsored pay(), agent holds 0 USDT / 0 WBT | REAL | [G2-onchain.md](docs/proof/G2-onchain.md) I2/D5, [G6-demo-run.txt](docs/proof/G6-demo-run.txt) |
 | On-chain reverts (BadIntentSig, RegistryMismatch, OverPerTx, Paused, OverRefund) | REAL | tx links in [INTEGRATION-REPORT.md](docs/proof/INTEGRATION-REPORT.md) |
 | Refund, revoke, pause, webhooks (HMAC), CSV, receipt == chain | REAL (services local) | [ACCEPTANCE.md](docs/proof/ACCEPTANCE.md), [A11-webhooks.txt](docs/proof/A11-webhooks.txt) |
-| Public hosting of services | MISSING | runs on loopback only |
+| Public hosting | PARTIAL | web on Vercel (REAL); API/relayer/attestor on build laptop via Cloudflare quick tunnel, live only while laptop+tunnel are up ([I6-live-url.txt](docs/proof/I6-live-url.txt)) |
 | RPC error handling (429, nonce, replacement) | FIXTURE (mocked RPC) | apps/api/test/relay-errors.test.mjs |
 
 ## World
@@ -80,13 +82,16 @@ Submitted is not settled: the observer requires three subsequent blocks and read
 |---|---|---|
 | Policy read via ENS Universal Resolver (viem, Sepolia) | REAL read-only | [F3-ens-smoke.txt](docs/proof/F3-ens-smoke.txt): `nick.eth` PASS, plus web route `mode:"live"` |
 | UI badge Live/Fixture | REAL mode flag | web/src/components/countersign/EnsIdentity.tsx |
-| Subname, resolver, text records, revoke tx builders | FIXTURE (encoding tests only) | packages/ens/test/ens.test.mjs |
-| Countersign agent policy read-back | PARTIAL (read-only; no subname exists) | ACCEPTANCE.md A15 |
-| `pnpm ens:setup` writes on Sepolia | UNEXECUTED (needs Sepolia ETH + owned parent) | scripts/ens-setup.mjs; [ENS-NOTES.md](docs/ENS-NOTES.md) |
+| `countersign.eth` registered with our own UserRegistry subregistry | REAL (Sepolia ENSv2) | [A15-ens-onchain.md](docs/proof/A15-ens-onchain.md) |
+| `agent1.countersign.eth` with its own PermissionedResolver; addr = agent 0x91E3…A293 | REAL | A15-ens-onchain.md |
+| Policy text records (limits, merchants, attestor, mandate, epoch) | REAL | A15-ens-onchain.md |
+| Agent key scoped to agent-endpoint[web] + agent-context via grantSetterRoles (Enhanced Access Control) | REAL | A15-ens-onchain.md |
+| Live drift check ENS vs Whitechain Mandate | REAL: 7/8 MATCH, merchantsHash MISSING by design (Mandate stores a mapping) | [A15-ens-live.txt](docs/proof/A15-ens-live.txt), web route `/api/countersign/ens/agent1.countersign.eth/drift` |
+| Revoke flow (ENS clear + Mandate epoch bump) | BUILT, UNEXECUTED (keeps demo name live) | `pnpm ens:setup -- --revoke`; [ENS-NOTES.md](docs/ENS-NOTES.md) |
 
 ## Security properties mapped to tests
 
-Executed 2026-11-06 on the laptop: forge 118 passed / 0 failed / 6 suites ([G1-forge-test.txt](docs/proof/G1-forge-test.txt)); `pnpm test` 93 pass / 0 fail. Local tests against mocks/fixtures, not deployed-chain evidence. Mandate tests are inherited by other suites, so names repeat.
+Executed 2026-11-06 on the laptop: forge 118 passed / 0 failed / 6 suites ([G1-forge-test.txt](docs/proof/G1-forge-test.txt)); `pnpm test` 97 pass / 0 fail. Local tests against mocks/fixtures, not deployed-chain evidence. Mandate tests are inherited by other suites, so names repeat.
 
 | Property | Forge tests (contracts/test) | Node tests (apps/api/test) |
 | --- | --- | --- |
@@ -109,17 +114,17 @@ The relayer ([apps/api/src/facilitator.mjs](apps/api/src/facilitator.mjs)) only 
 
 ## Limitations
 
-- Contracts deployed and source-verified. Services not publicly hosted. World sign-in is sandbox-only (mocked identities) through a Cloudflare quick tunnel, not production `auth.world.org`; IDKit not built. No ENS write, public repo or video yet.
+- Contracts deployed and source-verified. Web hosted on Vercel; API/relayer/attestor only via a Cloudflare quick tunnel from the build laptop (not durable hosting). World sign-in is sandbox-only (mocked identities) through a Cloudflare quick tunnel, not production `auth.world.org`; IDKit not built. ENS revoke not executed. No video yet.
 - Reservations cover execution gas, not complete OP fee components. Single relayer process/signer required.
 - Automatic deep-reorg recovery, multi-process production and identity recovery/rebinding are unfinished. Webhooks deliver only to an operator-configured URL.
 - Browser tests use a mocked wallet (W5 Playwright 8/8 FIXTURE, docs/proof/W5-playwright.txt); real-wallet run not done.
-- Contracts do not read ENS; ENS is identity/policy display.
+- Contracts do not read ENS; ENS is the agent name, public policy mirror and role layer. ENS revoke is built but not executed.
 - No independent audit or production-security claim. Off-chain merchant billing is a proposed business model, not implemented.
 - NO-DUMMY audit: [DUMMY-AUDIT.md](docs/proof/DUMMY-AUDIT.md) (non-web), [DUMMY-AUDIT-web.md](docs/proof/DUMMY-AUDIT-web.md) (web).
 
 ## Deployment and submission
 
-[HUMAN-RUN.md](docs/proof/HUMAN-RUN.md) has deploy/verify/first-payment, World and browser steps. Addresses and tx links above come from docs/proof/deployed.json and G2-onchain.md. No hosted URLs exist yet. `pnpm evidence` regenerates the block below from deployed.json. Prize mapping: [PRIZE-REQUIREMENTS.md](docs/proof/PRIZE-REQUIREMENTS.md).
+[HUMAN-RUN.md](docs/proof/HUMAN-RUN.md) has deploy/verify/first-payment, World and browser steps. Addresses and tx links above come from docs/proof/deployed.json and G2-onchain.md. Live web: https://web-rouge-one-10.vercel.app (backend via quick tunnel, see above). Repo: https://github.com/SomeshTalligeriDEV/ETHGLOBAL. `pnpm evidence` regenerates the block below from deployed.json. Prize mapping: [PRIZE-REQUIREMENTS.md](docs/proof/PRIZE-REQUIREMENTS.md).
 
 ## Prior work disclosure
 
@@ -138,7 +143,7 @@ From [W9-prior-code-inventory.md](docs/proof/W9-prior-code-inventory.md):
 <!-- COUNTERSIGN-EVIDENCE:START -->
 ## Recorded deployment evidence
 
-See "Live on Whitechain testnet" above and [INTEGRATION-REPORT.md](docs/proof/INTEGRATION-REPORT.md). Still TODO-HUMAN: public web/API URLs, public repo, video, final CI URL, source eligibility decision.
+See "Live on Whitechain testnet" above and [INTEGRATION-REPORT.md](docs/proof/INTEGRATION-REPORT.md). Still TODO-HUMAN: video, durable backend hosting, source eligibility decision.
 
 <!-- COUNTERSIGN-EVIDENCE:END -->
 
