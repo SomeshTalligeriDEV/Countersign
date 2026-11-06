@@ -1,4 +1,5 @@
 import {createServer} from 'node:http';
+import {createHash} from 'node:crypto';
 import {DatabaseSync} from 'node:sqlite';
 import {countersign} from '../../../packages/merchant/src/index.mjs';
 import {verifyWebhook} from '../../../packages/merchant/src/webhooks.mjs';
@@ -15,7 +16,9 @@ async function webhook(req,res){
  const chunks=[];let size=0;for await(const c of req){size+=c.length;if(size>65536){res.writeHead(413);return res.end();}chunks.push(c);}
  const body=Buffer.concat(chunks);
  if(!verifyWebhook(secret,body,req.headers['x-countersign-signature'])){console.log('webhook REJECTED: bad signature');res.writeHead(401);return res.end();}
- const id=String(req.headers['x-countersign-event-id']??'');let type='unknown';try{type=JSON.parse(body).type;}catch{}
+ // Dedupe on the signed bytes (the event-id header is not covered by the HMAC, so it must not be the key).
+ let type;try{type=JSON.parse(body).type;}catch{}if(typeof type!=='string'){res.writeHead(400);return res.end();}
+ const id=createHash('sha256').update(body).digest('hex');
  const fresh=db.prepare('INSERT OR IGNORE INTO webhook_events VALUES (?,?,?)').run(id,type,Math.floor(Date.now()/1000)).changes;
  console.log(`webhook verified ${fresh?'new':'duplicate'} ${type} ${id}`);res.writeHead(200);res.end();
 }
