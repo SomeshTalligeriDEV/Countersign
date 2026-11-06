@@ -27,3 +27,5 @@ deploy/public.env
 .run/
 
 .vercel
+.claude/
+skills-lock.json
