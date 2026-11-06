@@ -2,12 +2,12 @@
 
 **Live on Whitechain testnet (1874):** MerchantRegistry [0x2686…29E2](https://explorer.testnet.whitechain.io/address/0x2686f693A2C959568e650e0A5563E6244f2329E2), Mandate [0x9232…9EbA](https://explorer.testnet.whitechain.io/address/0x923298375911A173da34C715da2718c0c9889EbA). Both source-verified on Blockscout at 2026-11-06T17:55:24Z after the explorer outage ended (docs/proof/VERIFY-OUTAGE.md).
 - First real official-USDT pay(): [0x6862…4021](https://explorer.testnet.whitechain.io/tx/0x68629137bf52b628824e92723b299d2b6dcf5703920eda318c4f402af1734021); 3 more relayed via API/GasGuard; agent holds 0 USDT/0 WBT.
-- Acceptance: **11/16 PASS**, A15 partial (ENS read-only), A7 not run, A2/A14/A16 WAITING-ON-HUMAN (docs/proof/ACCEPTANCE.md).
-- Six-step demo twice: 5/6 PASS per run; order-40 waits on World (docs/proof/G6-demo-run.txt). On-chain reverts: BadIntentSig, RegistryMismatch, OverPerTx, Paused, OverRefund.
+- Acceptance: **13/16 PASS** (incl. A2/A16 real World sandbox), A15 partial (ENS read-only), A7 not run, A14 WAITING-ON-HUMAN (docs/proof/ACCEPTANCE.md).
+- Six-step demo twice: 5/6 PASS per run; order-40 waited on World in those runs (docs/proof/G6-demo-run.txt); it was later approved via real World sandbox sign-in and settled [0x98fa…b531](https://explorer.testnet.whitechain.io/tx/0x98fa814e805ab35e55124370539bc0c1889aef519d5c408800be2efc709cb531) (docs/proof/A2-world-approval.md). Failure paths (stale_auth, expired) sent no payment. On-chain reverts: BadIntentSig, RegistryMismatch, OverPerTx, Paused, OverRefund.
 - Tests: pnpm 95/95, forge 118/118. CI steps pass locally; remote CI needs a git remote.
 - Live URL: **none yet** (services run locally; host + remote WAITING-ON-HUMAN). Integration report: docs/proof/INTEGRATION-REPORT.md.
 - Security note: attestor and payout test keys were pasted in chat; testnet only, rotate before any production use.
-- Remaining human steps: World sandbox app + phone sign-in; git remote/push; public host; owner wallet clicks (A14); record video; submit form before 06:00 IST.
+- Remaining human steps: git remote/push; public host; owner wallet clicks (A14); record video; submit form before 06:00 IST.
 
 ---
 
@@ -38,7 +38,7 @@ Repo: local only, **no remote yet** (HUMAN-RUN H5). Commits: see `git rev-list -
 | Security fixes this session | API rate limiter: route-class + global per-IP buckets, forwarded IP only from TRUSTED_PROXY_IPS | git log |
 
 ## Fixture-only / unexecuted
-- World OIDC sign-in: signed local JWT fixtures only. **FIXTURE**. No real World app registered.
+- World OIDC sign-in: now **REAL** against sandbox.auth.world.org (mocked identities, CIMD public client, Cloudflare quick tunnel); see docs/proof/A2-world-approval.md. IDKit not built.
 - Relayer/GasGuard: tested against mocked RPC; **no sponsored tx broadcast**.
 - Docker images: **UNEXECUTED** (daemon down).
 - Browser CI job and real-wallet checklist: **UNEXECUTED** (docs/proof/W5-real-wallet-checklist.md).

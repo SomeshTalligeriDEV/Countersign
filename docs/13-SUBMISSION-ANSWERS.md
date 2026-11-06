@@ -1,6 +1,6 @@
 # Submission answers: evidence-dependent draft
 
-Whitechain on-chain evidence is real (below); public code permalinks, ratings, hosting, World and ENS-write evidence remain TODO-HUMAN. Root 13-SUBMISSION-FORM-DRAFT.md is preserved as the supplied spec.
+Whitechain on-chain evidence is real (below); World Agent Pass is real against the sandbox issuer (docs/proof/A2-world-approval.md). Public code permalinks, ratings, hosting and ENS-write evidence remain TODO-HUMAN. Root 13-SUBMISSION-FORM-DRAFT.md is preserved as the supplied spec.
 
 ## Whitechain
 
@@ -31,9 +31,9 @@ Whitechain on-chain evidence is real (below); public code permalinks, ratings, h
 
 ## World Agent Pass
 
-**How used:** Implemented discovery, code+PKCE, max_age=0, jose JWT/JWKS checks, action-bound nonce, authentication freshness, immutable owner subject binding with wallet proof, separate authenticated attestor and owner PaymentApproval signature. Signed local JWT fixture tests passed. Live read-only discovery + JWKS checks PASS for sandbox and production issuers (docs/proof/F2-world-smoke.txt); no sign-in performed. Real issuer sign-in, provider/client-auth compatibility and protected live payment are TODO-HUMAN.
+**How used:** Implemented discovery, code+PKCE, max_age=0, jose JWT/JWKS checks, action-bound nonce, authentication freshness, immutable owner subject binding with wallet proof, separate authenticated attestor and owner PaymentApproval signature. Real sign-in against `https://sandbox.auth.world.org` (mocked identities per World) using a CIMD public client (portal registration returned `account_not_eligible`), served over a Cloudflare quick tunnel: owner onboarding bound, then a 1.50 USDT over-threshold payment was approved and settled (tx 0x98fa814e805ab35e55124370539bc0c1889aef519d5c408800be2efc709cb531). Failures: stale_auth after real sign-in refused (`approval_not_ready`, no tx); expired approval, no tx. Discovery + JWKS PASS for sandbox and production (docs/proof/F2-world-smoke.txt). Production issuer not run.
 
-**Applicability:** The protected action is a bounded USDT payment. Fixture identity success is not real World verification and is not production identity assurance. A real success and at least one failure must be captured before selecting this track as completed.
+**Applicability:** The protected action is a bounded USDT payment. Sandbox identities are mocked, so this is not production identity assurance. A real sandbox success and two real failures are captured (docs/proof/A2-world-approval.md).
 
 **Code** (repo-relative; permalink TODO-HUMAN after push):
 - `apps/api/src/world-oidc.mjs:4` createWorldOidc, `:24` PKCE + max_age=0 params, `:39` token verification call
@@ -41,10 +41,11 @@ Whitechain on-chain evidence is real (below); public code permalinks, ratings, h
 - `apps/api/src/owner-binding.mjs:5` createOwnerBinding
 - `apps/attestor/src/attestor.mjs:4` createAttestor
 - `apps/api/src/owner-signature.mjs:3` createOwnerSignatureService
+- `apps/api/src/world-cimd.mjs` CIMD client metadata document
 - `apps/api/src/world-device.mjs` device flow (FIXTURE-tested, not routed)
-- World sign-in evidence is FIXTURE-only; discovery/JWKS is REAL read-only.
+- World sign-in evidence is REAL (sandbox); IDKit not built.
 
-**Rating:** TODO-HUMAN after real issuer integration. [Debrief](../WORLD_DEBRIEF.md) separates executed fixtures from missing real evidence.
+**Rating:** TODO-HUMAN after real issuer integration. [Debrief](../WORLD_DEBRIEF.md): ~20 min to first success via CIMD after ~1 h of portal blockers.
 
 ## ENS
 
@@ -60,7 +61,7 @@ No extra partner integration is claimed. EzPayz code is not used (rewritten from
 
 - Live web/API: TODO-HUMAN (services run locally only).
 - Public repo and actual commit: TODO-HUMAN.
-- Six-step results twice: [G6-demo-run.txt](proof/G6-demo-run.txt) (5/6 PASS each; World step WAITING-ON-HUMAN). Video URL: TODO-HUMAN.
+- Six-step results twice: [G6-demo-run.txt](proof/G6-demo-run.txt) (5/6 PASS each; the World step was later completed for real: proof/A2-world-approval.md). Video URL: TODO-HUMAN.
 - Contract and transaction links: see Whitechain section above; both source-verified on the explorer.
 - AI tools: OpenAI Codex (earlier sandbox: implementation, local Node tests, doc lookup); Claude Code (laptop: forge 118/118, pnpm test 93/93, doctor, world:smoke, ens:smoke, USDT read-only probe, docs). No fabricated history or real-world success.
 - Prior code: [W9 inventory](proof/W9-prior-code-inventory.md) (chupke removed, EzPayz-derived code rewritten, create-next-app scaffold configs disclosed). TODO-HUMAN creation dates, licenses, prior submissions and fresh/Continuity decision. Pactra relationship remains unanswered.

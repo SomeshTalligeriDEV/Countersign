@@ -20,12 +20,12 @@ Services (API + relayer + GasGuard :3011, attestor :3002, observer, demo merchan
 | API pre-flight rejections (no broadcast): bad_intent_sig, OverPerTx, StaleEpoch, not_allowlisted_call | REAL (API log, not tx) | G6-demo-run.txt runs 1+2 |
 | Revoke, pause/unpause, refund 0.25 | REAL | revoke [0x6d7b…f084](https://explorer.testnet.whitechain.io/tx/0x6d7b2c0c3e3c5de6c1a2e69a184208155195dd81ad8707e295502a80cbf1f084), pause [0x75b3…6737](https://explorer.testnet.whitechain.io/tx/0x75b30ba11e2cc97b314b30dfb84ee59544bb0dd3a28438edffa522e79d8c6737), refund [0x921d…6fe3](https://explorer.testnet.whitechain.io/tx/0x921d428645cbf91100523d79be8dc102aacccec8f354aaca343f576d8b706fe3) |
 | GasGuard real denial (1 gwei cap < 5 gwei base fee) | REAL | G2-onchain.md I2/D5 |
-| Six-step demo twice | REAL, 5/6 per run | G6-demo-run.txt; order-40 (World approval) WAITING-ON-HUMAN |
+| Six-step demo twice | REAL, 5/6 per run | G6-demo-run.txt; order-40 (World approval) waited in those runs; later settled via real sandbox sign-in (A2-world-approval.md) |
 | Webhooks delivered + HMAC verified, forged sig 401 | REAL (local) | A11-webhooks.txt: 5 events |
 | CSV export of real payments | REAL (local API) | A12-payments.csv: 4 payments |
 | Receipt matches Mandate.payments() storage | REAL | ACCEPTANCE.md A13 |
 | Owner dashboard actions via real wallet | WAITING-ON-HUMAN | ACCEPTANCE.md A14 |
-| Over-limit payment approved by human then settled | WAITING-ON-HUMAN | ACCEPTANCE.md A2 (needs World) |
+| Over-limit payment approved by human then settled | REAL | ACCEPTANCE.md A2, A2-world-approval.md |
 | Registry change after approval reverts (live) | MISSING (NOT RUN) | ACCEPTANCE.md A7; FIXTURE forge test only |
 | Contract suite | FIXTURE | forge 118/118, `pnpm test` 93/93 (I7-ci-local.txt) |
 | USDT permit / EIP-3009 | REAL read-only probe, not used | USDT-CAPABILITIES.md |
@@ -36,8 +36,10 @@ Services (API + relayer + GasGuard :3011, attestor :3002, observer, demo merchan
 | Claim | Status | Evidence |
 |---|---|---|
 | Sandbox + production discovery, PKCE S256, RS256, JWKS kid resolves | REAL read-only | F2-world-smoke.txt (RESULT PASS both issuers) |
-| Backend token validation (jose/JWKS, auth_time, owner binding) | FIXTURE | signed local JWT tests (I7-ci-local.txt: "Signed local JWT fixtures passed; NOT real World verification.") |
-| Real user sign-in, approval, denied path | WAITING-ON-HUMAN | no sandbox app registered; API `/health/ready` reports `world.configured:false` (I2-services.md); ACCEPTANCE.md A2/A16 |
+| Backend token validation (jose/JWKS, iss/aud/nonce, auth_time ≤120 s, owner binding) | REAL (sandbox) + FIXTURE | A2-world-approval.md; signed local JWT tests (I7-ci-local.txt: "Signed local JWT fixtures passed; NOT real World verification.") |
+| Real user sign-in, approval, settled payment | REAL (sandbox, mocked identities per World) | CIMD public client (portal returned `account_not_eligible`), Cloudflare quick tunnel; tx 0x98fa814e805ab35e55124370539bc0c1889aef519d5c408800be2efc709cb531; A2-world-approval.md, ACCEPTANCE A2 |
+| Failure paths (stale_auth after real sign-in; expired approval) | REAL | `approval_not_ready` / `expired`, no pay() sent (relay_transactions stayed 4); ACCEPTANCE A16 |
+| IDKit | MISSING (not built) | — |
 | Device flow | FIXTURE, not routed | apps/api/src/world-device.mjs |
 
 ## ENS (Sepolia)

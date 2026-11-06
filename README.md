@@ -2,7 +2,7 @@
 
 Bounded USDT payments for AI agents, targeting Whitechain Sepolia (1874). A treasury owner defines a mandate; its agent signs exact payment terms. The contract checks merchant payout/version, limits, nonce, order, epoch and expiry. Payments at the human threshold additionally require a fresh World identity attestation and owner-wallet approval.
 
-**Status (2026-11-06):** contracts are deployed on Whitechain testnet (1874) and real official-USDT payments have settled ([INTEGRATION-REPORT.md](docs/proof/INTEGRATION-REPORT.md)). Both contracts are source-verified on Blockscout (2026-11-06T17:55:24Z, after an explorer outage: [VERIFY-OUTAGE.md](docs/proof/VERIFY-OUTAGE.md)). The services (API, relayer, attestor, observer, demo merchant) run **locally only and are not yet publicly hosted**. Real World sign-in is WAITING-ON-HUMAN; ENS is read-only (no writes). See [STATUS.md](STATUS.md).
+**Status (2026-11-06):** contracts are deployed on Whitechain testnet (1874) and real official-USDT payments have settled ([INTEGRATION-REPORT.md](docs/proof/INTEGRATION-REPORT.md)). Both contracts are source-verified on Blockscout (2026-11-06T17:55:24Z, after an explorer outage: [VERIFY-OUTAGE.md](docs/proof/VERIFY-OUTAGE.md)). The services (API, relayer, attestor, observer, demo merchant) run **locally only and are not yet publicly hosted**. Real World sign-in works against the World sandbox issuer (mocked identities per World) via a CIMD public client over a Cloudflare quick tunnel: a 1.50 USDT human-approved payment settled ([0x98fa…b531](https://explorer.testnet.whitechain.io/tx/0x98fa814e805ab35e55124370539bc0c1889aef519d5c408800be2efc709cb531)) and two real failure paths sent no payment ([A2-world-approval.md](docs/proof/A2-world-approval.md)); ENS is read-only (no writes). See [STATUS.md](STATUS.md).
 
 ## Live on Whitechain testnet
 
@@ -14,7 +14,7 @@ Bounded USDT payments for AI agents, targeting Whitechain Sepolia (1874). A trea
 | First real payment (0.50 official USDT) | [0x68629137bf52b628824e92723b299d2b6dcf5703920eda318c4f402af1734021](https://explorer.testnet.whitechain.io/tx/0x68629137bf52b628824e92723b299d2b6dcf5703920eda318c4f402af1734021) |
 | Source verification | VERIFIED both contracts 2026-11-06T17:55:24Z (earlier attempts hit an explorer outage: [VERIFY-OUTAGE.md](docs/proof/VERIFY-OUTAGE.md)) |
 
-Feature acceptance on the live chain: [ACCEPTANCE.md](docs/proof/ACCEPTANCE.md) (11 PASS incl. webhooks, A15 partial, A7 not run, A2/A14/A16 WAITING-ON-HUMAN). Six-step demo run twice, 5/6 PASS each (order-40 waits on World): [G6-demo-run.txt](docs/proof/G6-demo-run.txt). All setup txs: [G2-onchain.md](docs/proof/G2-onchain.md).
+Feature acceptance on the live chain: [ACCEPTANCE.md](docs/proof/ACCEPTANCE.md) (13 PASS incl. webhooks and World A2/A16, A15 partial, A7 not run, A14 WAITING-ON-HUMAN). Six-step demo run twice, 5/6 PASS each (order-40 waited on World; later approved for real, see A2-world-approval.md): [G6-demo-run.txt](docs/proof/G6-demo-run.txt). All setup txs: [G2-onchain.md](docs/proof/G2-onchain.md).
 
 ## Why on-chain stablecoin settlement on Whitechain
 
@@ -68,9 +68,11 @@ Submitted is not settled: the observer requires three subsequent blocks and read
 | Piece | Mode | Proof |
 |---|---|---|
 | Sandbox + production discovery, PKCE S256, RS256 JWKS, auth_time, device grant endpoint | REAL read-only | [F2-world-smoke.txt](docs/proof/F2-world-smoke.txt): RESULT PASS for both issuers |
-| Code + PKCE, `max_age=0`, jose JWT/JWKS checks, owner binding | FIXTURE (signed local JWTs) | apps/api/test/world-http, owner-binding, approvals tests |
+| Code + PKCE, `max_age=0`, jose JWT/JWKS checks, owner binding | REAL (sandbox) + FIXTURE tests | [A2-world-approval.md](docs/proof/A2-world-approval.md); apps/api/test/world-http, owner-binding, approvals tests |
+| CIMD public client (client metadata served by our API, PKCE without secret; scope `openid offline_access`) | REAL (sandbox, Cloudflare quick tunnel) | apps/api/src/world-cimd.mjs, world-oidc.mjs, server.mjs; portal registration returned `account_not_eligible` |
 | Device flow (headless) | FIXTURE; implemented in apps/api/src/world-device.mjs, not yet routed in server.mjs | world-device test `FIXTURE device flow polls pending/slow_down, verifies nonce-less token, rejects 503 and denial` |
-| Real user sign-in, success + denied path, over-limit approval | none | WAITING-ON-HUMAN: no sandbox app registered (`world.configured:false`); ACCEPTANCE A2/A16 |
+| Real user sign-in, over-limit approval, failure paths | REAL (sandbox; mocked identities per World) | success [0x98fa…b531](https://explorer.testnet.whitechain.io/tx/0x98fa814e805ab35e55124370539bc0c1889aef519d5c408800be2efc709cb531); stale_auth after real sign-in → `approval_not_ready`, no tx; expired approval → no tx ([A2-world-approval.md](docs/proof/A2-world-approval.md), ACCEPTANCE A2/A16) |
+| IDKit | not built | — |
 
 ## ENS
 
@@ -107,7 +109,7 @@ The relayer ([apps/api/src/facilitator.mjs](apps/api/src/facilitator.mjs)) only 
 
 ## Limitations
 
-- Contracts deployed and source-verified. Services not publicly hosted. No real World sign-in, ENS write, public repo or video yet.
+- Contracts deployed and source-verified. Services not publicly hosted. World sign-in is sandbox-only (mocked identities) through a Cloudflare quick tunnel, not production `auth.world.org`; IDKit not built. No ENS write, public repo or video yet.
 - Reservations cover execution gas, not complete OP fee components. Single relayer process/signer required.
 - Automatic deep-reorg recovery, multi-process production and identity recovery/rebinding are unfinished. Webhooks deliver only to an operator-configured URL.
 - Browser tests use a mocked wallet (W5 Playwright 8/8 FIXTURE, docs/proof/W5-playwright.txt); real-wallet run not done.
@@ -136,7 +138,7 @@ From [W9-prior-code-inventory.md](docs/proof/W9-prior-code-inventory.md):
 <!-- COUNTERSIGN-EVIDENCE:START -->
 ## Recorded deployment evidence
 
-See "Live on Whitechain testnet" above and [INTEGRATION-REPORT.md](docs/proof/INTEGRATION-REPORT.md). Still TODO-HUMAN: World success + denied evidence, public web/API URLs, public repo, video, final CI URL, source eligibility decision.
+See "Live on Whitechain testnet" above and [INTEGRATION-REPORT.md](docs/proof/INTEGRATION-REPORT.md). Still TODO-HUMAN: public web/API URLs, public repo, video, final CI URL, source eligibility decision.
 
 <!-- COUNTERSIGN-EVIDENCE:END -->
 
