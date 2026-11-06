@@ -22,3 +22,17 @@ Context:
 {"message":"Contract verification is temporarily unavailable."}
 
 STOP verifyMerchantRegistry: preflight/verification failed; fix and rerun
+cast wallet failed:
+Error: Device not configured (os error 6)
+
+command_failed
+PASS deployMerchantRegistry: already recorded
+PASS deployMandate: already recorded
+PASS registerMerchant: https://explorer.testnet.whitechain.io/tx/0x82f8aac77c0f62b779de42af221c4adefaffe7d7fc82aced68595ed6017a8e16
+PASS createMandate: https://explorer.testnet.whitechain.io/tx/0x7f7581a8413444805059d798e72103759fd4c7b5ab195c10776a6fb2c5b1660e
+PASS setLimits: https://explorer.testnet.whitechain.io/tx/0x05e7b1b1d91aedcc08b1cf0696dfb370e8f66ad5930b4e37863f04e6bcb436d2
+PASS allowMerchant: https://explorer.testnet.whitechain.io/tx/0x60d780994c5afdd29932004391dca23c53b405c0b4240bd419ef8bcf1ca39f26
+PASS resetAllowance
+PASS limitedAllowance: https://explorer.testnet.whitechain.io/tx/0xb735124308b0d9cdc32fff984a684e854fff1f8ca6a6473db3955375b0a5b66f
+PASS firstPayment: https://explorer.testnet.whitechain.io/tx/0x68629137bf52b628824e92723b299d2b6dcf5703920eda318c4f402af1734021
+Recorded all steps. Run pnpm evidence and inspect actual receipts/source verification.

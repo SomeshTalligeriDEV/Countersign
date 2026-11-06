@@ -14,7 +14,9 @@
       "block": "12366502"
     }
   },
-  "transactions": {},
+  "transactions": {
+    "firstPayment": "0x68629137bf52b628824e92723b299d2b6dcf5703920eda318c4f402af1734021"
+  },
   "urls": {},
   "deployer": "0x10799095B510e74DA4c706472B6039e111025c7D",
   "agent": "0x91E3e6D4376A570BcE8CC5549749C4eDBA2cA293",
@@ -24,7 +26,8 @@
     "merchantId": "0x2760fb48ad94751d0412ae3a2e3ed7099b50550fc17607edb650cfecce4042a5",
     "orderId": "0x233ca4b31829aa6cf8768c6dc125af2bf38062ae594e8318c37c3f2c37a80cc5",
     "payout": "0x5C9C3D789549C22eE592F9275E9F838bA7505581",
-    "attestor": "0x99205442BAe9C9E6259804571e78C2ccfa604D63"
+    "attestor": "0x99205442BAe9C9E6259804571e78C2ccfa604D63",
+    "paymentId": "0x13d931f174ee5af6bd7c5f97f17827a11eca33203cf026169fd1d470fc3da070"
   },
   "steps": {
     "deployMerchantRegistry": {
@@ -45,6 +48,55 @@
     },
     "verifyMerchantRegistry": {
       "status": "failed"
+    },
+    "registerMerchant": {
+      "status": "done",
+      "result": {
+        "txHash": "0x82f8aac77c0f62b779de42af221c4adefaffe7d7fc82aced68595ed6017a8e16",
+        "block": "12372123"
+      }
+    },
+    "createMandate": {
+      "status": "done",
+      "result": {
+        "txHash": "0x7f7581a8413444805059d798e72103759fd4c7b5ab195c10776a6fb2c5b1660e",
+        "block": "12372134"
+      }
+    },
+    "setLimits": {
+      "status": "done",
+      "result": {
+        "txHash": "0x05e7b1b1d91aedcc08b1cf0696dfb370e8f66ad5930b4e37863f04e6bcb436d2",
+        "block": "12372151"
+      }
+    },
+    "allowMerchant": {
+      "status": "done",
+      "result": {
+        "txHash": "0x60d780994c5afdd29932004391dca23c53b405c0b4240bd419ef8bcf1ca39f26",
+        "block": "12372161"
+      }
+    },
+    "resetAllowance": {
+      "status": "done",
+      "result": {
+        "skipped": "already zero"
+      }
+    },
+    "limitedAllowance": {
+      "status": "done",
+      "result": {
+        "txHash": "0xb735124308b0d9cdc32fff984a684e854fff1f8ca6a6473db3955375b0a5b66f",
+        "block": "12372169"
+      }
+    },
+    "firstPayment": {
+      "status": "done",
+      "result": {
+        "txHash": "0x68629137bf52b628824e92723b299d2b6dcf5703920eda318c4f402af1734021",
+        "block": "12372188",
+        "paymentId": "0x13d931f174ee5af6bd7c5f97f17827a11eca33203cf026169fd1d470fc3da070"
+      }
     }
   }
 }
