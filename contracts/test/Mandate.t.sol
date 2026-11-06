@@ -388,7 +388,9 @@ contract MandateTest {
     }
 
     function testT08RaisedLimitAllowsOnlyUnspentRemainder() public {
-        for (uint256 n = 1; n <= 10; n++) pay(intent(9, n));
+        for (uint256 n = 1; n <= 10; n++) {
+            pay(intent(9, n));
+        }
         vm.prank(owner);
         mandate.updateLimits(id, 50, 110, 51);
         require(mandate.spent(id, 0) == 90 && mandate.remaining(id) == 20, "spent reset");
