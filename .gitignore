@@ -25,3 +25,5 @@ docs/proof/deployed.json.tmp
 deploy/public.env
 .keys/
 .run/
+
+.vercel
