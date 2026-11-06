@@ -1,0 +1,401 @@
+# I7 local CI run 2026-11-06T12:42:41Z node v24.10.0 forge forge Version: 1.9.0
+## job: secret-scan
+
+$ bash <secret-scan step from ci.yml>
+secret-scan: clean
+[exit 0]
+## job: backend
+
+$ npm install --prefix packages/shared --ignore-scripts --no-audit --no-fund
+
+up to date in 337ms
+[exit 0]
+
+$ npm ci --prefix packages/ens --ignore-scripts
+
+added 13 packages, and audited 14 packages in 8s
+
+10 packages are looking for funding
+  run `npm fund` for details
+
+2 vulnerabilities (1 moderate, 1 high)
+
+To address all issues, run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+[exit 0]
+
+$ npm ci --prefix apps/api --ignore-scripts
+
+added 2 packages, and audited 3 packages in 804ms
+
+1 package is looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+[exit 0]
+
+$ npm test
+(node:96731) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ merchant binds quote to exact resource and never serves on submission (36.36225ms)
+(node:96732) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ HTTP middleware serves only confirmed receipt and polls without repeating submission (12.291541ms)
+✔ middleware rejects malformed payment header and requires exact POST body bytes (0.599125ms)
+✔ A-13 accepts signed raw bytes within freshness window (1.555334ms)
+✔ A-13 rejects tampered payload, wrong key, expired and future signatures (0.354959ms)
+✔ rejects ambiguous headers and requires raw payload (0.451ms)
+✔ demo dry-run accepts valid config, lists six steps, never echoes the key (1.343459ms)
+✔ demo dry-run rejects missing/malformed config (0.252125ms)
+✔ resumable deploy saves before mutation, skips completed fake-chain steps and never retries unknown submission (2.03375ms)
+✔ resumable deployment recovers an interrupted fake-chain step only with evidence (0.408792ms)
+✔ doctor reports fixes without secrets and fails closed on wrong chain (2.131583ms)
+✔ evidence never fills missing claims and accepts only testnet input (1.966208ms)
+✔ video checklist covers nine scenes and does not invent missing proof (1.545833ms)
+ℹ tests 93
+ℹ suites 0
+ℹ pass 93
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2807.83975
+[exit 0]
+
+$ npm --prefix apps/api run test:world-fixtures
+
+> test:world-fixtures
+> node scripts/world-jwt-fixtures.mjs
+
+(node:96767) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+Signed local JWT fixtures passed; NOT real World verification.
+[exit 0]
+
+$ npm test --prefix packages/shared
+
+> @countersign/shared@0.1.0 test
+> node --test test/*.test.mjs
+
+✔ A-14 PaymentIntent matches fixed independently encoded digest (7.320542ms)
+✔ A-14 PaymentApproval matches fixed independently encoded digest (1.656291ms)
+✔ A-14 WorldAttestation matches fixed independently encoded digest (1.286458ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 284.917917
+[exit 0]
+## job: contracts
+
+$ npm install --prefix contracts --ignore-scripts --package-lock=false
+
+up to date, audited 2 packages in 1s
+
+found 0 vulnerabilities
+[exit 0]
+
+$ forge fmt --root contracts --check
+[exit 0]
+
+$ forge test --root contracts -vvv
+[PASS] testT22DifferentChainSignatureRejected() (gas: 140686)
+[PASS] testT22DifferentContractSignatureRejected() (gas: 2153308)
+[PASS] testT23MalleableSignatureRejected() (gas: 84373)
+[PASS] testT25InsufficientAllowanceRollsBackAllEffects() (gas: 561185)
+[PASS] testT26UnauthorizedRefund() (gas: 286089)
+[PASS] testT27RefundCannotExceedPaymentOrRestoreBudget() (gas: 414397)
+[PASS] testT28AllAdministrativeCallsRequireOwner() (gas: 166343)
+[PASS] testZeroAmountCannotBypassOrderDeduplication() (gas: 75437)
+Suite result: ok. 43 passed; 0 failed; 0 skipped; finished in 51.03ms (42.40ms CPU time)
+
+Ran 1 test for test/MandateInvariant.t.sol:MandateInvariantTest
+[PASS] invariant_T30AccountingReplayAndRefundBounds() (runs: 256, calls: 16384, reverts: 0)
+
+╭----------------+--------------+-------+---------+----------╮
+| Contract       | Selector     | Calls | Reverts | Discards |
++============================================================+
+| MandateHandler | pay          | 3275  | 0       | 0        |
+|----------------+--------------+-------+---------+----------|
+| MandateHandler | refund       | 3169  | 0       | 0        |
+|----------------+--------------+-------+---------+----------|
+| MandateHandler | revoke       | 3266  | 0       | 0        |
+|----------------+--------------+-------+---------+----------|
+| MandateHandler | updateLimits | 3323  | 0       | 0        |
+|----------------+--------------+-------+---------+----------|
+| MandateHandler | warp         | 3351  | 0       | 0        |
+╰----------------+--------------+-------+---------+----------╯
+
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 3.36s (3.33s CPU time)
+
+Ran 6 test suites in 3.37s (3.55s CPU time): 118 tests passed, 0 failed, 0 skipped (118 total tests)
+[exit 0]
+## job: web
+
+$ npm install --prefix packages/shared --ignore-scripts --no-audit --no-fund
+
+up to date in 217ms
+[exit 0]
+
+$ npm ci --prefix packages/ens --ignore-scripts
+
+added 13 packages, and audited 14 packages in 4s
+
+10 packages are looking for funding
+  run `npm fund` for details
+
+2 vulnerabilities (1 moderate, 1 high)
+
+To address all issues, run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+[exit 0]
+
+$ cd web && npm ci --ignore-scripts
+npm warn deprecated eslint@9.39.5: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+
+added 361 packages, and audited 368 packages in 12s
+
+147 packages are looking for funding
+  run `npm fund` for details
+
+8 moderate severity vulnerabilities
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+[exit 0]
+
+$ cd web && npm run lint
+
+> countersign-web@0.1.0 lint
+> eslint
+
+[exit 0]
+
+$ cd web && npm run build
+  Running TypeScript ...
+  Finished TypeScript in 2.4s ...
+  Collecting page data using 7 workers ...
+  Generating static pages using 7 workers (0/15) ...
+  Generating static pages using 7 workers (3/15) 
+  Generating static pages using 7 workers (7/15) 
+  Generating static pages using 7 workers (11/15) 
+✓ Generating static pages using 7 workers (15/15) in 277ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ƒ /api/countersign/approvals/[id]
+├ ƒ /api/countersign/approvals/[id]/owner-signature
+├ ƒ /api/countersign/demo/[action]
+├ ƒ /api/countersign/ens/[name]
+├ ƒ /api/countersign/mandates/[id]
+├ ƒ /api/countersign/merchant-access
+├ ƒ /api/countersign/merchants/[id]
+├ ƒ /api/countersign/onboarding
+├ ƒ /api/countersign/onboarding/[id]
+├ ƒ /api/countersign/receipts/[paymentId]
+├ ƒ /api/countersign/refunds
+├ ƒ /api/countersign/setup
+├ ƒ /api/network
+├ ○ /app
+├   /approve/[id]
+│ └ ◐ /approve/[id]
+├ ○ /demo
+├ ○ /merchant
+├ ○ /owner
+└   /r/[paymentId]
+  └ ◐ /r/[paymentId]
+
+
+○  (Static)             prerendered as static content
+◐  (Partial Prerender)  prerendered as static HTML with dynamic server-streamed content
+ƒ  (Dynamic)            server-rendered on demand
+
+[exit 0]
+## job: browser
+
+$ npm ci --prefix web --ignore-scripts
+npm warn deprecated eslint@9.39.5: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+
+added 361 packages, and audited 368 packages in 12s
+
+147 packages are looking for funding
+  run `npm fund` for details
+
+8 moderate severity vulnerabilities
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+[exit 0]
+
+$ npm install --prefix web/e2e --ignore-scripts
+
+up to date, audited 7 packages in 1s
+
+found 0 vulnerabilities
+[exit 0]
+
+$ cd web/e2e && npx playwright install chromium   # CI uses --with-deps (apt, Linux only)
+Downloading Chromium 141.0.7390.37 (playwright build v1194) from https://cdn.playwright.dev/dbazure/download/playwright/builds/chromium/1194/chromium-mac-arm64.zip
+|                                                                                |   0% of 129.7 MiB
+|■■■■■■■■                                                                        |  10% of 129.7 MiB
+|■■■■■■■■■■■■■■■■                                                                |  20% of 129.7 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 129.7 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 129.7 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 129.7 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 129.7 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 129.7 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 129.7 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 129.7 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 129.7 MiB
+Chromium 141.0.7390.37 (playwright build v1194) downloaded to /Users/somesh.s.talligeri/Library/Caches/ms-playwright/chromium-1194
+Downloading FFMPEG playwright build v1011 from https://cdn.playwright.dev/dbazure/download/playwright/builds/ffmpeg/1011/ffmpeg-mac-arm64.zip
+|                                                                                |   1% of 1 MiB
+|■■■■■■■■                                                                        |  10% of 1 MiB
+|■■■■■■■■■■■■■■■■                                                                |  20% of 1 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 1 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 1 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 1 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 1 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 1 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 1 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 1 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 1 MiB
+FFMPEG playwright build v1011 downloaded to /Users/somesh.s.talligeri/Library/Caches/ms-playwright/ffmpeg-1011
+Downloading Chromium Headless Shell 141.0.7390.37 (playwright build v1194) from https://cdn.playwright.dev/dbazure/download/playwright/builds/chromium/1194/chromium-headless-shell-mac-arm64.zip
+|                                                                                |   0% of 81.7 MiB
+|■■■■■■■■                                                                        |  10% of 81.7 MiB
+|■■■■■■■■■■■■■■■■                                                                |  20% of 81.7 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 81.7 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 81.7 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 81.7 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 81.7 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 81.7 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 81.7 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 81.7 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 81.7 MiB
+Chromium Headless Shell 141.0.7390.37 (playwright build v1194) downloaded to /Users/somesh.s.talligeri/Library/Caches/ms-playwright/chromium_headless_shell-1194
+[exit 0]
+
+$ npm --prefix web run test:e2e
+
+> countersign-web@0.1.0 test:e2e
+> npm --prefix e2e test
+
+
+> test
+> playwright test
+
+[WebServer] ⨯ Failed to start server
+[WebServer] Error: listen EADDRINUSE: address already in use 127.0.0.1:3000
+[WebServer]     at ignore-listed frames {
+[WebServer]   code: 'EADDRINUSE',
+[WebServer]   errno: -48,
+[WebServer]   syscall: 'listen',
+[WebServer]   address: '127.0.0.1',
+[WebServer]   port: 3000
+[WebServer] }
+Error: Process from config.webServer was not able to start. Exit code: 1
+
+
+To open last HTML report run:
+
+  npx playwright show-report
+
+[exit 1]
+
+$ PW_PORT=3107 npm --prefix web run test:e2e   # retry: local port 3000 held by another dev server (CI runner has it free)
+
+> countersign-web@0.1.0 test:e2e
+> npm --prefix e2e test
+
+
+> test
+> playwright test
+
+[WebServer] ⨯ Another next dev server is already running.
+[WebServer] 
+[WebServer] - Local:        http://127.0.0.1:3000
+[WebServer] - PID:          46954
+[WebServer] - Dir:          /Users/somesh.s.talligeri/Desktop/countersign/web
+[WebServer] - Log:          .next/dev/logs/next-development.log
+[WebServer] 
+[WebServer] You can access the existing server at http://127.0.0.1:3000,
+[WebServer] or run kill 46954 to stop it and start a new one.
+Error: Process from config.webServer was not able to start. Exit code: 1
+
+
+To open last HTML report run:
+
+  npx playwright show-report
+
+[exit ]
+
+NOTE browser job: BLOCKED locally, not a code failure. A developer `next dev` (PID 46954, web/, port 3000) is running; Next 16 refuses a second dev server in the same dir. Stopped after 2 attempts per rules; did not kill the user process. CI runners have no such server.
+
+## pnpm audit
+$ pnpm audit
+┌─────────────────────┬────────────────────────────────────────────────────────┐
+│ high                │ ws: Memory exhaustion DoS from tiny fragments and data │
+│                     │ chunks                                                 │
+├─────────────────────┼────────────────────────────────────────────────────────┤
+│ Package             │ ws                                                     │
+├─────────────────────┼────────────────────────────────────────────────────────┤
+│ Vulnerable versions │ >=8.0.0 <8.21.0                                        │
+├─────────────────────┼────────────────────────────────────────────────────────┤
+│ Patched versions    │ >=8.21.0                                               │
+├─────────────────────┼────────────────────────────────────────────────────────┤
+│ Paths               │ packages__ens>viem>ws                                  │
+├─────────────────────┼────────────────────────────────────────────────────────┤
+│ More info           │ https://github.com/advisories/GHSA-96hv-2xvq-fx4p      │
+└─────────────────────┴────────────────────────────────────────────────────────┘
+┌─────────────────────┬────────────────────────────────────────────────────────┐
+│ moderate            │ ws: Uninitialized memory disclosure                    │
+├─────────────────────┼────────────────────────────────────────────────────────┤
+│ Package             │ ws                                                     │
+├─────────────────────┼────────────────────────────────────────────────────────┤
+│ Vulnerable versions │ >=8.0.0 <8.20.1                                        │
+├─────────────────────┼────────────────────────────────────────────────────────┤
+│ Patched versions    │ >=8.20.1                                               │
+├─────────────────────┼────────────────────────────────────────────────────────┤
+│ Paths               │ packages__ens>viem>ws                                  │
+├─────────────────────┼────────────────────────────────────────────────────────┤
+│ More info           │ https://github.com/advisories/GHSA-58qx-3vcg-4xpx      │
+└─────────────────────┴────────────────────────────────────────────────────────┘
+┌─────────────────────┬────────────────────────────────────────────────────────┐
+│ moderate            │ minimatch has potential denial of service via          │
+│                     │ globparts amplification                                │
+├─────────────────────┼────────────────────────────────────────────────────────┤
+│ Package             │ minimatch                                              │
+├─────────────────────┼────────────────────────────────────────────────────────┤
+│ Vulnerable versions │ >=7.0.0 <11.0.1                                        │
+├─────────────────────┼────────────────────────────────────────────────────────┤
+│ Patched versions    │ >=11.0.1                                               │
+├─────────────────────┼────────────────────────────────────────────────────────┤
+│ Paths               │ web>eslint-config-next>eslint-plugin-                  │
+│                     │ import>@typescript-eslint/parser>@typescript-eslint/   │
+│                     │ typescript-estree>minimatch                            │
+├─────────────────────┼────────────────────────────────────────────────────────┤
+│ More info           │ https://github.com/advisories/GHSA-g3hv-75wg-m249      │
+└─────────────────────┴────────────────────────────────────────────────────────┘
+3 vulnerabilities found
+Severity: 2 moderate | 1 high
+[exit 1]
