@@ -32,7 +32,7 @@ const relayAccount=relayOptions?privateKeyToAccount(process.env.RELAYER_KEY):und
 const chain=rpc&&process.env.MANDATE_ADDRESS&&process.env.REGISTRY_ADDRESS?createChainAdapter({rpcUrl:process.env.WHITECHAIN_RPC_URL,mandateAddress:process.env.MANDATE_ADDRESS,registryAddress:process.env.REGISTRY_ADDRESS,account:relayAccount}):null;
 const observerName=chain&&process.env.DEPLOYMENT_BLOCK?`1874:${process.env.MANDATE_ADDRESS.toLowerCase()}`:null;
 const freshness=observerFreshness();
-const stopObserver=observerName?runObserver(new ChainObserver({db,chain,name:observerName,startBlock:process.env.DEPLOYMENT_BLOCK}),{onSuccess:result=>freshness.success(result),onError:()=>{freshness.failure();console.error('Observer stopped; inspect chain and reconcile cursor before restart.');}}):async()=>{};
+const stopObserver=observerName?runObserver(new ChainObserver({db,chain,name:observerName,startBlock:process.env.DEPLOYMENT_BLOCK}),{onSuccess:result=>freshness.success(result),onRetry:(e,n)=>{freshness.failure();console.error(`Observer transient RPC error (retry ${n}): ${e?.shortMessage??e?.message}`);},onError:e=>{freshness.failure();console.error(`Observer stopped; inspect chain and reconcile cursor before restart: ${e?.shortMessage??e?.message}`);}}):async()=>{};
 const worldKeys=['WORLD_ISSUER','WORLD_CLIENT_ID','WORLD_CLIENT_SECRET','WORLD_REDIRECT_URI'];
 const worldConfigured=worldKeys.every(key=>Boolean(process.env[key]));
 const world=worldEnv();
