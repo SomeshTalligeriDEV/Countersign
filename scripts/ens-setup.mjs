@@ -19,7 +19,7 @@ else {
   const ROLE_SET_RESOLVER = 1n << 12n; // ponytail: owner keeps resolver control only; verify bit against RegistryRolesLib before --execute
   txs = [
     buildCreateSubname({ userRegistry, label, owner, resolver, roleBitmap: BigInt(process.env.ENS_ROLE_BITMAP ?? ROLE_SET_RESOLVER), expiry: BigInt(Math.floor(Date.now() / 1000) + 30 * 86400) }),
-    buildSetTexts({ resolver, name, records: policyRecords({ limits: JSON.parse(env('ENS_POLICY_LIMITS')), merchantsHash: env('ENS_MERCHANTS_HASH'), attestor: env('ENS_ATTESTOR_ADDRESS'), mandateAddress: env('ENS_MANDATE_ADDRESS'), mandateId: process.env.ENS_MANDATE_ID }) }),
+    buildSetTexts({ resolver, name, records: policyRecords({ limits: JSON.parse(env('ENS_POLICY_LIMITS')), merchantsHash: env('ENS_MERCHANTS_HASH'), attestor: env('ENS_ATTESTOR_ADDRESS'), mandateAddress: env('ENS_MANDATE_ADDRESS'), mandateId: process.env.ENS_MANDATE_ID, epoch: process.env.ENS_EPOCH }) }),
     ...AGENT_KEYS.map((key) => buildGrantAgentKey({ resolver, agent, key })),
   ];
 }

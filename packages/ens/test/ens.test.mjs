@@ -53,3 +53,24 @@ test('revoke clears all policy keys, revokes scoped roles, optionally unregister
   assert.equal(decodeFunctionData({ abi: resolverAbi, data: txs[1].data }).args[1], ROLE_SET_TEXT);
   assert.equal(decodeFunctionData({ abi: registryAbi, data: txs[3].data }).functionName, 'unregister');
 });
+
+test('driftCheck: match, each mismatch, missing, case-insensitive addresses', async () => {
+  const { driftCheck } = await import('../src/index.mjs');
+  const id = '0x' + 'cd'.repeat(32);
+  const ens = await readAgentPolicy(fake(A, policyRecords({ limits: { perTx: '10', daily: '50' }, merchantsHash: H, attestor: A, mandateAddress: M, mandateId: id, epoch: 3 })), 'x.eth');
+  const chain = { perTxLimit: '10', periodLimit: '50', merchantsHash: H.toUpperCase().replace('0X', '0x'), attestor: A.toUpperCase().replace('0X', '0x'), mandateAddress: M.toLowerCase(), chainId: 1874, mandateId: id.toUpperCase().replace('0X', '0x'), epoch: '3' };
+  const st = (rows) => Object.fromEntries(rows.map((r) => [r.field, r.status]));
+  assert.ok(Object.values(st(driftCheck(ens, chain))).every((s) => s === 'MATCH'));
+  const flips = { perTxLimit: ['limits.perTx', '11'], periodLimit: ['limits.perPeriod', '51'], merchantsHash: ['merchantsHash', '0x' + '00'.repeat(32)], attestor: ['attestor', R], mandateAddress: ['mandateAddress', R], chainId: ['chainId', 1], mandateId: ['mandateId', H], epoch: ['epoch', '4'] };
+  for (const [k, [field, v]] of Object.entries(flips)) {
+    const s = st(driftCheck(ens, { ...chain, [k]: v }));
+    assert.equal(s[field], 'MISMATCH', field);
+    assert.equal(Object.values(s).filter((x) => x !== 'MATCH').length, 1, field);
+  }
+  assert.ok(driftCheck(null, chain).every((r) => r.status === 'MISSING'));
+  assert.ok(driftCheck(ens, null).every((r) => r.status === 'MISSING'));
+  const sparse = await readAgentPolicy(fake(A, { [KEYS.attestor]: A }), 'x.eth');
+  const s = st(driftCheck(sparse, chain));
+  assert.equal(s.attestor, 'MATCH');
+  assert.ok(['limits.perTx', 'epoch', 'mandateAddress', 'mandateId', 'merchantsHash'].every((f) => s[f] === 'MISSING'));
+});

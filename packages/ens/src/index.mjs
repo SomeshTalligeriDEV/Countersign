@@ -15,6 +15,7 @@ export const KEYS = {
   merchantsHash: 'countersign.merchants',
   attestor: 'countersign.attestor',
   mandate: 'countersign.mandate', // "eip155:1874:<MandateAddress>[:<mandateId>]"
+  epoch: 'countersign.epoch', // Mandate policy epoch the records were published at (decimal)
 };
 // Keys the agent key may update itself (scoped setter roles); policy keys stay owner-only.
 export const AGENT_KEYS = ['agent-endpoint[web]', 'agent-context'];
@@ -79,7 +80,7 @@ export function buildSetResolver({ registry, label, resolver }) {
   return { to: getAddress(registry), data: encodeFunctionData({ abi: registryAbi, functionName: 'setResolver', args: [labelId(label), getAddress(resolver)] }) };
 }
 
-export function policyRecords({ limits, merchantsHash, attestor, mandateAddress, mandateId }) {
+export function policyRecords({ limits, merchantsHash, attestor, mandateAddress, mandateId, epoch }) {
   if (!isAddress(attestor) || !isAddress(mandateAddress)) throw new Error('attestor and mandateAddress must be addresses');
   if (!/^0x[\da-fA-F]{64}$/.test(merchantsHash)) throw new Error('merchantsHash must be bytes32');
   return {
@@ -87,6 +88,7 @@ export function policyRecords({ limits, merchantsHash, attestor, mandateAddress,
     [KEYS.merchantsHash]: merchantsHash,
     [KEYS.attestor]: getAddress(attestor),
     [KEYS.mandate]: `eip155:${WHITECHAIN_CHAIN_ID}:${getAddress(mandateAddress)}${mandateId ? `:${mandateId}` : ''}`,
+    ...(epoch != null && epoch !== '' ? { [KEYS.epoch]: String(BigInt(epoch)) } : {}),
   };
 }
 
@@ -113,4 +115,25 @@ export function buildRevoke({ resolver, name, agent, registry, label, unregister
   for (const key of AGENT_KEYS) txs.push({ to: getAddress(resolver), data: encodeFunctionData({ abi: resolverAbi, functionName: 'revokeRoles', args: [BigInt(keccak256(toHex(key))), ROLE_SET_TEXT, getAddress(agent)] }) });
   if (unregister) txs.push({ to: getAddress(registry), data: encodeFunctionData({ abi: registryAbi, functionName: 'unregister', args: [labelId(label)] }) });
   return txs;
+}
+
+/** Compare ENS-published policy (readAgentPolicy result, or null) with an on-chain Mandate snapshot (or null).
+ * Fail closed: any side absent/unparseable => MISSING, never MATCH. Whitechain cannot read ENS; ENS only mirrors. */
+export function driftCheck(ens, chain) {
+  const lim = ens?.limits && typeof ens.limits === 'object' ? ens.limits : {};
+  const m = ens?.mandate ?? null;
+  const num = (v) => { try { return v == null || v === '' ? null : BigInt(v).toString(); } catch { return null; } };
+  const str = (v) => (typeof v === 'string' && v ? v.toLowerCase() : null);
+  const rows = [
+    ['limits.perTx', num(lim.perTx), num(chain?.perTxLimit)],
+    ['limits.perPeriod', num(lim.perPeriod ?? lim.daily), num(chain?.periodLimit)],
+    // ponytail: Mandate stores merchants as a mapping, not a hash; chain side is MISSING unless the caller supplies merchantsHash.
+    ['merchantsHash', str(ens?.merchantsHash), str(chain?.merchantsHash)],
+    ['attestor', str(ens?.attestor), str(chain?.attestor)],
+    ['mandateAddress', str(m?.address), str(chain?.mandateAddress)],
+    ['chainId', m ? String(m.chainId) : null, chain?.chainId != null ? String(chain.chainId) : null],
+    ['mandateId', str(m?.mandateId), str(chain?.mandateId)],
+    ['epoch', num(ens?.raw?.epoch), num(chain?.epoch)],
+  ];
+  return rows.map(([field, e, c]) => ({ field, ens: e, chain: c, status: e == null || c == null ? 'MISSING' : e === c ? 'MATCH' : 'MISMATCH' }));
 }
