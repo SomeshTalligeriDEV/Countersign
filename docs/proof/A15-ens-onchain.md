@@ -14,3 +14,7 @@ Contracts verified against Blockscout-verified ENSv2 Sepolia sources (docs.ens.d
 | addr(agent1.countersign.eth) = agent 0x91E3…A293 | [0x9fcda5fd…0d31](https://sepolia.etherscan.io/tx/0x9fcda5fd1a8d5f4e068c0d9aad0e393f18af1394c59099df2403d6db404d0d31) |
 
 Live read-back via Universal Resolver + drift check against the live Whitechain Mandate: docs/proof/A15-ens-live.txt — 7 MATCH (perTx, perPeriod, attestor, mandateAddress, chainId 1874, mandateId, epoch 5), merchantsHash MISSING on the chain side by design (Mandate stores a mapping, not a hash). Whitechain cannot read ENS; the Mandate enforces signed commitments; ENS is the agent's name, public policy mirror and role layer. Revoke flow (ENS clear + Mandate epoch bump) is built (`pnpm ens:setup -- --revoke`) but NOT executed, to keep the demo name live.
+
+## ENSIP-26 agent records (REAL)
+
+`agent-endpoint[web]` = `https://web-rouge-one-10.vercel.app/demo` and `agent-context` (plain-text description of the agent, its chain, token, mandate records and World approval rule) set in one multicall on agent1's PermissionedResolver: [0x5dec4f06…c93b](https://sepolia.etherscan.io/tx/0x5dec4f06eba43c58ebb4690e5edf43c2a12c6b4be9df7a72266c48854e65c93b). Read back through the Universal Resolver with viem `getEnsText` (2026-11-06 ~20:20Z). These two keys are exactly the ones the agent's own key is allowed to edit (grantSetterRoles), so the agent can update its endpoint/context but not its policy records.
