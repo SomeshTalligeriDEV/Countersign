@@ -12,6 +12,9 @@ Only friction actually recorded in STATUS.md, docs/proof/LOOP-LOG.md and proof f
 - Whitechain Foundry docs page could not be fetched by the agent in either `.md` or HTML form (STATUS.md, "Live sources consulted"); the Hardhat page loaded and was used for solc 0.8.30 / Prague / chain 1874.
 - Earlier sandboxed agent: Foundry 1.9.0 `forge build`/`forge test` failed resolving DNS while downloading compiler metadata from raw.githubusercontent.com (STATUS.md). Workspace network restriction, not a Whitechain fault; resolved by running on the laptop.
 - The whitechain-dev skill was not in the agent's installed skill catalog; it had to be found and read manually, and its network/deployment/verification reference files were still to be read (STATUS.md).
+- Docs reference `whitechainSepolia` from `viem/chains`, but viem 2.35.0 has no such chain; it ships only the legacy `whitechainTestnet` (id 2625). We defined chain 1874 ourselves in packages/shared/src/chain.mjs (docs/proof/INTEGRATION-SOURCES.md).
+- Official USDT `eip712Domain()` (EIP-5267) and `version()` both revert, so the EIP-712 domain name/version needed to sign permit / EIP-3009 must be known from outside the chain; the docs do not state it (docs/proof/USDT-CAPABILITIES.md).
+- The ETHGlobal prize page fetch timed out once (`curl: (28)` after 30 s) before succeeding on retry (docs/proof/PRIZE-REQUIREMENTS.md). Not a Whitechain docs fault.
 
 ## Not yet observable (WAITING-ON-HUMAN)
 Deployment, source verification, test USDT/WBT funding, transaction fees, RPC latency. Recorded after HUMAN-RUN.md H1–H3. No invented figures.

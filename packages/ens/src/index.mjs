@@ -46,7 +46,7 @@ export function parseMandate(value) {
   return { chainId: Number(m[1]), address: getAddress(m[2]), mandateId: m[3] ?? null };
 }
 
-/** Read agent policy text records. `client` needs getEnsAddress + getEnsText (viem PublicClient or a fake). */
+/** Read agent policy text records. `client` needs getEnsAddress + getEnsText. Production passes a real viem PublicClient (Sepolia); the fake client exists only in packages/ens/test (test-only, never shipped). */
 export async function readAgentPolicy(client, name) {
   const n = normalize(name);
   const [address, ...values] = await Promise.all([

@@ -18,5 +18,10 @@
 | WORLD_DEBRIEF "user installed jose in laptop terminal" | loop-M3 proofs | Kept, cited |
 | On-chain deployment | none | README/answers state nothing deployed (WAITING-ON-HUMAN) |
 | World sign-in | fixtures only | Labelled FIXTURE-only everywhere |
+| README "pnpm test 75/75" | F9 run 2026-11-06 | Replaced with 93/93 |
+| README "mocked-wallet browser tests remain unexecuted" | docs/proof/W5-playwright.txt (8 passed) | Replaced: executed 8/8 FIXTURE |
+| README "selected EzPayz patterns adapted" / "Legacy Chupke entrypoints retired" | W9 F5 update | Replaced: chupke removed, EzPayz code rewritten |
+| docs/13 "ENS was not implemented" | packages/ens, F3-ens-smoke.txt | Replaced: read-only live, writes UNEXECUTED |
+| README ENS/World REAL rows | F2-world-smoke.txt, F3-ens-smoke.txt | Read-only REAL only; sign-in/writes not claimed |
 
 No blanket claim that all routes are live, instantaneous, audited, eligible, or prize-winning is supported. A recorder must distinguish contract execution, API rejection, fixture proof and real issuer evidence. Do not use API-only rejections as explorer revert transactions.
