@@ -24,8 +24,10 @@ export class ChainObserver {
       // Fast-forward over event-free spans with one ranged getLogs (block-by-block cannot keep up with ~1 block/s chains).
       // Safety: cursor hash re-checked before the jump; the jump target's hash is stored, so the next per-block
       // step still verifies parentHash continuity. Blocks containing events always take the per-block path below.
-      // Only fast-forward across deep blocks (64 below head), never the 3-block confirmation zone.
-      const deep = head - 64n;
+      // Fast-forward up to the same 3-confirmation point as the per-block path. Soundness: target hash is identical
+      // before/after the range query and the cursor hash is still canonical, and a block hash commits to its whole
+      // ancestry, so the cursor is an ancestor of the target and no block in between can have been reorged unseen.
+      const deep = safe;
       if (this.chain.logsInRange && block <= deep) {
         const end = block + 999n < deep ? block + 999n : deep;
         const targetBefore = await this.chain.block(end);
