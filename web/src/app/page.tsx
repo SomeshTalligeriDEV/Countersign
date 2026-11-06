@@ -1,8 +1,9 @@
 import Link from "next/link";
 import LiveStatus from "@/components/countersign/LiveStatus";
+import SiteNav, { CountUp } from "@/components/countersign/SiteNav";
 import { SITE_URL } from "@/lib/site";
 
-// Countersign landing. Dark surface scoped to .cs-landing so /owner, /merchant, /demo keep the paper theme.
+// Countersign landing. Black hero, then dark/paper bands alternate (shared tokens in countersign.css).
 const GITHUB = "https://github.com/SomeshTalligeriDEV/ETHGLOBAL";
 const EXPLORER = "https://explorer.testnet.whitechain.io";
 const MANDATE = "0x923298375911A173da34C715da2718c0c9889EbA";
@@ -58,35 +59,43 @@ const jsonLd = [
   { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faq.map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })) },
 ];
 
+const stats = [
+  { v: 118, l: "contract tests" },
+  { v: 97, l: "API tests" },
+  { v: 1874, l: "Whitechain chain ID" },
+  { v: 3, l: "primitives: Whitechain, World ID, ENS" },
+];
+
 export default function Home() {
   return (
     <div className="cs-landing">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
-      <header className="cs-wrap cs-nav">
-        <Link href="/" className="cs-logo">Countersign</Link>
-        <nav aria-label="Primary" className="cs-navlinks">
-          <Link href="/demo">Demo</Link>
-          <Link href="/owner">Owner</Link>
-          <Link href="/merchant">Merchant</Link>
-          <Ext href={GITHUB}>GitHub</Ext>
-        </nav>
-      </header>
+      <SiteNav
+        links={[{ href: "/demo", label: "Demo" }, { href: "/owner", label: "Owner" }, { href: "/merchant", label: "Merchant" }]}
+        action={{ href: GITHUB, label: "GitHub", ext: true }}
+      />
 
-      <main className="cs-wrap">
-        <section className="cs-hero-row" aria-labelledby="hero-title">
-        <div className="cs-hero cs-rise">
-          <p className="cs-eyebrow">Testnet · Whitechain · World ID · ENS</p>
-          <h1 id="hero-title">Spending mandates for AI&nbsp;agents.</h1>
-          <p className="cs-lede">
+      <main>
+        <section className="cs-hero" aria-labelledby="hero-title">
+          <p className="cs-trust cs-rise" style={{ "--d": "0s" } as React.CSSProperties}><span className="cs-trust-dot" aria-hidden="true" />Testnet · Whitechain · World ID · ENS</p>
+          <h1 id="hero-title" className="cs-headline"><span>Spending mandates</span><span>for AI&nbsp;agents.</span></h1>
+          <p className="cs-lede cs-rise" style={{ "--d": ".25s" } as React.CSSProperties}>
             Your agent pays in USDT only inside limits a contract enforces. Anything bigger waits for a verified human to
             countersign the exact payment.
           </p>
-          <div className="cs-ctas">
+          <div className="cs-ctas cs-rise" style={{ "--d": ".35s" } as React.CSSProperties}>
             <Link href="/demo" className="cs-btn cs-btn-primary">Run the live demo</Link>
             <Link href="/owner" className="cs-btn">Open owner console</Link>
             <Ext href={GITHUB} className="cs-btn cs-btn-ghost">View on GitHub</Ext>
           </div>
-        </div>
+          <dl className="cs-stats cs-rise" style={{ "--d": ".45s" } as React.CSSProperties}>
+            {stats.map((s) => (
+              <div key={s.l} className="cs-stat"><dt>{s.l}</dt><dd><CountUp to={s.v} /></dd></div>
+            ))}
+          </dl>
+        </section>
+
+        <div className="cs-wrap cs-term-wrap">
         <div className="cs-term">
           <div className="cs-term-bar"><i /><i /><i /><span>{ENS_NAME} · live</span></div>
           <LiveStatus />
@@ -101,9 +110,11 @@ export default function Home() {
           <figcaption>Illustrative flow, not live data · testnet</figcaption>
         </figure>
         </div>
-        </section>
+        </div>
 
-        <section className="cs-sec" aria-labelledby="how">
+        <section className="cs-sec cs-paper" aria-labelledby="how">
+          <div className="cs-wrap">
+          <p className="cs-eyebrow">Flow</p>
           <h2 id="how">How it works</h2>
           <ol className="cs-grid cs-grid-4">
             {steps.map((s, i) => (
@@ -114,9 +125,12 @@ export default function Home() {
               </li>
             ))}
           </ol>
+          </div>
         </section>
 
         <section className="cs-sec" aria-labelledby="pillars">
+          <div className="cs-wrap">
+          <p className="cs-eyebrow">Stack</p>
           <h2 id="pillars">Built on three primitives</h2>
           <ul className="cs-grid cs-grid-3">
             {pillars.map((p) => (
@@ -128,10 +142,13 @@ export default function Home() {
               </li>
             ))}
           </ul>
+          </div>
         </section>
 
-        <section className="cs-sec cs-split" aria-labelledby="refuses">
+        <section className="cs-sec cs-paper" aria-labelledby="refuses">
+          <div className="cs-wrap cs-split">
           <div>
+            <p className="cs-eyebrow">Enforcement</p>
             <h2 id="refuses">What the contract refuses</h2>
             <p className="cs-muted">Each of these is rejected on-chain, not by the app. Covered by 118 contract tests and 97 API tests.</p>
           </div>
@@ -140,9 +157,12 @@ export default function Home() {
               <li key={t}><span className="cs-x" aria-hidden="true">✕</span><div><strong>{t}</strong><p>{b}</p></div></li>
             ))}
           </ul>
+          </div>
         </section>
 
         <section className="cs-sec" aria-labelledby="proof">
+          <div className="cs-wrap">
+          <p className="cs-eyebrow">Verify</p>
           <h2 id="proof">Proof, on-chain</h2>
           <dl className="cs-proof">
             {proof.map((p) => (
@@ -152,20 +172,26 @@ export default function Home() {
               </div>
             ))}
           </dl>
+          </div>
         </section>
-        <section className="cs-sec" aria-labelledby="faq">
+        <section className="cs-sec cs-paper" aria-labelledby="faq">
+          <div className="cs-wrap">
+          <p className="cs-eyebrow">FAQ</p>
           <h2 id="faq">Questions</h2>
           <dl className="cs-refusals">
             {faq.map(([q, a]) => (
               <div key={q}><dt><strong>{q}</strong></dt><dd><p>{a}</p></dd></div>
             ))}
           </dl>
+          </div>
         </section>
         <section className="cs-sec cs-cta" aria-labelledby="try">
+          <div className="cs-wrap">
           <h2 id="try">See an agent get countersigned.</h2>
           <div className="cs-ctas">
             <Link href="/demo" className="cs-btn cs-btn-primary">Run the live demo</Link>
             <Link href="/merchant" className="cs-btn">Open merchant registry</Link>
+          </div>
           </div>
         </section>
       </main>

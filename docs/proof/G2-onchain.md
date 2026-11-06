@@ -30,3 +30,6 @@ Balances after: owner 6.50 USDT; payout 0.50 USDT; **agent 0 USDT, 0 WBT** (sign
 - First attempt: GasGuard **denied** (`gas_price_or_limit`): configured max fee 1 gwei < Whitechain base fee 5 gwei. Real GasGuard rejection, logged in gasguard_log. Cap raised to 10 gwei.
 - Second attempt: GasGuard allow → relayer broadcast [0x80a2…8078](https://explorer.testnet.whitechain.io/tx/0x80a23cc2a8da4d8209f5dc2cb2c479874ab175332e052b04d9ad31e043e48078), status=true, sender relayer 0x1079…5c7D, Transfer 0.50 official USDT → payout 0x5C9C…5581. Observer recorded paymentId 0xd3ed…0855 `settled`.
 - Merchant SDK returned 503 to the agent because its 10 s API timeout expired before confirmation on the slow RPC (payment nonetheless settled). Timeout raised to 60 s.
+
+## Pre-recording check 2026-11-06T20:3xZ
+updateLimits period 5→10 USDT (epoch 6) 0xefe53104bd0ca27555c12f3e77e0c8d6350c5edb704da9b8c314f5d0637535de; allowance 5 USDT 0xca609055b2fc5445c11caac061a2472798b3e9f277cd42ff7dabefcb05ef3223; ENS limits+epoch synced (Sepolia) 0x1e5bef803861bb668cfdcceb6bd9e74706dce4a335a458465076a9cef8947c70; buy-report 0.50 settled 0x4d23d2d2a0f5a9000fdd8fd6c104e2c3a63a72227ebe4146bedefe2af911a9e3.
