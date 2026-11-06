@@ -1,14 +1,14 @@
 import {recoverWalletMessage,hashApproval,recoverOwner} from '../../../packages/shared/src/crypto.mjs';
 import { readFileSync } from 'node:fs';
 import { hashMessage,keccak256,encodeFunctionData,decodeFunctionData,createPublicClient,createWalletClient,defineChain,http,zeroHash,zeroAddress,erc20Abi } from '../../../packages/shared/src/viem-runtime.mjs';
-const token='0xcedfB56113143d55b2358b8CFbB0dEB5Ad2f55a7';
+import {USDT_ADDRESS as token,withRpc} from '../../../packages/shared/src/chain.mjs';
 export function createChainAdapter({rpcUrl,mandateAddress,registryAddress,account}) {
  for(const address of [mandateAddress,registryAddress])if(!/^0x[\da-fA-F]{40}$/.test(address)||address.toLowerCase()===zeroAddress)throw new Error('invalid_contract_address');
  const url=new URL(rpcUrl);
  if(url.protocol!=='https:')throw new Error('https_rpc_required');
  const abi=JSON.parse(readFileSync(new URL('../../../contracts/out/Mandate.sol/Mandate.json',import.meta.url))).abi;
  const registryAbi=JSON.parse(readFileSync(new URL('../../../contracts/out/MerchantRegistry.sol/MerchantRegistry.json',import.meta.url))).abi;
- const chain=defineChain({id:1874,name:'Whitechain Sepolia',nativeCurrency:{name:'WBT',symbol:'WBT',decimals:18},rpcUrls:{default:{http:[rpcUrl]}}});
+ const chain=defineChain(withRpc(rpcUrl));
  const client=createPublicClient({chain,transport:http(rpcUrl,{timeout:10000,retryCount:1})});
  const wallet=account?createWalletClient({account,chain,transport:http(rpcUrl,{timeout:10000,retryCount:0})}):null;
  async function assertChain(){if(await client.getChainId()!==1874)throw new Error('wrong_chain');}

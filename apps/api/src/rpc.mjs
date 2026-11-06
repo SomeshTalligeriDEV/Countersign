@@ -1,3 +1,4 @@
+import { USDT_ADDRESS } from '../../../packages/shared/src/chain.mjs';
 export class WhitechainRpc {
   constructor(url, fetcher = fetch) {
     const parsed = new URL(url);
@@ -11,6 +12,7 @@ export class WhitechainRpc {
       body: JSON.stringify({ jsonrpc: '2.0', id: 1, method, params }),
       signal: AbortSignal.timeout(8000),
     });
+    if (response.status === 429) throw new Error('rpc_rate_limited');
     if (!response.ok) throw new Error('rpc_unavailable');
     const data = await response.json();
     if (data.error || data.id !== 1 || data.jsonrpc !== '2.0' || data.result === undefined) throw new Error('rpc_invalid_response');
@@ -21,8 +23,8 @@ export class WhitechainRpc {
     if (chainId !== '0x752') throw new Error('wrong_chain');
     const [block, decimals, code] = await Promise.all([
       this.call('eth_blockNumber'),
-      this.call('eth_call', [{ to: '0xcedfB56113143d55b2358b8CFbB0dEB5Ad2f55a7', data: '0x313ce567' }, 'latest']),
-      this.call('eth_getCode', ['0xcedfB56113143d55b2358b8CFbB0dEB5Ad2f55a7', 'latest']),
+      this.call('eth_call', [{ to: USDT_ADDRESS, data: '0x313ce567' }, 'latest']),
+      this.call('eth_getCode', [USDT_ADDRESS, 'latest']),
     ]);
     if (!/^0x[0-9a-fA-F]+$/.test(block) || !/^0x[0-9a-fA-F]{64}$/.test(decimals) || BigInt(decimals) > 255n || !/^0x[0-9a-fA-F]+$/.test(code) || code === '0x0') throw new Error('invalid_token_or_block');
     return { chainId: 1874, block: BigInt(block).toString(), tokenDecimals: Number(BigInt(decimals)), checkedAt: new Date().toISOString() };

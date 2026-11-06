@@ -1,7 +1,8 @@
+import {classifyRpcError} from './relay-errors.mjs';
 /** Signed transactions are persisted before broadcasting. One relayer process only. */
 export class RelayLedger {
- constructor({db,chain,clock=()=>Math.floor(Date.now()/1000)}){
-  Object.assign(this,{db,chain,clock});
+ constructor({db,chain,clock=()=>Math.floor(Date.now()/1000),sleep=ms=>new Promise(r=>setTimeout(r,ms)),maxRateLimitRetries=3}){
+  Object.assign(this,{db,chain,clock,sleep,maxRateLimitRetries});
   db.exec(`CREATE TABLE IF NOT EXISTS relay_transactions(
    intent_id TEXT PRIMARY KEY,tx_hash TEXT NOT NULL UNIQUE,nonce TEXT NOT NULL UNIQUE,
    raw TEXT NOT NULL,status TEXT NOT NULL,created_at INTEGER NOT NULL,error TEXT
@@ -18,14 +19,24 @@ export class RelayLedger {
   return this.broadcast(id,signed);
  }
  async broadcast(id,signed){
-  try{
-   const hash=await this.chain.broadcastRaw(signed.raw);
-   if(hash.toLowerCase()!==signed.hash.toLowerCase())throw new Error('transaction_hash_mismatch');
-   this.db.prepare("UPDATE relay_transactions SET status='submitted',error=NULL WHERE intent_id=?").run(id);
+  const mark=(status,error)=>this.db.prepare('UPDATE relay_transactions SET status=?,error=? WHERE intent_id=?').run(status,error,id);
+  for(let attempt=0;;attempt++){
+   let hash;
+   try{hash=await this.chain.broadcastRaw(signed.raw);}catch(error){
+    const {kind,retryMs}=classifyRpcError(error);
+    // 429: node rejected the request before reading it; resending identical signed bytes is safe.
+    if(kind==='rate_limited'&&attempt<this.maxRateLimitRetries){await this.sleep(Math.min(retryMs??1000*2**attempt,8000));continue;}
+    // Same bytes already in the mempool: that is a successful submission.
+    if(kind==='already_known'){mark('submitted',null);return signed.hash;}
+    // nonce_too_low / replacement_underpriced / rate_limited (exhausted) / unknown: outcome unresolved.
+    // recover() reconciles by receipt; we never sign a replacement.
+    const code=kind==='unknown'?'broadcast_outcome_unknown':kind;
+    mark('unknown',code);
+    throw new Error(kind==='unknown'?code:`broadcast_${code}`);
+   }
+   if(hash.toLowerCase()!==signed.hash.toLowerCase()){mark('unknown','broadcast_outcome_unknown');throw new Error('broadcast_outcome_unknown');}
+   mark('submitted',null);
    return hash;
-  }catch{
-   this.db.prepare("UPDATE relay_transactions SET status='unknown',error='broadcast_outcome_unknown' WHERE intent_id=?").run(id);
-   throw new Error('broadcast_outcome_unknown');
   }
  }
  async recover(){
