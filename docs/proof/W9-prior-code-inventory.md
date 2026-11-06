@@ -34,3 +34,22 @@ License: no LICENSE file anywhere in the repo (`find . -name 'LICENSE*'` outside
 3. Delete unused prior code: web/chupke/, web/chupke.zip, DepositCard.tsx, src/lib chupke libs, auth/biz stub routes, app/ and login/ redirects, default public SVGs, globals.css.
 4. Scaffold files (package.json named `zacc`, Dockerfile, favicon, configs): rename/re-create or disclose.
 5. Pre-existing: `next build` fails prerendering `/approve/[id]` with and without the W9 change (not caused by W9).
+
+## F5 update (2026-11-06): human-approved removal and rewrites
+Before each deletion `grep -rn` over web/src, web/e2e, web/Dockerfile, web/next.config.ts confirmed no remaining importer outside the deleted set.
+
+Removed:
+- `web/chupke/`, `web/chupke.zip`
+- `web/src/components/{Nav,Hero,LogoMarquee,SeeItWork,WhatItDoes,LanguageMarquee,HowItWorks,Safety,FAQ,WaitlistCTA,Footer,Ghost,TryIt,DepositCard}.tsx`
+- `web/public/ghost.png`, `web/public/{file,globe,next,vercel,window}.svg` (`web/public/.gitkeep` kept so the Dockerfile `COPY public` still works)
+- `web/src/lib/{authSession,bizGuard,bizProxy,otpStore,sendOtpEmail}.ts`
+- `web/src/app/api/auth/*`, `web/src/app/api/biz/*`, `web/src/app/login/`
+- `web/src/app/globals.css`, `web/src/app/landing-motion.css`
+
+Rewritten from scratch:
+- `web/src/app/page.tsx`: minimal Countersign landing (links to /owner, /merchant, /demo), same Tailwind style as the Countersign pages; no prior code.
+- `packages/shared/src/amount.mjs`: new implementation (regex split + padded BigInt), same exports and error codes. No written EzPayz permission exists in docs/proof, so the earlier attributed version was replaced.
+- `apps/api/src/approvals.mjs` `create()`: idempotency is now a single `INSERT ... ON CONFLICT(intent_digest) DO UPDATE ... RETURNING id` statement; the EzPayz-pattern comment and the insert-then-select pattern are gone.
+- `web/package.json` name `zacc` -> `countersign-web` (package-lock.json still shows `zacc` until the next `npm install`; not in scope to touch).
+
+Still prior/scaffold (unchanged): `web/src/app/app/` redirect, `web/AGENTS.md`, `web/README.md`, Dockerfile, favicon, configs.

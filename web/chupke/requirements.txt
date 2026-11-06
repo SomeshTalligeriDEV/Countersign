@@ -1,8 +1,0 @@
-anthropic[mcp]>=2.4.0
-mcp>=2.3.0
-python-telegram-bot>=22.0
-python-dotenv>=1.0
-pytest>=8
-cryptography>=42
-starlette>=0.40
-uvicorn>=0.30

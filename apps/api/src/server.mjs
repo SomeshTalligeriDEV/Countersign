@@ -1,3 +1,4 @@
+import {clientIp} from './client-ip.mjs';
 import {merchantService} from './merchant-service.mjs';
 import {createOwnerBinding} from './owner-binding.mjs';
 import {createApprovalService} from './approval-service.mjs';
@@ -12,6 +13,7 @@ import {createAttestorClient} from './attestor-client.mjs';
 import { createOwnerSetup } from './owner-setup.mjs';
 import { createWorldOidc } from './world-oidc.mjs';
 import { createWorldHttp } from './world-http.mjs';
+import { worldEnv } from './world-env.mjs';
 import { Approvals } from './approvals.mjs';
 import { observerFreshness } from './freshness.mjs';
 import { ChainObserver } from './observer.mjs';
@@ -33,6 +35,7 @@ const freshness=observerFreshness();
 const stopObserver=observerName?runObserver(new ChainObserver({db,chain,name:observerName,startBlock:process.env.DEPLOYMENT_BLOCK}),{onSuccess:result=>freshness.success(result),onError:()=>{freshness.failure();console.error('Observer stopped; inspect chain and reconcile cursor before restart.');}}):async()=>{};
 const worldKeys=['WORLD_ISSUER','WORLD_CLIENT_ID','WORLD_CLIENT_SECRET','WORLD_REDIRECT_URI'];
 const worldConfigured=worldKeys.every(key=>Boolean(process.env[key]));
+const world=worldEnv();
 if(worldKeys.some(key=>Boolean(process.env[key]))&&!worldConfigured)throw new Error('Incomplete World configuration');
 let worldHttp,ownerWorldHttp,ownerBinding,approvalService;
 if(worldConfigured){
@@ -61,18 +64,14 @@ const ownerSetup=chain?createOwnerSetup({chain,mandateAddress:process.env.MANDAT
 const merchants=chain?merchantService({db,chain,mandateAddress:process.env.MANDATE_ADDRESS,registryAddress:process.env.REGISTRY_ADDRESS,observerName,observerHealthy:()=>freshness.healthy()}):null;
 const handle=createHttpApp({db,chain,merchants,demoGuard:process.env.DEMO_MODE==='1'?facilitator?.guard:null,ownerSetup,worldHttp,ownerWorldHttp,ownerBinding,approvalService,ownerSignatures,observerName,observerHealthy:()=>freshness.healthy(),facilitator,networkStatus:async()=>{
  if(!rpc)throw new Error('rpc_not_configured');
- return {...await rpc.status(),observer:observerName?freshness.status():{state:'not_configured'},settlementEnabled:Boolean(facilitator)&&!relayOptions.paused};
+ return {...await rpc.status(),observer:observerName?freshness.status():{state:'not_configured'},settlementEnabled:Boolean(facilitator)&&!relayOptions.paused,world:{env:world.env,issuer:world.issuer,configured:worldConfigured}};
 }});
 const server=createServer(async(req,res)=>{
  try{
   const init={method:req.method,headers:req.headers};
   if(!['GET','HEAD'].includes(req.method)){init.body=Readable.toWeb(req);init.duplex='half';}
   const request=new Request(new URL(req.url,'http://localhost'),init);
-  // Forwarded client IP is honoured only from configured proxy addresses (TRUSTED_PROXY_IPS, comma-separated).
-  const peer=req.socket.remoteAddress??'unknown';
-  const trusted=(process.env.TRUSTED_PROXY_IPS??'').split(',').map(s=>s.trim()).filter(Boolean);
-  const fwd=trusted.includes(peer)?String(req.headers['x-countersign-client-ip']??'').trim():'';
-  const response=await handle(request,{ip:fwd||peer});
+  const response=await handle(request,{ip:clientIp(req.socket.remoteAddress??'unknown',req.headers['x-countersign-client-ip'],process.env.TRUSTED_PROXY_IPS)});
   res.writeHead(response.status,Object.fromEntries(response.headers));
   res.end(Buffer.from(await response.arrayBuffer()));
  }catch{res.writeHead(500,{'content-type':'application/json'});res.end('{"error":"internal_error"}');}

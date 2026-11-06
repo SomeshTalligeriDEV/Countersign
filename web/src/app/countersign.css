@@ -1,4 +1,4 @@
-/* Countersign base styles. Written fresh for W9; replaces the supplied-ui globals.css. */
+/* Countersign base styles. Written fresh for W9; own base stylesheet. */
 @import "tailwindcss";
 
 :root {

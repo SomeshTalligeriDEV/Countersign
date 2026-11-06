@@ -1,4 +1,5 @@
-export async function GET(_request: Request, { params }: { params: Promise<{ paymentId: string }> }) {
+import { forwardHeaders } from '@/lib/countersign-forward';
+export async function GET(request: Request, { params }: { params: Promise<{ paymentId: string }> }) {
   const { paymentId } = await params;
   const headers = { 'Cache-Control': 'no-store' };
   if (!/^0x[\da-fA-F]{64}$/.test(paymentId)) return Response.json({ error: 'Invalid payment ID.' }, { status: 400, headers });
@@ -6,8 +7,8 @@ export async function GET(_request: Request, { params }: { params: Promise<{ pay
   if (!base) return Response.json({ error: 'Receipt service is not configured.' }, { status: 503, headers });
   try {
     const [receipt, network] = await Promise.all([
-      fetch(new URL(`/v1/payments/${paymentId}`, base), { cache: 'no-store', redirect: 'error', signal: AbortSignal.timeout(10000) }),
-      fetch(new URL('/v1/network', base), { cache: 'no-store', redirect: 'error', signal: AbortSignal.timeout(10000) }),
+      fetch(new URL(`/v1/payments/${paymentId}`, base), { headers: forwardHeaders(request), cache: 'no-store', redirect: 'error', signal: AbortSignal.timeout(10000) }),
+      fetch(new URL('/v1/network', base), { headers: forwardHeaders(request), cache: 'no-store', redirect: 'error', signal: AbortSignal.timeout(10000) }),
     ]);
     if (receipt.status === 404) return Response.json({ error: 'No confirmed receipt yet. A payment may be pending or this ID may be unknown.' }, { status: 404, headers });
     if (!receipt.ok || !network.ok) throw new Error('unavailable');

@@ -1,7 +1,0 @@
-.env
-venv/
-__pycache__/
-*.sqlite3
-zingo-wallet/
-bitrefill-tools.md
-dev_deposits.json

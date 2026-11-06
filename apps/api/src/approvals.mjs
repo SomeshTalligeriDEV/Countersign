@@ -19,11 +19,11 @@ export class Approvals {
     const deadline=Number(intent.deadline);
     if(!Number.isSafeInteger(deadline)||deadline<=now||deadline>now+180)throw new Error('invalid_deadline');
     const id=randomUUID();
-    this.db.prepare(`INSERT INTO approvals(id,intent_digest,approval_digest,intent_json,agent_sig,owner_sub_hash,state,expires_at)
-      VALUES(?,?,?,?,?,?,'pending_human',?) ON CONFLICT(intent_digest) DO NOTHING`).run(id,intentDigest,approvalDigest,JSON.stringify(intent),agentSig,ownerSubHash,Math.min(now+120,deadline));
-    // Adapted EzPayz's durable idempotency pattern to the signed digest and
-    // SQLite: the unique insert, not an earlier lookup, decides the winner.
-    return this.db.prepare('SELECT id FROM approvals WHERE intent_digest=?').get(intentDigest).id;
+    // One statement: a fresh digest inserts; a repeated digest hits the UNIQUE index and the no-op
+    // update hands back the stored row, so concurrent retries all resolve to the first id.
+    return this.db.prepare(`INSERT INTO approvals(id,intent_digest,approval_digest,intent_json,agent_sig,owner_sub_hash,state,expires_at)
+      VALUES(?,?,?,?,?,?,'pending_human',?)
+      ON CONFLICT(intent_digest) DO UPDATE SET intent_digest=intent_digest RETURNING id`).get(id,intentDigest,approvalDigest,JSON.stringify(intent),agentSig,ownerSubHash,Math.min(now+120,deadline)).id;
   }
   get(id,now=Math.floor(Date.now()/1000)) {
     this.db.prepare("UPDATE approvals SET state='expired' WHERE id=? AND expires_at<=? AND state IN ('pending_human','world_ok')").run(id,now);

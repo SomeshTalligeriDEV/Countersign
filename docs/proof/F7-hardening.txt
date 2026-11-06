@@ -1,0 +1,113 @@
+# F7 hardening record (2026-11-06T08:18:48Z)
+
+## Client IP forwarding
+web/src/lib/countersign-forward.ts sets x-countersign-client-ip (x-forwarded-for first hop, node:net isIP) on every API fetch in web/src/app/api/countersign/** (approvals, approvals owner-signature, mandates, merchant-access, merchants, onboarding, onboarding/[id], receipts, refunds, setup). demo/[action] calls the local demo runner, not the API: unchanged. ens/[name] reads Sepolia directly: unchanged.
+API: apps/api/src/client-ip.mjs honours it only if peer in TRUSTED_PROXY_IPS AND value is a valid IP; test apps/api/test/client-ip.test.mjs.
+
+## $ pnpm audit (root)
+ ERR_PNPM_AUDIT_NO_LOCKFILE  No pnpm-lock.yaml found: Cannot audit a project without a lockfile
+exit=1
+
+## $ cd web && npm audit
+# npm audit report
+
+minimatch  7.0.0 - 11.0.0
+Severity: moderate
+minimatch has potential denial of service via globparts amplification - https://github.com/advisories/GHSA-g3hv-75wg-m249
+fix available via `npm audit fix --force`
+Will install eslint-config-next@15.5.29, which is a breaking change
+node_modules/@typescript-eslint/typescript-estree/node_modules/minimatch
+  @typescript-eslint/typescript-estree  >=6.16.0
+  Depends on vulnerable versions of minimatch
+  node_modules/@typescript-eslint/typescript-estree
+    @typescript-eslint/parser  >=6.16.0
+    Depends on vulnerable versions of @typescript-eslint/typescript-estree
+    node_modules/@typescript-eslint/parser
+      @typescript-eslint/eslint-plugin  >=6.16.0
+      Depends on vulnerable versions of @typescript-eslint/parser
+      Depends on vulnerable versions of @typescript-eslint/type-utils
+      Depends on vulnerable versions of @typescript-eslint/utils
+      node_modules/@typescript-eslint/eslint-plugin
+      typescript-eslint  *
+      Depends on vulnerable versions of @typescript-eslint/eslint-plugin
+      Depends on vulnerable versions of @typescript-eslint/parser
+      Depends on vulnerable versions of @typescript-eslint/typescript-estree
+      Depends on vulnerable versions of @typescript-eslint/utils
+      node_modules/typescript-eslint
+        eslint-config-next  >=15.6.0-canary.0
+        Depends on vulnerable versions of typescript-eslint
+        node_modules/eslint-config-next
+    @typescript-eslint/type-utils  >=6.16.0
+    Depends on vulnerable versions of @typescript-eslint/typescript-estree
+    Depends on vulnerable versions of @typescript-eslint/utils
+    node_modules/@typescript-eslint/type-utils
+    @typescript-eslint/utils  >=6.16.0
+    Depends on vulnerable versions of @typescript-eslint/typescript-estree
+    node_modules/@typescript-eslint/utils
+
+8 moderate severity vulnerabilities
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+exit=1
+
+## $ cd web && pnpm audit
+ ERR_PNPM_AUDIT_NO_LOCKFILE  No pnpm-lock.yaml found: Cannot audit a project without a lockfile
+exit=1
+
+## $ cd contracts && forge build
+    ╰ help: https://getfoundry.sh/forge/linting/block-timestamp
+
+warning[reentrancy-events]: event emitted after an external call; reentrancy can reorder or fabricate logs that off-chain consumers rely on
+    ╭▸ src/Mandate.sol:266:9
+    │
+266 │         emit PaymentExecuted(paymentId, i.mandateId, i.merchantId, i.payout, i.amount, i.orderId, humanApproved);
+    │         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    │
+    ╰ help: https://getfoundry.sh/forge/linting/reentrancy-events
+
+warning[unsafe-typecast]: typecast can truncate values
+    ╭▸ src/Mandate.sol:264:76
+    │
+264 │         payments[paymentId] = Payment(i.mandateId, i.merchantId, i.payout, uint128(i.amount), 0);
+    │                                                                            ━━━━━━━━━━━━━━━━━
+    │
+    ├ note: consider disabling this lint if you're certain the cast is safe
+    │       
+    │       // casting to 'uint128' is safe because [explain why]
+    │       // forge-lint: disable-next-line(unsafe-typecast)
+    │       
+    │       
+    ╰ help: https://getfoundry.sh/forge/linting/unsafe-typecast
+
+warning[block-timestamp]: usage of `block.timestamp` in a comparison may be manipulated by validators
+    ╭▸ src/Mandate.sol:291:13
+    │
+291 │         if (att.authTime > block.timestamp || block.timestamp - att.authTime > MAX_AUTH_AGE) revert StaleAuth();
+    │             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    │
+    ╰ help: https://getfoundry.sh/forge/linting/block-timestamp
+
+warning[block-timestamp]: usage of `block.timestamp` in a comparison may be manipulated by validators
+    ╭▸ src/Mandate.sol:291:47
+    │
+291 │         if (att.authTime > block.timestamp || block.timestamp - att.authTime > MAX_AUTH_AGE) revert StaleAuth();
+    │                                               ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    │
+    ╰ help: https://getfoundry.sh/forge/linting/block-timestamp
+
+exit=0
+
+## forge build warning summary (full run, exit 0)
+Compiling 36 files with Solc 0.8.30
+Compiler run successful!
+
+Root pnpm audit: no pnpm-lock.yaml at root (workspace has no third-party runtime deps locked by pnpm); web uses package-lock.json, npm audit: 8 moderate (minimatch ReDoS via eslint toolchain, dev-only, fix requires breaking eslint-config-next downgrade) -- not applied.
+   1 warning[arbitrary-send-erc20]
+   5 warning[block-timestamp]
+   4 warning[missing-events-access-control]
+   1 warning[reentrancy-events]
+   2 warning[unsafe-typecast]

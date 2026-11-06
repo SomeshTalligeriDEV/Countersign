@@ -1,24 +1,31 @@
-// Independent decimal conversion; rewritten during the loop provenance audit.
-function precision(decimals){
- if(!Number.isInteger(decimals)||decimals<0||decimals>255)throw new Error('invalid_token_decimals');
+// Decimal string <-> integer base-unit string conversion for uint256 token amounts. Written from scratch (F5).
+const MAX = (1n << 256n) - 1n;
+
+function checkDecimals(decimals) {
+  if (!Number.isInteger(decimals) || decimals < 0 || decimals > 255) throw new Error('invalid_token_decimals');
 }
-export function parseHumanAmount(input,decimals){
- precision(decimals);
- if(typeof input!=='string'||input.length>512||!/^\d+(\.\d+)?$/.test(input))throw new Error('invalid_amount');
- const point=input.indexOf('.');
- const places=point<0?0:input.length-point-1;
- if(places>decimals)throw new Error('amount_precision');
- let value=0n;
- for(const digit of input){if(digit==='.')continue;value=value*10n+BigInt(digit);if(value>=1n<<256n)throw new Error('amount_overflow');}
- value*=10n**BigInt(decimals-places);
- if(value>=1n<<256n)throw new Error('amount_overflow');
- return value.toString();
+
+export function parseHumanAmount(input, decimals) {
+  checkDecimals(decimals);
+  if (typeof input !== 'string' || input.length > 512) throw new Error('invalid_amount');
+  const match = /^(\d+)(?:\.(\d+))?$/.exec(input);
+  if (!match) throw new Error('invalid_amount');
+  const [, whole, fraction = ''] = match;
+  if (fraction.length > decimals) throw new Error('amount_precision');
+  // Strip leading zeros before the size check so "000…1" is not mistaken for overflow.
+  const digits = (whole + fraction.padEnd(decimals, '0')).replace(/^0+(?=\d)/, '');
+  if (digits.length > 78) throw new Error('amount_overflow');
+  const value = BigInt(digits);
+  if (value > MAX) throw new Error('amount_overflow');
+  return value.toString();
 }
-export function formatBaseUnits(input,decimals){
- precision(decimals);
- if(typeof input!=='string'||! /^(0|[1-9]\d{0,77})$/.test(input))throw new Error('invalid_base_units');
- const value=BigInt(input);if(value>=1n<<256n)throw new Error('amount_overflow');
- const factor=10n**BigInt(decimals);
- const fraction=(value%factor).toString().padStart(decimals,'0').replace(/0+$/,'');
- return fraction?`${value/factor}.${fraction}`:(value/factor).toString();
+
+export function formatBaseUnits(input, decimals) {
+  checkDecimals(decimals);
+  if (typeof input !== 'string' || !/^(0|[1-9]\d{0,77})$/.test(input)) throw new Error('invalid_base_units');
+  if (BigInt(input) > MAX) throw new Error('amount_overflow');
+  const padded = input.padStart(decimals + 1, '0');
+  const whole = padded.slice(0, padded.length - decimals);
+  const fraction = padded.slice(padded.length - decimals).replace(/0+$/, '');
+  return fraction ? `${whole}.${fraction}` : whole;
 }
