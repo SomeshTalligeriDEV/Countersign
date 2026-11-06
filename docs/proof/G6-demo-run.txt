@@ -23,3 +23,9 @@ Run-1 notes: first attempts at 19:10 failed on venue-network RPC timeouts (Cloud
 + arbitrary-relayer-call PASS GasGuard rejected: not_allowlisted_call
 
 SUMMARY: 2 consecutive runs, 5/6 steps PASS each; order-40 (World human approval) WAITING-ON-HUMAN.
+
+=== ON-CHAIN REVERT EVIDENCE — 2026-11-06 19:3x IST ===
+Agent-signed intents (agent keystore) submitted DIRECTLY to Mandate.pay() by the relayer with a forced gas limit, bypassing the API, so the contract itself rejects them on chain. Reason from eth_call simulation of the identical calldata; tx status 0 on the explorer.
+tamper-amount  (signed 0.50, submitted 1.00)        REVERT BadIntentSig     https://explorer.testnet.whitechain.io/tx/0xac0dc1c00dbd1b738b9f8c959b4375dd696dce9a9f139c76f0bf0c94484df17f  gasUsed 66628
+tamper-payout  (payout swapped to non-registry addr) REVERT RegistryMismatch https://explorer.testnet.whitechain.io/tx/0xebf520a6cccc825ec3b9f383299731552198715c8be98d0f3a912ffc3bd8217f  gasUsed 52505
+over-budget    (validly signed 3.00 > perTx 2.00)   REVERT OverPerTx        https://explorer.testnet.whitechain.io/tx/0x47599f29d943ac96b708f43655c8aa4b2b55ab640173e2b260d491c13bbb464c  gasUsed 54800
