@@ -18,6 +18,7 @@ import { Approvals } from './approvals.mjs';
 import { observerFreshness } from './freshness.mjs';
 import { ChainObserver } from './observer.mjs';
 import { runObserver } from './observer-runner.mjs';
+import { WebhookWorker } from './webhook-worker.mjs';
 import { createServer } from 'node:http';
 import { Readable } from 'node:stream';
 import { WhitechainRpc } from './rpc.mjs';
@@ -61,6 +62,13 @@ if(facilitator&&process.env.ATTESTOR_HMAC_SECRET){
 }
 
 const ownerSetup=chain?createOwnerSetup({chain,mandateAddress:process.env.MANDATE_ADDRESS}):null;
+// Webhooks: delivered only to the operator-configured URL for the configured merchant (never a request-supplied URL).
+const webhookTimer=process.env.WEBHOOK_URL&&process.env.WEBHOOK_SECRET&&process.env.WEBHOOK_MERCHANT_ID?(()=>{
+ const target=new URL(process.env.WEBHOOK_URL);const merchantId=process.env.WEBHOOK_MERCHANT_ID.toLowerCase();
+ const worker=new WebhookWorker({db,resolveMerchant:async id=>id.toLowerCase()===merchantId?{url:target,secret:process.env.WEBHOOK_SECRET}:null,
+  deliver:async({merchant,body,headers,signal})=>fetch(merchant.url,{method:'POST',body,headers,signal,redirect:'error'})});
+ return setInterval(()=>worker.tick().catch(()=>{}),5000);
+})():null;
 const merchants=chain?merchantService({db,chain,mandateAddress:process.env.MANDATE_ADDRESS,registryAddress:process.env.REGISTRY_ADDRESS,observerName,observerHealthy:()=>freshness.healthy()}):null;
 const handle=createHttpApp({db,chain,merchants,demoGuard:process.env.DEMO_MODE==='1'?facilitator?.guard:null,ownerSetup,worldHttp,ownerWorldHttp,ownerBinding,approvalService,ownerSignatures,observerName,observerHealthy:()=>freshness.healthy(),facilitator,networkStatus:async()=>{
  if(!rpc)throw new Error('rpc_not_configured');
@@ -79,4 +87,4 @@ const server=createServer(async(req,res)=>{
 const stopRealtime=process.env.WEBSOCKET_ENABLED==='1'?await attachRealtime({server,db,allowedOrigins:(process.env.WEBSOCKET_ORIGINS??'').split(',').filter(Boolean)}):()=>{};
 server.requestTimeout=15000;server.headersTimeout=10000;
 server.listen(Number(process.env.PORT??3001),process.env.HOST??'127.0.0.1');
-for(const signal of ['SIGINT','SIGTERM'])process.on(signal,()=>{stopRealtime();server.close(async()=>{await stopObserver();db.close();process.exit(0);});});
+for(const signal of ['SIGINT','SIGTERM'])process.on(signal,()=>{stopRealtime();if(webhookTimer)clearInterval(webhookTimer);server.close(async()=>{await stopObserver();db.close();process.exit(0);});});
