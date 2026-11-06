@@ -1,0 +1,22 @@
+
+> countersign@ ens:smoke /Users/somesh.s.talligeri/Desktop/countersign
+> node scripts/ens-smoke.mjs
+
+date: 2026-11-06T08:17:16.629Z
+rpc: https://ethereum-sepolia-rpc.publicnode.com
+chainId: 11155111
+name: nick.eth
+{
+  "address": "0xb8c2C29ee19D8307cb7255e1Cd9CbDE883A267d5",
+  "url": null,
+  "countersignRecords": {
+    "limits": null,
+    "merchantsHash": null,
+    "attestor": null,
+    "mandate": null
+  }
+}
+PASS: resolved via ENS Universal Resolver on Sepolia
+
+--- web route (dev server 127.0.0.1:3000) GET /api/countersign/ens/nick.eth @ 2026-11-06T08:21:07Z
+{"mode":"live","network":"sepolia","name":"nick.eth","address":"0xb8c2C29ee19D8307cb7255e1Cd9CbDE883A267d5","limits":null,"merchantsHash":null,"attestor":null,"mandate":null,"raw":{"limits":null,"merchantsHash":null,"attestor":null,"mandate":null},"problems":[],"checkedAt":"2026-11-06T08:21:08.079Z"}

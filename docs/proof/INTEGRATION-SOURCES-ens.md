@@ -1,0 +1,6 @@
+# ENS integration sources (fetched 2026-11-06)
+
+- https://docs.ens.domains/llms-full.txt (fetched 2026-11-06, 1,790,939 bytes). Sections used: ENSv2 Permissioned Resolver (setText(bytes name,...), DNS-encoded name via `toHex(packetToBytes(name))`, multicall, grantSetterRoles / revokeRoles / revokeRootRoles, ROLE_SET_TEXT = 1<<4, "no per-name scoping → one resolver per agent"), Permissioned Registry (register(label, owner, registry, resolver, roleBitmap, expiry) with absolute expiry; setResolver/unregister take anyId = labelhash), Verifiable Factory (deployProxy, OwnedResolver/UserRegistry salt schemes), ENSv2 readiness (viem >= 2.35.0 resolves via Universal Resolver).
+- Sepolia contract addresses: the docs page renders them from a component (not present in llms-full.txt); see https://docs.ens.domains/learn/deployments#sepolia-ensv2 and verify before running scripts/ens-setup.mjs. 06-ENS-OPTIONAL.md lists ETHRegistry 0xd4eb…a8b4 and PermissionedResolverImpl 0x115e…2b2c (UNVERIFIED by this loop).
+- viem 2.35.0 (installed in packages/ens): `sepolia.contracts.ensUniversalResolver = 0xeeeeeeee14d718c2b47d9923deab1335e144eeee` (from node_modules/viem/_esm/chains/definitions/sepolia.js).
+- ENSjs not used: viem alone covers reads and tx encoding. Context7 was not available (MCP unauthenticated).

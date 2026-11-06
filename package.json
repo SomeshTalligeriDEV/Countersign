@@ -5,10 +5,13 @@
     "dev": "pnpm --dir 'web' dev",
     "build:web": "pnpm --dir 'web' build",
     "test:contracts": "forge test --root contracts -vvv",
-    "test": "node --test packages/merchant/test/*.test.mjs packages/agent/test/*.test.mjs apps/api/test/*.test.mjs apps/attestor/test/*.test.mjs scripts/test/*.test.mjs",
+    "test": "node --test packages/merchant/test/*.test.mjs packages/agent/test/*.test.mjs packages/ens/test/*.test.mjs apps/api/test/*.test.mjs apps/attestor/test/*.test.mjs scripts/test/*.test.mjs",
     "evidence": "node scripts/evidence.mjs",
     "doctor": "node scripts/doctor.mjs",
     "human:deploy": "node scripts/human-deploy.mjs",
-    "video:checklist": "node scripts/video-checklist.mjs"
+    "video:checklist": "node scripts/video-checklist.mjs",
+    "world:smoke": "node scripts/world-smoke.mjs",
+    "ens:smoke": "node scripts/ens-smoke.mjs",
+    "ens:setup": "node scripts/ens-setup.mjs"
   }
 }
