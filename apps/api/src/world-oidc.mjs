@@ -3,7 +3,7 @@ import {worldSubjectHash} from '../../../packages/shared/src/crypto.mjs';
 /** Production verifier is always jose; no injectable bypass for JWT validation. */
 export async function createWorldOidc({approvals,issuer,clientId,clientSecret,redirectUri,acr,fetchImpl=fetch,clock=()=>Math.floor(Date.now()/1000)}){
  if(!['https://sandbox.auth.world.org','https://auth.world.org'].includes(issuer))throw new Error('unsupported_world_issuer');
- // CIMD public client: client_id is our HTTPS metadata URL, no secret; PKCE (S256) still binds the code.
+ // CIMD public client: client_id is our HTTPS metadata URL, no secret; PKCE (S256) still binds the code. World requires 'openid offline_access' for CIMD hosts (refresh token is discarded).
  const cimd=/^https:\/\/[^/]+\/.+/.test(clientId??'');
  if(!clientId||(!clientSecret&&!cimd))throw new Error('world_credentials_required');
  const redirect=new URL(redirectUri);
@@ -23,7 +23,7 @@ export async function createWorldOidc({approvals,issuer,clientId,clientSecret,re
   start(approvalId){
    const flow=approvals.begin(approvalId,clock());
    const url=new URL(metadata.authorization_endpoint);
-   const params={client_id:clientId,redirect_uri:redirectUri,response_type:'code',scope:'openid',state:flow.state,nonce:flow.nonce,code_challenge:flow.challenge,code_challenge_method:'S256',max_age:'0'};
+   const params={client_id:clientId,redirect_uri:redirectUri,response_type:'code',scope:cimd?'openid offline_access':'openid',state:flow.state,nonce:flow.nonce,code_challenge:flow.challenge,code_challenge_method:'S256',max_age:'0'};
    if(acr)params.acr_values=acr;
    for(const [key,value]of Object.entries(params))url.searchParams.set(key,value);
    return {url:url.href,browser:flow.browser};
