@@ -2,7 +2,7 @@
 
 Bounded USDT payments for AI agents, targeting Whitechain Sepolia (1874). A treasury owner defines a mandate; its agent signs exact payment terms. The contract checks merchant payout/version, limits, nonce, order, epoch and expiry. Payments at the human threshold additionally require a fresh identity attestation and owner-wallet approval.
 
-**Work in progress:** no independently verified Countersign deployment, real official-USDT payment, real World issuer sign-in or live URL has been recorded. See [STATUS.md](STATUS.md) and [human runbook](docs/proof/HUMAN-RUN.md). Component tests are not end-to-end deployment evidence.
+**Work in progress / status:** nothing is deployed on-chain yet (W2 WAITING-ON-HUMAN: no keystore/funds). World sign-in is FIXTURE-only (signed local JWTs), no real World issuer sign-in. No verified Countersign deployment, real official-USDT payment, real World issuer sign-in or live URL has been recorded. See [STATUS.md](STATUS.md) and [human runbook](docs/proof/HUMAN-RUN.md). Component tests are not end-to-end deployment evidence.
 
 ## Setup
 
@@ -38,19 +38,28 @@ Submitted is not settled. The observer requires three subsequent blocks and read
 
 ## Security evidence and limits
 
-Human-run `docs/proof/G1-forge-with-vectors.txt`: 75 Solidity tests passed, including inherited duplicates, T30 invariant runs and A14 Solidity parity. Shared viem vectors passed three tests. Latest Node/UI proof is linked in STATUS.md.
+Executed today (2026-11-06, laptop, Claude Code session): `forge test --root contracts -vvv` → **118 passed, 0 failed, 6 suites** ([docs/proof/G1-forge-test.txt](docs/proof/G1-forge-test.txt)). Node: `pnpm test` 75/75 (recorded in docs/proof/LOOP-LOG.md). These are local tests against mocks/fixtures, not deployed-chain evidence. Note: Mandate tests are inherited by WalletAndReentrancy/AdversarialEdges suites, so names repeat; unique property coverage is below.
 
-- Treasury ownership: T01; owner is createMandate caller.
-- Tampered terms/payout/version: T02–T05 and local facilitator signature/simulation tests.
-- Spending limits and monotonic accounting: T06–T09/T30.
-- Nonce/order replay and revocation: T10/T11/T16/T17.
-- Fresh two-party approval: T12–T15; backend JWT/attestor/owner tests use disclosed local identities.
-- Reentrancy/ERC1271/refund caps: T24/T26/T27/T29.
-- GasGuard: allowlisted pay only, simulation first, reservations, per-mandate/global budgets and pause. Signed transaction bytes/hash/nonce persist before broadcast; restart retries identical bytes. Unknown nonce outcomes block further work.
+| Property | Forge tests (contracts/test) | Node tests (apps/api/test) |
+| --- | --- | --- |
+| Only owner funds move; attacker cannot use victim allowance | `testT01AttackerCannotUseVictimAllowance`, `testSmallPaymentMovesOnlyOwnerFunds` | |
+| Tampered amount/payout/version, inactive merchant | `testT02TamperedAmount`, `testT03TamperedPayout`, `testT04PayoutVersionChanged`, `testT05InactiveMerchant`, `testRiskRegistryChangeSameBlockRejectsCachedTerms`; MerchantRegistry: `testStrangerCannotRedirectPayout`, `testDuplicateCannotTakeOwnership`, `testVersionInvalidatesTermsOnEveryChange` | facilitator: `A-01 tampered signed intent never broadcasts` |
+| Spend limits, period accounting | `testT06HardPerTransactionCap`, `testT07CumulativePeriodCap`, `testT08LimitChangePreservesSpend`, `testT08RaisedLimitAllowsOnlyUnspentRemainder`, `testT09PeriodRolloverPreservesHistory`, `testLoweredBudgetSaturatesRemainingWithoutResettingSpent`, `testRiskPeriodBoundaryExactly`, `invariant_T30AccountingReplayAndRefundBounds` (256 runs) | |
+| Replay / order dedup / revocation | `testT10NonceReplay`, `testT11DuplicateOrderNewNonce`, `testZeroAmountCannotBypassOrderDeduplication`, `testT16RevocationRejectsUnusedIntent`, `testT16RevocationRejectsFullySignedHumanApproval`, `testT17PolicyChangesInvalidateFullApproval`, `testRiskRevokeFrontRunsInFlightPayment`, `testRiskThirdPartyCannotGriefNonceWithInvalidSignature` | facilitator: `successful broadcast is submitted, never prematurely settled; duplicate is blocked` |
+| Human threshold: owner + attestor, freshness | `testT12HumanThresholdRequiresOwner`, `testT13AttestationMustBindOwnerApproval`, `testT14WrongAttestorCannotApprove`, `testT15StaleAndFutureAuthentication`, `testHumanApprovalSettlesExactDigest`, `testRiskMalformedHumanSignaturesCannotConsumeIntent` | facilitator: `threshold payment cannot use automatic path`; approval-service: `missing verified owner binding cannot create a human approval`; attestor-client: `API authenticates attestor, verifies signature and recovers lost response without re-signing` (FIXTURE identities) |
+| Expiry / pause / allowlist / domain separation / malleability | `testT18ExpiredIntent`, `testT19ExpiredMandate`, `testT20PausedMandate`, `testT21MerchantNotAllowed`, `testT22DifferentChainSignatureRejected`, `testT22DifferentContractSignatureRejected`, `testT23MalleableSignatureRejected`, `testRiskMalformedAndOversizedAgentSignatures` | |
+| Reentrancy, atomic rollback, ERC-1271 | `testT24ReentrantTokenCannotExecuteSecondPayment`, `testT25InsufficientAllowanceRollsBackAllEffects`, `testRiskAllowanceExhaustedMidSequenceRollsBack`, `testRiskRevertingPayoutDoesNotReceiveNativeCallback`, `testT29SmartWalletOwnerApprovesExactDigest` | |
+| Refunds and admin auth | `testT26UnauthorizedRefund`, `testT27RefundCannotExceedPaymentOrRestoreBudget`, `testRiskRefundAfterRevokeAndPausePreservesSpend`, `testT28AllAdministrativeCallsRequireOwner` | observer: `confirmed refund updates payment and invalid refund rolls back cursor and outbox` |
+| Off-chain/on-chain digest parity | `testA14SharedFixedDigestVectors` | |
+| World sign-in transport (FIXTURE only) | | world-http: `World browser routes set secure binding cookie and clear it on callback`, `World callback rejects missing browser cookie and duplicate parameters before verifier`; owner-binding: `owner binding requires verified identity plus matching wallet and forbids rebinding` |
+
+### Relayer and GasGuard
+
+The relayer ([apps/api/src/facilitator.mjs](apps/api/src/facilitator.mjs)) only submits `pay` calls to the Mandate contract after authoritative simulation; GasGuard ([apps/api/src/gasguard.mjs](apps/api/src/gasguard.mjs)) enforces allowlisted target/selector, per-mandate and global gas budgets, fee caps and pause. Covered by gasguard tests `A-02/A-03 deny arbitrary calls and failed simulations with audit records`, `A-04 reservations survive restart and prevent budget overspend and duplicates`, `pause, fee caps and global budget fail closed`; facilitator `A-03 authoritative simulation rejection never broadcasts`; relay-ledger `relay persists before broadcast and restart rebroadcasts identical signed bytes`, `recovery retains unknown nonce outcome instead of signing or spending again`. All against mocked RPC; **no sponsored payment has been broadcast** (W2 WAITING-ON-HUMAN).
 
 M2's permitted cut: reservations cover execution gas, not complete OP fee components. Dedicated single relayer process/signer required. Automatic deep-reorg recovery, production multi-process claims, identity recovery/rebinding and full webhook transport are unfinished. Wallet browser execution and real provider discovery/client-auth compatibility are unverified. No independent audit or production-security claim.
 
-The configured relayer is intended to sponsor payment gas from test WBT; no actual sponsored payment has been recorded. Offchain company/merchant billing is a proposed business model, not implemented billing. Low-cost payments are the reason for targeting Whitechain; no measured fee/latency claims are made yet.
+Offchain company/merchant billing is a proposed business model, not implemented billing. Low-cost payments are the reason for targeting Whitechain; no measured fee/latency claims are made yet.
 
 ## Deployment and submission
 
@@ -64,7 +73,9 @@ The supplied UI included an earlier Chupke project. EzPayz main was separately r
 
 ## AI tools used
 
-OpenAI Codex assisted with code, tests, documentation, repository inspection and official-documentation browsing. Skills consulted include blockchain-master, frontend-design-guidelines and World's official integration skill; current World MCP availability/configuration is documented separately. Tools used include local Node/TypeScript/ESLint tests, human-run Foundry tests and documentation web lookup. Test chain/World fixtures are disclosed; no fake real-world success evidence was generated.
+- **OpenAI Codex** (earlier sandbox phase): source editing, local Node/ESLint/TypeScript test runs, documentation lookup. Its sandbox could not run forge (compiler download DNS failure) or git.
+- **Claude Code** (current laptop phase, 2026-11-06): ran forge 118/118, `pnpm test`, `pnpm doctor`, rate-limit fix, prior-code inventory, these docs.
+- No fabricated commits, transactions, feedback, deployment links or test results. World/identity evidence is FIXTURE-only.
 
 <!-- COUNTERSIGN-EVIDENCE:START -->
 ## Recorded deployment evidence
@@ -101,4 +112,4 @@ TODO-HUMAN: real World success and denied evidence, two ordered demo runs, brows
 
 `pnpm doctor` checks public configuration, chain/token/balances/contracts/budget, provider discovery, service health, flags and Git cleanliness without printing secrets. `pnpm human:deploy` runs the keystore-based stepwise deployment and first payment in a normal terminal, persisting docs/proof/deployed.json. These live adapters are unexecuted; fixture orchestration tests do not prove a live deployment. Unknown submissions stop for reconciliation.
 
-New adversarial Solidity tests are in contracts/test/AdversarialEdges.t.sol and remain UNEXECUTED. Earlier75-test evidence does not cover them. See docs/CLAIM-AUDIT.md.
+Adversarial Solidity tests in contracts/test/AdversarialEdges.t.sol (43 incl. inherited) are now EXECUTED and pass (docs/proof/G1-forge-test.txt). See docs/CLAIM-AUDIT.md.

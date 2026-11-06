@@ -1,5 +1,5 @@
 
-> video:checklist
+> countersign@ video:checklist /Users/somesh.s.talligeri/Desktop/countersign
 > node scripts/video-checklist.mjs
 
 0:00-0:15 Hook: bounded authorization problem
