@@ -16,6 +16,11 @@ export function createChainAdapter({rpcUrl,mandateAddress,registryAddress,accoun
   chainId:()=>client.getChainId(),
   blockNumber:()=>client.getBlockNumber({cacheTime:0}),
   block:number=>client.getBlock({blockNumber:number}),
+  async logsInRange(fromBlock,toBlock){
+   await assertChain();
+   const events=abi.filter(item=>item.type==='event'&&['PaymentExecuted','PaymentRefunded','Revoked'].includes(item.name));
+   return client.getLogs({address:mandateAddress,events,fromBlock,toBlock,strict:true});
+  },
   async paymentLogs(block){
    await assertChain();
    const events=abi.filter(item=>item.type==='event'&&['PaymentExecuted','PaymentRefunded','Revoked'].includes(item.name));

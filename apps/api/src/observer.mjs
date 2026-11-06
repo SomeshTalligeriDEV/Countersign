@@ -21,6 +21,20 @@ export class ChainObserver {
       const safe = head - 3n;
       let block = cursor ? BigInt(cursor.block) + 1n : this.startBlock;
       let processed = 0;
+      // Fast-forward over event-free spans with one ranged getLogs (block-by-block cannot keep up with ~1 block/s chains).
+      // Safety: cursor hash re-checked before the jump; the jump target's hash is stored, so the next per-block
+      // step still verifies parentHash continuity. Blocks containing events always take the per-block path below.
+      if (this.chain.logsInRange && block <= safe) {
+        const end = block + 999n < safe ? block + 999n : safe;
+        const logs = await this.chain.logsInRange(block, end);
+        const stop = logs.length ? logs.reduce((m, l) => (l.blockNumber < m ? l.blockNumber : m), end + 1n) - 1n : end;
+        if (stop >= block) {
+          const target = await this.chain.block(stop);
+          if (cursor && (await this.chain.block(BigInt(cursor.block))).hash !== cursor.block_hash) throw new Error('observer_reorg');
+          this.db.prepare('INSERT INTO observer_cursor VALUES (?,?,?) ON CONFLICT(name) DO UPDATE SET block=excluded.block,block_hash=excluded.block_hash').run(this.name, stop.toString(), target.hash);
+          block = stop + 1n;
+        }
+      }
       for (; block <= safe && processed < 100; block++, processed++) {
         const before = await this.chain.block(block);
         const logs = await this.chain.paymentLogs(block);
