@@ -1,0 +1,18 @@
+2026-11-06T18:51:19Z
+RPC: https://ethereum-sepolia-rpc.publicnode.com (chainId 0xaa36a7)
+date: 2026-11-06T18:51:20.449Z
+rpc: https://ethereum-sepolia-rpc.publicnode.com
+chainId: 11155111
+name: nick.eth
+{
+  "address": "0xb8c2C29ee19D8307cb7255e1Cd9CbDE883A267d5",
+  "url": null,
+  "countersignRecords": {
+    "limits": null,
+    "merchantsHash": null,
+    "attestor": null,
+    "mandate": null,
+    "epoch": null
+  }
+}
+PASS: resolved via ENS Universal Resolver on Sepolia
