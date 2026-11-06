@@ -25,3 +25,8 @@ mandateId / merchantId / paymentId: `0x5123ac907dd47f0fbaf39da4b9c97f7ed6b5fb2be
 Transfer event in the pay() receipt: token 0xcedfB561… (official USDT) from owner 0x1079…5c7D → payout 0x5C9C…5581, amount 500000 (0.50 USDT).
 Balances after: owner 6.50 USDT; payout 0.50 USDT; **agent 0 USDT, 0 WBT** (signed the intent only; relayer/deployer paid gas).
 | LIMITED allowance raised to 5.00 USDT (cap, never unlimited; prior allowance was 0 after pay) | [0x6a62…07fc](https://explorer.testnet.whitechain.io/tx/0x6a62ff95d9a08c50b703885d44269ffcf9a41df3ced67725fda2fcbcd0c607fc) |
+
+## I2/D5 — $0.50 settled through /v1/settle (API relayer + GasGuard), 2026-11-06 19:00 IST
+- First attempt: GasGuard **denied** (`gas_price_or_limit`): configured max fee 1 gwei < Whitechain base fee 5 gwei. Real GasGuard rejection, logged in gasguard_log. Cap raised to 10 gwei.
+- Second attempt: GasGuard allow → relayer broadcast [0x80a2…8078](https://explorer.testnet.whitechain.io/tx/0x80a23cc2a8da4d8209f5dc2cb2c479874ab175332e052b04d9ad31e043e48078), status=true, sender relayer 0x1079…5c7D, Transfer 0.50 official USDT → payout 0x5C9C…5581. Observer recorded paymentId 0xd3ed…0855 `settled`.
+- Merchant SDK returned 503 to the agent because its 10 s API timeout expired before confirmation on the slow RPC (payment nonetheless settled). Timeout raised to 60 s.
