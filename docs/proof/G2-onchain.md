@@ -24,3 +24,4 @@ mandateId / merchantId / paymentId: `0x5123ac907dd47f0fbaf39da4b9c97f7ed6b5fb2be
 
 Transfer event in the pay() receipt: token 0xcedfB561… (official USDT) from owner 0x1079…5c7D → payout 0x5C9C…5581, amount 500000 (0.50 USDT).
 Balances after: owner 6.50 USDT; payout 0.50 USDT; **agent 0 USDT, 0 WBT** (signed the intent only; relayer/deployer paid gas).
+| LIMITED allowance raised to 5.00 USDT (cap, never unlimited; prior allowance was 0 after pay) | [0x6a62…07fc](https://explorer.testnet.whitechain.io/tx/0x6a62ff95d9a08c50b703885d44269ffcf9a41df3ced67725fda2fcbcd0c607fc) |
