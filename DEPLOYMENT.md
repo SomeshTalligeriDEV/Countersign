@@ -57,3 +57,14 @@ Mocked wallet/API tests are fixture evidence only. Save the generated e2e lockfi
 The demo control service runs separately via `npm --prefix apps/demo-agent run control`, holds only the agent key, binds 127.0.0.1:4001 and requires DEMO_CONTROL_SECRET shared with the web server. Web/API both require DEMO_MODE=1 for demo operations. Never expose this control service publicly. It supports only fixed scenario names, does not execute arbitrary shell commands, and stores run results in SQLite. The local compose does not launch it automatically. API/Web/attestor source Dockerfiles exist; attestor/Dockerfile requires building/tagging countersign-runtime first. No Docker image build has been verified here.
 
 WebSockets need TLS-compatible Upgrade forwarding and idle timeout above the 30s heartbeat. Set exact WEBSOCKET_ORIGINS, public WSS build URL and both World callback URIs. Socket invalidation is not settlement proof. External app URLs, secrets and hosting credentials remain TODO-HUMAN.
+
+## F8 public host + dry-runs (UNEXECUTED on a host)
+
+Target: one VPS running deploy/compose.yml plus deploy/compose.public.yml (Caddy 2 TLS edge, automatic certificates; routes web and api hostnames only, attestor never exposed). Hostnames go in deploy/public.env (`COUNTERSIGN_WEB_HOST`, `COUNTERSIGN_API_HOST`); the overlay derives `wss://<api>/v1/events`, the public API URL and `WEB_TRUSTED_HOPS=1`. Set `TRUSTED_PROXY_IPS` in api.env to the web container address if the API should honour forwarded client IPs.
+
+```sh
+docker compose -f deploy/compose.yml -f deploy/compose.public.yml --env-file deploy/public.env up -d --build
+```
+
+web/Dockerfile now builds from the repo layout because web imports packages/shared/src and packages/ens (installed with its own `npm ci`).
+Dry-runs (no broadcast, no state writes): `pnpm human:deploy:dry`, `pnpm demo:all:dry`. Ordered inputs: docs/proof/HUMAN-RUN.md "NEXT LOOP INPUTS".

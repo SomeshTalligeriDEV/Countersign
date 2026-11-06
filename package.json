@@ -12,6 +12,9 @@
     "video:checklist": "node scripts/video-checklist.mjs",
     "world:smoke": "node scripts/world-smoke.mjs",
     "ens:smoke": "node scripts/ens-smoke.mjs",
-    "ens:setup": "node scripts/ens-setup.mjs"
+    "ens:setup": "node scripts/ens-setup.mjs",
+    "human:deploy:dry": "node scripts/human-deploy.mjs --dry-run",
+    "demo:all": "node apps/demo-agent/src/run-all.mjs",
+    "demo:all:dry": "node apps/demo-agent/src/run-all.mjs --dry-run"
   }
 }

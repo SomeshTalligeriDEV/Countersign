@@ -1,0 +1,9 @@
+# Public TLS edge for one VPS. Set COUNTERSIGN_WEB_HOST / COUNTERSIGN_API_HOST (DNS A records -> VPS).
+# Caddy obtains certificates automatically. Attestor (3002) is never routed.
+{$COUNTERSIGN_WEB_HOST} {
+	reverse_proxy web:3000
+}
+{$COUNTERSIGN_API_HOST} {
+	# /v1/events websocket upgrade is forwarded natively; heartbeat 30s < Caddy idle timeout.
+	reverse_proxy api:3001
+}

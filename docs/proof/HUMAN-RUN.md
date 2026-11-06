@@ -1,5 +1,34 @@
 # Human-run commands
 
+## ▶ NEXT LOOP INPUTS (F8, ordered; everything the deploy/verify loop needs)
+
+All UNEXECUTED unless marked. Testnet only (Whitechain 1874, Sepolia 11155111). Values go in gitignored files only; paste back public addresses/URLs only.
+
+**0. Tooling.** Docker daemon working (`docker info` succeeds; colima still broken: `colima delete -f && colima start`, or Docker Desktop). Foundry (`forge`, `cast`) on PATH. Git remote (H5).
+
+**1. Keystore aliases (Foundry, never raw keys in env for deploy).**
+| alias | role | funding |
+|---|---|---|
+| `deployer` | OWNER_ADDRESS: deploys, owns mandate, pays | WBT for ~11 txs (faucet drip; dry-run saw 1.05e14 wei on a test account, get more) + **≥1.00 official test USDT** (script hard-min 0.50 = 500000 base units) at `0xcedfB56113143d55b2358b8CFbB0dEB5Ad2f55a7` |
+| `agent` | AGENT_ADDRESS: signs intents only | none |
+| `ens-owner` | ENS parent owner on Sepolia | Sepolia ETH (+ Sepolia MockUSDC for name fee) |
+Separate keys (env, gitignored): relayer `RELAYER_KEY` in deploy/api.env (fund with WBT; it pays gas), attestor `ATTESTOR_KEY` in deploy/attestor.env only (its address = ATTESTOR_ADDRESS, no funds). Demo `AGENT_KEY` = the `agent` key, only in apps/demo-agent env.
+
+**2. Deploy env (shell / root .env):** `DEPLOYER_ACCOUNT=deployer AGENT_ACCOUNT=agent OWNER_ADDRESS AGENT_ADDRESS DEMO_PAYOUT` (≠ owner) `ATTESTOR_ADDRESS`, optional `WHITECHAIN_RPC_URL` (default https://rpc.testnet.whitechain.io).
+- `pnpm human:deploy:dry` → must exit 0 with `PASS keystore ... matches` for both aliases and no WARN (sample run with public test addresses: docs/proof/F8-human-deploy-dryrun.txt).
+- `pnpm human:deploy` → writes docs/proof/deployed.json (MerchantRegistry, Mandate, setup.mandateId/merchantId, firstPayment tx). Then `pnpm evidence`.
+
+**3. Service env from deployed.json.** Root/API: `MANDATE_ADDRESS REGISTRY_ADDRESS DEPLOYMENT_BLOCK TRUSTED_PROXY_IPS`. deploy/api.env: `ATTESTOR_HMAC_SECRET` (same value in attestor.env) `RELAYER_ENABLED RELAYER_KEY RELAYER_PAUSED GASGUARD_DAILY_WEI GASGUARD_MANDATE_DAILY_WEI GASGUARD_MAX_FEE_WEI WEBSOCKET_ENABLED WEBSOCKET_ORIGINS=https://<web-host>` + World vars (step 5). deploy/attestor.env: `ATTESTOR_KEY MANDATE_ADDRESS DATABASE_PATH ATTESTOR_HMAC_SECRET`. Web: `COUNTERSIGN_API_URL COUNTERSIGN_PUBLIC_API_URL NEXT_PUBLIC_COUNTERSIGN_WS_URL WEB_TRUSTED_HOPS=1 DEMO_MODE DEMO_CONTROL_SECRET ENS_SEPOLIA_RPC_URL NEXT_PUBLIC_ENS_AGENT_NAME` (public overlay sets the URL ones from hostnames).
+
+**4. Public host (one VPS, DNS A records → VPS).** `deploy/public.env`: `COUNTERSIGN_WEB_HOST=<app.domain> COUNTERSIGN_API_HOST=<api.domain>` (hostnames only). Run: `docker compose -f deploy/compose.yml -f deploy/compose.public.yml --env-file deploy/public.env up -d --build`. URLs: `https://<web-host>`, `https://<api-host>/health/live`, `wss://<api-host>/v1/events`. Attestor port 3002 never exposed.
+
+**5. World** — follow docs/proof/HUMAN-RUN-world.md steps 1-8 in order. Inputs: `WORLD_ENV=sandbox` (production for submission) `WORLD_ISSUER WORLD_CLIENT_ID WORLD_CLIENT_SECRET WORLD_REDIRECT_URI=https://<api-host>/auth/world/callback` (+ `/auth/world/onboard/callback` registered), optional `WORLD_ACR`.
+
+**6. ENS** — follow docs/proof/HUMAN-RUN-ens.md steps 1-8 in order (after step 2, needs MANDATE_ADDRESS + mandateId). Inputs: `ENS_SEPOLIA_RPC_URL ENS_KEYSTORE_ACCOUNT=ens-owner ENS_PARENT_NAME ENS_AGENT_LABEL ENS_USER_REGISTRY ENS_AGENT_RESOLVER ENS_OWNER_ADDRESS ENS_AGENT_ADDRESS ENS_ATTESTOR_ADDRESS ENS_MANDATE_ADDRESS ENS_MANDATE_ID ENS_MERCHANTS_HASH ENS_POLICY_LIMITS` optional `ENS_ROLE_BITMAP`; then set `NEXT_PUBLIC_ENS_AGENT_NAME` and rebuild web.
+
+**7. Demo.** apps/demo-agent env: `AGENT_KEY MANDATE_ADDRESS REGISTRY_ADDRESS MANDATE_ID MERCHANT_ID MAX_AMOUNT_BASE_UNITS COUNTERSIGN_API=https://<api-host> COUNTERSIGN_WEB=https://<web-host> REPORT_URL ORDER_URL` (demo-merchant running: `COUNTERSIGN_API MERCHANT_ID PORT`). `pnpm demo:all:dry` (sample: docs/proof/F8-demo-dryrun.txt) → exit 0, then `pnpm demo:all` (owner must approve order-40 with World and revoke in wallet during replay-after-revoke).
+
+
 ## ▶ CURRENT HANDOFF (orchestrator, Fri 6 Nov 2026 13:30 IST) — do these first
 
 Items 1–2 below are DONE by the agent (forge 118/118 executed). Remaining blockers are yours:
@@ -21,7 +50,7 @@ Expected: nonzero WBT; USDT ≥ 1000000 (6 decimals).
 
 **H3. `.env` (gitignored).** `cp .env.example .env`, then fill OWNER_ADDRESS, AGENT_ADDRESS, DEMO_PAYOUT, ATTESTOR_ADDRESS, DEPLOYER_ACCOUNT=deployer, AGENT_ACCOUNT=agent, WORLD_ISSUER, WORLD_CLIENT_ID, WORLD_CLIENT_SECRET. Never paste values into chat.
 
-**H4. World sandbox app (W4).** The World developer MCP is not available to the agent. Register a sandbox app in the World developer portal, set redirect URI `http://localhost:3000/api/world/callback` (plus the live URL once deployed), copy client id/secret into `.env`. Then sign in once at `/approve/<id>` with your World App (phone step). Expected: approval page shows "verified" with a fresh auth_time.
+**H4. World sandbox app (W4).** The World developer MCP is not available to the agent. Register a sandbox app in the World developer portal, set redirect URI `<API origin>/auth/world/callback (the API rejects any other path; see apps/api/src/server.mjs:43)` (plus the live URL once deployed), copy client id/secret into `.env`. Then sign in once at `/approve/<id>` with your World App (phone step). Expected: approval page shows "verified" with a fresh auth_time.
 
 **H5. Git remote (W8).** `gh repo create countersign --public --source . --push` (or give the agent a remote URL). Needed for remote CI and form permalinks.
 

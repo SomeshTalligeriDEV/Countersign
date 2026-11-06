@@ -1,0 +1,21 @@
+# Public overlay (UNEXECUTED): docker compose -f deploy/compose.yml -f deploy/compose.public.yml --env-file deploy/public.env up -d --build
+# deploy/public.env (gitignored) holds COUNTERSIGN_WEB_HOST, COUNTERSIGN_API_HOST (hostnames only, no secrets).
+services:
+  caddy:
+    image: caddy:2.10.2
+    ports: ["80:80", "443:443"]
+    environment:
+      COUNTERSIGN_WEB_HOST: ${COUNTERSIGN_WEB_HOST:?set in deploy/public.env}
+      COUNTERSIGN_API_HOST: ${COUNTERSIGN_API_HOST:?set in deploy/public.env}
+    volumes: ["./Caddyfile:/etc/caddy/Caddyfile:ro", "caddy:/data"]
+    depends_on: [web, api]
+    restart: unless-stopped
+  web:
+    build:
+      args:
+        NEXT_PUBLIC_COUNTERSIGN_WS_URL: wss://${COUNTERSIGN_API_HOST}/v1/events
+    environment:
+      COUNTERSIGN_PUBLIC_API_URL: https://${COUNTERSIGN_API_HOST}
+      WEB_TRUSTED_HOPS: "1"
+volumes:
+  caddy:

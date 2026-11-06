@@ -1,0 +1,31 @@
+$ DEPLOYER_ACCOUNT=countersign-deployer AGENT_ACCOUNT=countersign-agent OWNER_ADDRESS=0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 AGENT_ADDRESS=0x70997970C51812dc3A010C7d01b50e0d17dc79C8 DEMO_PAYOUT=0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC ATTESTOR_ADDRESS=0x90F79bf6EB2c4f870365E785982E1f101E93b906 pnpm human:deploy:dry
+# addresses = public Anvil/Hardhat test accounts #0-#3 (no keys used)
+DRY-RUN: no transaction is signed or broadcast; docs/proof/deployed.json is not written.
+WARN (dry-run) keystore alias 'countersign-deployer' not found locally (cast wallet import countersign-deployer --interactive)
+WARN (dry-run) keystore alias 'countersign-agent' not found locally (cast wallet import countersign-agent --interactive)
+PASS chain 1874, token 0xcedfB56113143d55b2358b8CFbB0dEB5Ad2f55a7 decimals=6, owner WBT wei=105020999997500, owner USDT base=2000000, amount=500000
+PLAN deployMerchantRegistry
+  forge create --root contracts --rpc-url https://rpc.testnet.whitechain.io --chain 1874 --account countersign-deployer --broadcast --json src/MerchantRegistry.sol:MerchantRegistry   # -> REGISTRY
+PLAN deployMandate
+  forge create --root contracts --rpc-url https://rpc.testnet.whitechain.io --chain 1874 --account countersign-deployer --broadcast --json src/Mandate.sol:Mandate --constructor-args 0xcedfB56113143d55b2358b8CFbB0dEB5Ad2f55a7 $REGISTRY   # -> MANDATE
+PLAN verifyMerchantRegistry
+  forge verify-contract $REGISTRY src/MerchantRegistry.sol:MerchantRegistry --root contracts --chain 1874 --verifier blockscout --verifier-url https://explorer.testnet.whitechain.io/api/ --watch
+PLAN verifyMandate
+  forge verify-contract $MANDATE src/Mandate.sol:Mandate --root contracts --chain 1874 --verifier blockscout --verifier-url https://explorer.testnet.whitechain.io/api/ --watch --constructor-args $(cast abi-encode 'constructor(address,address)' 0xcedfB56113143d55b2358b8CFbB0dEB5Ad2f55a7 $REGISTRY)
+PLAN registerMerchant
+  cast send $REGISTRY --data 0xd22057a92b4dce2ae0c5ac89cc7187bc7ddd878ab6fc586dde1d1b581c99e71a5406b68d0000000000000000000000003c44cdddb6a900fa2b585dd299e03d12fa4293bc --rpc-url https://rpc.testnet.whitechain.io --chain 1874 --account countersign-deployer --confirmations 4 --json
+PLAN createMandate
+  cast send $MANDATE --data 0x33e1ea4600000000000000000000000070997970c51812dc3a010c7d01b50e0d17dc79c800000000000000000000000090f79bf6eb2c4f870365e785982e1f101e93b90600000000000000000000000000000000000000000000000000000000001e848000000000000000000000000000000000000000000000000000000000004c4b4000000000000000000000000000000000000000000000000000000000000f42400000000000000000000000000000000000000000000000000000000000015180000000000000000000000000000000000000000000000000000000006aeee0bd00000000000000000000000000000000000000000000000000000000000000008988e47e65a3f2252145a9749fdcedbd71137c9176e54612d974b2a79f1eb097 --rpc-url https://rpc.testnet.whitechain.io --chain 1874 --account countersign-deployer --confirmations 4 --json   # expiry recomputed at real run
+PLAN setLimits
+  cast send $MANDATE --data 0x55a87f6bd546c3c87f898f5908a5a37e4f6d4cd313811d806e06d3c77a587944286d6ccb00000000000000000000000000000000000000000000000000000000001e848000000000000000000000000000000000000000000000000000000000004c4b4000000000000000000000000000000000000000000000000000000000000f4240 --rpc-url https://rpc.testnet.whitechain.io --chain 1874 --account countersign-deployer --confirmations 4 --json
+PLAN allowMerchant
+  cast send $MANDATE --data 0x5c319840d546c3c87f898f5908a5a37e4f6d4cd313811d806e06d3c77a587944286d6ccb2b4dce2ae0c5ac89cc7187bc7ddd878ab6fc586dde1d1b581c99e71a5406b68d0000000000000000000000000000000000000000000000000000000000000001 --rpc-url https://rpc.testnet.whitechain.io --chain 1874 --account countersign-deployer --confirmations 4 --json
+PLAN resetAllowance
+  cast call 0xcedfB56113143d55b2358b8CFbB0dEB5Ad2f55a7 'allowance(address,address)(uint256)' 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 $MANDATE --rpc-url https://rpc.testnet.whitechain.io --chain 1874   # if nonzero: cast send 0xcedfB56113143d55b2358b8CFbB0dEB5Ad2f55a7 'approve(address,uint256)' $MANDATE 0 --rpc-url https://rpc.testnet.whitechain.io --chain 1874 --account countersign-deployer --confirmations 4 --json
+PLAN limitedAllowance
+  cast send 0xcedfB56113143d55b2358b8CFbB0dEB5Ad2f55a7 'approve(address,uint256)' $MANDATE 500000 --rpc-url https://rpc.testnet.whitechain.io --chain 1874 --account countersign-deployer --confirmations 4 --json
+PLAN firstPayment
+  cast wallet sign --no-hash --account countersign-agent <hashIntent(MANDATE,intent nonce=1 amount=500000)>  then  cast send $MANDATE --data <pay(intent,sig,0x,{0,0,0},0x)> --rpc-url https://rpc.testnet.whitechain.io --chain 1874 --account countersign-deployer --confirmations 4 --json
+setup: mandateId=0xd546c3c87f898f5908a5a37e4f6d4cd313811d806e06d3c77a587944286d6ccb merchantId=0x2b4dce2ae0c5ac89cc7187bc7ddd878ab6fc586dde1d1b581c99e71a5406b68d (fresh salt each dry-run; real run persists it)
+DRY-RUN complete: nothing broadcast.
+exit=0

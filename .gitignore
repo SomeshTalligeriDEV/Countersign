@@ -22,3 +22,4 @@ web/e2e/playwright-report/
 .demo-runs/
 docs/proof/deployed.lock
 docs/proof/deployed.json.tmp
+deploy/public.env

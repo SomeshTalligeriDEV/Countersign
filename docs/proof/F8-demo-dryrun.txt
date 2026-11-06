@@ -1,0 +1,12 @@
+$ AGENT_KEY=<anvil test key #1, public> MANDATE_ADDRESS=0x...01 REGISTRY_ADDRESS=0x...02 MANDATE_ID=0x11..11 MERCHANT_ID=0x22..22 MAX_AMOUNT_BASE_UNITS=2000000 pnpm demo:all:dry
+# placeholder addresses/ids: real values come from docs/proof/deployed.json after human:deploy
+DRY-RUN demo:all: nothing signed, sent or written.
+config: rpc=https://rpc.testnet.whitechain.io api=http://127.0.0.1:3001 web=http://127.0.0.1:3000 mandate=0x0000000000000000000000000000000000000001 registry=0x0000000000000000000000000000000000000002 mandateId=0x1111111111111111111111111111111111111111111111111111111111111111 merchantId=0x2222222222222222222222222222222222222222222222222222222222222222 max=2000000
+PLAN buy-report: agent pays http://127.0.0.1:4000/api/report under the mandate (expect LIVE PASS, tx on explorer)
+PLAN tamper-amount: signed intent with altered amount -> http://127.0.0.1:3001 (expect rejection)
+PLAN tamper-payout: signed intent with altered payout -> http://127.0.0.1:3001 (expect rejection)
+PLAN order-40: http://127.0.0.1:4000/api/order-priced-report above humanThreshold -> pending_human, owner approves via World on web, then settles
+PLAN over-budget: intent above perTx/period limit (expect rejection)
+PLAN replay-after-revoke: save-replay, owner revokes mandate in wallet (epoch change, 120s wait), replay -> expect rejection
+DRY-RUN complete: config valid.
+exit=0

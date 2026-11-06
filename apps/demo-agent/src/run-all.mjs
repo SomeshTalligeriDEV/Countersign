@@ -20,7 +20,30 @@ export function runCommand(command,{env=process.env}={}){return new Promise(reso
  const child=spawn(process.execPath,[new URL('./cli.mjs',import.meta.url).pathname,command],{env,stdio:['ignore','pipe','pipe']});let output='';
  const collect=data=>{output+=data.toString();if(output.length>16000)child.kill();};child.stdout.on('data',collect);child.stderr.on('data',collect);child.on('error',()=>resolve({exitCode:1,output:'Could not launch scenario'}));child.on('close',code=>resolve({exitCode:code??1,output:output.slice(0,16000)}));
 });}
-if(process.argv[1]===new URL(import.meta.url).pathname){
+// --dry-run: validate config shape and print the six-step plan; no key use, no network, no files.
+export function dryRunPlan(env=process.env){
+ const errors=[],hex=(v,n)=>new RegExp(`^0x[0-9a-fA-F]{${n}}$`).test(v??'');
+ if(!hex(env.AGENT_KEY,64))errors.push('AGENT_KEY missing or not 32-byte hex (value never printed)');
+ for(const k of ['MANDATE_ADDRESS','REGISTRY_ADDRESS'])if(!hex(env[k],40))errors.push(`${k} missing or not an address`);
+ for(const k of ['MANDATE_ID','MERCHANT_ID'])if(!hex(env[k],64))errors.push(`${k} missing or not bytes32`);
+ if(!/^[1-9]\d*$/.test(env.MAX_AMOUNT_BASE_UNITS??''))errors.push('MAX_AMOUNT_BASE_UNITS missing or not a positive integer');
+ for(const k of ['WHITECHAIN_RPC_URL','COUNTERSIGN_API','COUNTERSIGN_WEB','REPORT_URL','ORDER_URL'])if(env[k]){try{new URL(env[k]);}catch{errors.push(`${k} is not a URL`);}}
+ const api=env.COUNTERSIGN_API??'http://127.0.0.1:3001',report=env.REPORT_URL??'http://127.0.0.1:4000/api/report',order=env.ORDER_URL??'http://127.0.0.1:4000/api/order-priced-report';
+ const lines=[`config: rpc=${env.WHITECHAIN_RPC_URL??'https://rpc.testnet.whitechain.io'} api=${api} web=${env.COUNTERSIGN_WEB??'http://127.0.0.1:3000'} mandate=${env.MANDATE_ADDRESS} registry=${env.REGISTRY_ADDRESS} mandateId=${env.MANDATE_ID} merchantId=${env.MERCHANT_ID} max=${env.MAX_AMOUNT_BASE_UNITS}`,
+  `PLAN buy-report: agent pays ${report} under the mandate (expect LIVE PASS, tx on explorer)`,
+  `PLAN tamper-amount: signed intent with altered amount -> ${api} (expect rejection)`,
+  `PLAN tamper-payout: signed intent with altered payout -> ${api} (expect rejection)`,
+  `PLAN order-40: ${order} above humanThreshold -> pending_human, owner approves via World on web, then settles`,
+  `PLAN over-budget: intent above perTx/period limit (expect rejection)`,
+  `PLAN replay-after-revoke: save-replay, owner revokes mandate in wallet (epoch change, 120s wait), replay -> expect rejection`];
+ return {ok:errors.length===0,errors,lines};
+}
+if(process.argv[1]===new URL(import.meta.url).pathname&&process.argv.includes('--dry-run')){
+ const {ok,errors,lines}=dryRunPlan();console.log('DRY-RUN demo:all: nothing signed, sent or written.');
+ for(const e of errors)console.log('FAIL config '+e);if(ok)for(const l of lines)console.log(l);
+ console.log(ok?'DRY-RUN complete: config valid.':'DRY-RUN failed: fix config.');process.exitCode=ok?0:1;
+}
+else if(process.argv[1]===new URL(import.meta.url).pathname){
  mkdirSync('.demo-runs',{recursive:true,mode:0o700});
  const directory=mkdtempSync('.demo-runs/run-');
  const runEnv={...process.env,REPLAY_FILE:`${directory}/unused-${randomUUID()}.json`};

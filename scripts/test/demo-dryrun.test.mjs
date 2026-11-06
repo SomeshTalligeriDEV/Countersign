@@ -1,0 +1,4 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';import {dryRunPlan} from '../../apps/demo-agent/src/run-all.mjs';
+const good={AGENT_KEY:'0x'+'1'.repeat(64),MANDATE_ADDRESS:'0x'+'a'.repeat(40),REGISTRY_ADDRESS:'0x'+'b'.repeat(40),MANDATE_ID:'0x'+'c'.repeat(64),MERCHANT_ID:'0x'+'d'.repeat(64),MAX_AMOUNT_BASE_UNITS:'2000000'};
+test('demo dry-run accepts valid config, lists six steps, never echoes the key',()=>{const r=dryRunPlan(good);assert.equal(r.ok,true);assert.equal(r.lines.filter(l=>l.startsWith('PLAN')).length,6);assert.ok(!r.lines.join().includes(good.AGENT_KEY));});
+test('demo dry-run rejects missing/malformed config',()=>{const r=dryRunPlan({...good,AGENT_KEY:'nope',MAX_AMOUNT_BASE_UNITS:'0',COUNTERSIGN_API:'x'});assert.equal(r.ok,false);assert.equal(r.errors.length,3);assert.ok(!r.errors.join().includes('nope'));});

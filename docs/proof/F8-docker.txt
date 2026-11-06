@@ -1,0 +1,22 @@
+F8 docker builds: UNEXECUTED (local Docker daemon still broken; one repair attempt, per rule)
+
+$ docker info
+Server: failed to connect to the docker API at unix:///Users/somesh.s.talligeri/.colima/default/docker.sock; ... connect: no such file or directory
+$ colima start      (single attempt)
+level=warning msg="already running, ignoring"   -> docker.sock still absent
+$ docker compose -f deploy/compose.yml build
+ Image deploy-api Building
+failed to connect to the docker API at unix:///Users/somesh.s.talligeri/.colima/default/docker.sock ...
+
+Static validation that does not need the daemon (PASS):
+$ docker compose -f deploy/compose.yml config --quiet                                    -> exit 0
+$ COUNTERSIGN_WEB_HOST=app.example.org COUNTERSIGN_API_HOST=api.example.org \
+  docker compose -f deploy/compose.yml -f deploy/compose.public.yml config --quiet      -> exit 0
+(deploy/api.env, deploy/attestor.env created as gitignored copies of the .env.example key names with empty values.)
+
+Changes this loop:
+- web/Dockerfile now keeps the repo layout (/app/web + /app/packages/{shared/src,ens}) and runs `npm ci` for packages/ens,
+  because web imports packages/shared/src/chain.mjs and packages/ens/src (its own viem). Old Dockerfile copied only web/ -> imports would fail.
+- apps/api/Dockerfile already copies packages/shared (incl. src/chain.mjs); api/attestor do not import packages/ens.
+- Host `npm run build` in web passes with these imports (no root/lockfile warnings).
+Commands once Docker works: see docs/proof/W8-docker.txt (unchanged).
