@@ -36,7 +36,7 @@ async function main(){
  const rpcUrl=env.WHITECHAIN_RPC_URL??'https://rpc.testnet.whitechain.io';
  if(new URL(rpcUrl).protocol!=='https:')throw new Error('HTTPS testnet RPC required');
  const chain=defineChain({id:1874,name:'Whitechain Sepolia',nativeCurrency:{name:'WBT',symbol:'WBT',decimals:18},rpcUrls:{default:{http:[rpcUrl]}}});
- const rpc=createPublicClient({chain,transport:http(rpcUrl,{timeout:10000,retryCount:0})});
+ const rpc=createPublicClient({chain,transport:http(rpcUrl,{timeout:30000,retryCount:2})});
  const assertChain=async()=>{if(await rpc.getChainId()!==1874)throw new Error('Wrong chain; testnet1874 required');};await assertChain();
  const state=existsSync(file)?JSON.parse(readFileSync(file,'utf8')):{chainId:1874,contracts:{},transactions:{},urls:{}};
  if(state.chainId!==1874)throw new Error('Saved evidence has wrong chain');

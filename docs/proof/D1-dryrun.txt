@@ -1,0 +1,29 @@
+DRY-RUN: no transaction is signed or broadcast; docs/proof/deployed.json is not written.
+WARN (dry-run) keystore alias 'deployer' not found locally (cast wallet import deployer --interactive)
+WARN (dry-run) keystore alias 'agent' not found locally (cast wallet import agent --interactive)
+WARN (dry-run) Need at least0.50 official test USDT
+PASS chain 1874, token 0xcedfB56113143d55b2358b8CFbB0dEB5Ad2f55a7 decimals=6, owner WBT wei=2000000000000000000, owner USDT base=0, amount=500000
+PLAN deployMerchantRegistry
+  forge create --root contracts --rpc-url https://rpc.testnet.whitechain.io --chain 1874 --account deployer --broadcast --json src/MerchantRegistry.sol:MerchantRegistry   # -> REGISTRY
+PLAN deployMandate
+  forge create --root contracts --rpc-url https://rpc.testnet.whitechain.io --chain 1874 --account deployer --broadcast --json src/Mandate.sol:Mandate --constructor-args 0xcedfB56113143d55b2358b8CFbB0dEB5Ad2f55a7 $REGISTRY   # -> MANDATE
+PLAN verifyMerchantRegistry
+  forge verify-contract $REGISTRY src/MerchantRegistry.sol:MerchantRegistry --root contracts --chain 1874 --verifier blockscout --verifier-url https://explorer.testnet.whitechain.io/api/ --watch
+PLAN verifyMandate
+  forge verify-contract $MANDATE src/Mandate.sol:Mandate --root contracts --chain 1874 --verifier blockscout --verifier-url https://explorer.testnet.whitechain.io/api/ --watch --constructor-args $(cast abi-encode 'constructor(address,address)' 0xcedfB56113143d55b2358b8CFbB0dEB5Ad2f55a7 $REGISTRY)
+PLAN registerMerchant
+  cast send $REGISTRY --data 0xd22057a92ee365e7a932bbcf5ede5268238c990c0f259dcdae9ccd1ffd0a994178063ac20000000000000000000000007515b4b61052da60e3bf72ce62f98fef5eaae9cd --rpc-url https://rpc.testnet.whitechain.io --chain 1874 --account deployer --confirmations 4 --json
+PLAN createMandate
+  cast send $MANDATE --data 0x33e1ea4600000000000000000000000091e3e6d4376a570bce8cc5549749c4edba2ca293000000000000000000000000de0c46e1b4568c94e04035455d16856cd3e7636900000000000000000000000000000000000000000000000000000000001e848000000000000000000000000000000000000000000000000000000000004c4b4000000000000000000000000000000000000000000000000000000000000f42400000000000000000000000000000000000000000000000000000000000015180000000000000000000000000000000000000000000000000000000006aeef8db000000000000000000000000000000000000000000000000000000000000000022131140c15bdfcc8a0b6e18ec95efd064d6963948b7762eeeb8f4c87885296c --rpc-url https://rpc.testnet.whitechain.io --chain 1874 --account deployer --confirmations 4 --json   # expiry recomputed at real run
+PLAN setLimits
+  cast send $MANDATE --data 0x55a87f6bb71f015f44c20688181a6d88ca154d1aecc2cff410c5a7bd75704037410b82f500000000000000000000000000000000000000000000000000000000001e848000000000000000000000000000000000000000000000000000000000004c4b4000000000000000000000000000000000000000000000000000000000000f4240 --rpc-url https://rpc.testnet.whitechain.io --chain 1874 --account deployer --confirmations 4 --json
+PLAN allowMerchant
+  cast send $MANDATE --data 0x5c319840b71f015f44c20688181a6d88ca154d1aecc2cff410c5a7bd75704037410b82f52ee365e7a932bbcf5ede5268238c990c0f259dcdae9ccd1ffd0a994178063ac20000000000000000000000000000000000000000000000000000000000000001 --rpc-url https://rpc.testnet.whitechain.io --chain 1874 --account deployer --confirmations 4 --json
+PLAN resetAllowance
+  cast call 0xcedfB56113143d55b2358b8CFbB0dEB5Ad2f55a7 'allowance(address,address)(uint256)' 0x10799095B510e74DA4c706472B6039e111025c7D $MANDATE --rpc-url https://rpc.testnet.whitechain.io --chain 1874   # if nonzero: cast send 0xcedfB56113143d55b2358b8CFbB0dEB5Ad2f55a7 'approve(address,uint256)' $MANDATE 0 --rpc-url https://rpc.testnet.whitechain.io --chain 1874 --account deployer --confirmations 4 --json
+PLAN limitedAllowance
+  cast send 0xcedfB56113143d55b2358b8CFbB0dEB5Ad2f55a7 'approve(address,uint256)' $MANDATE 500000 --rpc-url https://rpc.testnet.whitechain.io --chain 1874 --account deployer --confirmations 4 --json
+PLAN firstPayment
+  cast wallet sign --no-hash --account agent <hashIntent(MANDATE,intent nonce=1 amount=500000)>  then  cast send $MANDATE --data <pay(intent,sig,0x,{0,0,0},0x)> --rpc-url https://rpc.testnet.whitechain.io --chain 1874 --account deployer --confirmations 4 --json
+setup: mandateId=0xb71f015f44c20688181a6d88ca154d1aecc2cff410c5a7bd75704037410b82f5 merchantId=0x2ee365e7a932bbcf5ede5268238c990c0f259dcdae9ccd1ffd0a994178063ac2 (fresh salt each dry-run; real run persists it)
+DRY-RUN complete: nothing broadcast.
