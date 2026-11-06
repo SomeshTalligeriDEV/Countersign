@@ -16,7 +16,7 @@ const owner = env('ENS_OWNER_ADDRESS'), agent = env('ENS_AGENT_ADDRESS');
 let txs;
 if (revoke) txs = buildRevoke({ resolver, name, agent, registry: userRegistry, label, unregister: !process.argv.includes('--keep-name') });
 else {
-  const ROLE_SET_RESOLVER = 1n << 12n; // ponytail: owner keeps resolver control only; verify bit against RegistryRolesLib before --execute
+  const ROLE_SET_RESOLVER = 1n << 24n; // RegistryRolesLib.ROLE_SET_RESOLVER, verified against the Sepolia UserRegistryImpl source (1<<12 is ROLE_UNREGISTER)
   txs = [
     buildCreateSubname({ userRegistry, label, owner, resolver, roleBitmap: BigInt(process.env.ENS_ROLE_BITMAP ?? ROLE_SET_RESOLVER), expiry: BigInt(Math.floor(Date.now() / 1000) + 30 * 86400) }),
     buildSetTexts({ resolver, name, records: policyRecords({ limits: JSON.parse(env('ENS_POLICY_LIMITS')), merchantsHash: env('ENS_MERCHANTS_HASH'), attestor: env('ENS_ATTESTOR_ADDRESS'), mandateAddress: env('ENS_MANDATE_ADDRESS'), mandateId: process.env.ENS_MANDATE_ID, epoch: process.env.ENS_EPOCH }) }),
@@ -28,4 +28,4 @@ for (const tx of txs) console.log(JSON.stringify(tx));
 if (!execute) process.exit(0);
 const chainId = Number(execFileSync('cast', ['chain-id', '--rpc-url', rpc]).toString().trim());
 if (chainId !== SEPOLIA_CHAIN_ID) throw new Error(`refusing: RPC chainId ${chainId} is not Sepolia`);
-for (const tx of txs) console.log(execFileSync('cast', ['send', tx.to, tx.data, '--account', account, '--rpc-url', rpc], { stdio: ['inherit', 'pipe', 'inherit'] }).toString());
+for (const tx of txs) console.log(execFileSync('cast', ['send', tx.to, tx.data, '--account', account, ...(process.env.ENS_PASSWORD_FILE ? ['--password-file', process.env.ENS_PASSWORD_FILE] : []), '--rpc-url', rpc], { stdio: ['inherit', 'pipe', 'inherit'] }).toString());

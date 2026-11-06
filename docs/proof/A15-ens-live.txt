@@ -1,0 +1,41 @@
+2026-11-06T19:51:31Z
+date: 2026-11-06T19:51:32.374Z
+rpc: https://ethereum-sepolia-rpc.publicnode.com
+chainId: 11155111
+name: agent1.countersign.eth
+{
+  "address": null,
+  "url": null,
+  "countersignRecords": {
+    "limits": "{\"perTx\":\"2000000\",\"perPeriod\":\"5000000\"}",
+    "merchantsHash": "0x87e6914f7dba6d1f46bd041f371dbf7416bf80c151ecd412283f3d785822ffce",
+    "attestor": "0x99205442BAe9C9E6259804571e78C2ccfa604D63",
+    "mandate": "eip155:1874:0x923298375911A173da34C715da2718c0c9889EbA:0x5123ac907dd47f0fbaf39da4b9c97f7ed6b5fb2be1441cf04cc345553a8243fe",
+    "epoch": "5"
+  }
+}
+FAIL: no address resolved
+MATCH     limits.perTx
+MATCH     limits.perPeriod
+MISSING   merchantsHash
+MATCH     attestor
+MATCH     mandateAddress
+MATCH     chainId
+MATCH     mandateId
+MATCH     epoch
+date: 2026-11-06T19:52:48.979Z
+rpc: https://ethereum-sepolia-rpc.publicnode.com
+chainId: 11155111
+name: agent1.countersign.eth
+{
+  "address": "0x91E3e6D4376A570BcE8CC5549749C4eDBA2cA293",
+  "url": null,
+  "countersignRecords": {
+    "limits": "{\"perTx\":\"2000000\",\"perPeriod\":\"5000000\"}",
+    "merchantsHash": "0x87e6914f7dba6d1f46bd041f371dbf7416bf80c151ecd412283f3d785822ffce",
+    "attestor": "0x99205442BAe9C9E6259804571e78C2ccfa604D63",
+    "mandate": "eip155:1874:0x923298375911A173da34C715da2718c0c9889EbA:0x5123ac907dd47f0fbaf39da4b9c97f7ed6b5fb2be1441cf04cc345553a8243fe",
+    "epoch": "5"
+  }
+}
+PASS: resolved via ENS Universal Resolver on Sepolia

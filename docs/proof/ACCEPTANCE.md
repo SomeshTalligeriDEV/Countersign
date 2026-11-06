@@ -19,7 +19,7 @@ Environment: deployed Mandate 0x9232…9EbA + MerchantRegistry 0x2686…29E2; of
 | A12 | CSV export | **PASS** | /v1/payments.csv lists 4 real payments incl. partially_refunded (docs/proof/A12-payments.csv) |
 | A13 | Receipt matches chain | **PASS** | /v1/payments/0x13d9… == Mandate.payments() storage: mandate, merchant, payout, amount 500000, refunded 250000 |
 | A14 | Owner dashboard actions via real wallet | **WAITING-ON-HUMAN** | wallet clicks on /owner (HUMAN-RUN.md) |
-| A15 | ENS policy read-back | **PARTIAL (read-only)** | ens:smoke live Sepolia resolve PASS; no agent subname written (writes not verified/unfunded) |
+| A15 | ENS policy read-back | **PASS** | agent1.countersign.eth on ENSv2 Sepolia (own UserRegistry + PermissionedResolver); live drift check 7 MATCH, merchantsHash MISSING by design (A15-ens-onchain.md, A15-ens-live.txt) |
 | A16 | World real approval + one real failure | **PASS** | success above; failures: stale auth after real sign-in → refused, expired approval → no tx (A2-world-approval.md) |
 
 Six-step demo twice: docs/proof/G6-demo-run.txt (5/6 PASS per run; order-40 waiting on World).
