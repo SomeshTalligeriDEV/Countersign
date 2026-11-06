@@ -24,14 +24,24 @@ export class ChainObserver {
       // Fast-forward over event-free spans with one ranged getLogs (block-by-block cannot keep up with ~1 block/s chains).
       // Safety: cursor hash re-checked before the jump; the jump target's hash is stored, so the next per-block
       // step still verifies parentHash continuity. Blocks containing events always take the per-block path below.
-      if (this.chain.logsInRange && block <= safe) {
-        const end = block + 999n < safe ? block + 999n : safe;
+      // Only fast-forward across deep blocks (64 below head), never the 3-block confirmation zone.
+      const deep = head - 64n;
+      if (this.chain.logsInRange && block <= deep) {
+        const end = block + 999n < deep ? block + 999n : deep;
+        const targetBefore = await this.chain.block(end);
         const logs = await this.chain.logsInRange(block, end);
+        if (logs.some(l => l.removed)) throw new Error('observer_reorg');
+        const targetAfter = await this.chain.block(end);
+        if (targetAfter.hash !== targetBefore.hash) throw new Error('observer_reorg');
+        if (cursor && (await this.chain.block(BigInt(cursor.block))).hash !== cursor.block_hash) throw new Error('observer_reorg');
         const stop = logs.length ? logs.reduce((m, l) => (l.blockNumber < m ? l.blockNumber : m), end + 1n) - 1n : end;
         if (stop >= block) {
-          const target = await this.chain.block(stop);
-          if (cursor && (await this.chain.block(BigInt(cursor.block))).hash !== cursor.block_hash) throw new Error('observer_reorg');
-          this.db.prepare('INSERT INTO observer_cursor VALUES (?,?,?) ON CONFLICT(name) DO UPDATE SET block=excluded.block,block_hash=excluded.block_hash').run(this.name, stop.toString(), target.hash);
+          const target = stop === end ? targetAfter : await this.chain.block(stop);
+          this.db.exec('BEGIN IMMEDIATE');
+          try {
+            this.db.prepare('INSERT INTO observer_cursor VALUES (?,?,?) ON CONFLICT(name) DO UPDATE SET block=excluded.block,block_hash=excluded.block_hash').run(this.name, stop.toString(), target.hash);
+            this.db.exec('COMMIT');
+          } catch (error) { this.db.exec('ROLLBACK'); throw error; }
           block = stop + 1n;
         }
       }
