@@ -68,7 +68,11 @@ const server=createServer(async(req,res)=>{
   const init={method:req.method,headers:req.headers};
   if(!['GET','HEAD'].includes(req.method)){init.body=Readable.toWeb(req);init.duplex='half';}
   const request=new Request(new URL(req.url,'http://localhost'),init);
-  const response=await handle(request,{ip:req.socket.remoteAddress??'unknown'});
+  // Forwarded client IP is honoured only from configured proxy addresses (TRUSTED_PROXY_IPS, comma-separated).
+  const peer=req.socket.remoteAddress??'unknown';
+  const trusted=(process.env.TRUSTED_PROXY_IPS??'').split(',').map(s=>s.trim()).filter(Boolean);
+  const fwd=trusted.includes(peer)?String(req.headers['x-countersign-client-ip']??'').trim():'';
+  const response=await handle(request,{ip:fwd||peer});
   res.writeHead(response.status,Object.fromEntries(response.headers));
   res.end(Buffer.from(await response.arrayBuffer()));
  }catch{res.writeHead(500,{'content-type':'application/json'});res.end('{"error":"internal_error"}');}

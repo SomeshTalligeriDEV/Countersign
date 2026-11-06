@@ -25,7 +25,7 @@ export function createHttpApp({chain,facilitator,approvalService,ownerSignatures
    }
    if(request.method==='POST'&&path==='/v1/demo/gasguard'){
     if(!demoGuard)return json({error:'demo_disabled'},404);
-    if(!rateLimit(ip))return json({error:'rate_limited'},429);
+    if(!rateLimit(`${path}|${ip}`))return json({error:'rate_limited'},429);
     demoGuard.reserve({id:'demo-arbitrary',mandateId:'demo',to:'0x0000000000000000000000000000000000000001',functionName:'transfer',gas:1n,maxFeePerGas:1n,simulationSucceeded:true},clock());
     return json({error:'unexpected_guard_acceptance'},500);
    }
@@ -75,7 +75,7 @@ export function createHttpApp({chain,facilitator,approvalService,ownerSignatures
     if(ownerMatch&&!ownerSignatures)return json({error:'owner_signatures_not_configured'},503);
     if(path==='/v1/approvals'&&!approvalService)return json({error:'approvals_not_configured'},503);
     if(path==='/v1/settle'&&!facilitator)return json({error:'relayer_not_configured'},503);
-    if(!rateLimit(ip))return json({error:'rate_limited'},429);
+    if(!rateLimit(`${path}|${ip}`))return json({error:'rate_limited'},429);
     if(!(request.headers.get('content-type')??'').startsWith('application/json'))return json({error:'json_required'},415);
     const reader=request.body?.getReader();if(!reader)return json({error:'invalid_request'},400);
     const chunks=[];let size=0;
