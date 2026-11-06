@@ -19,6 +19,8 @@ export async function submitAttack({apiUrl,body,name,fetchImpl=fetch}){
  const result=await response.json();
  if(response.ok)throw new Error('ATTACK_ACCEPTED: inspect returned transaction; no rejection claimed');
  const expected=name==='replay-after-revoke'?'StaleEpoch':name==='over-budget'?'gasguard_rejected':'bad_intent_sig';
- if(result.error!==expected||(name==='over-budget'&&result.reason!=='would_revert'))throw new Error(`Scenario not demonstrated: ${result.error??'unknown'} ${result.reason??''}`);
+ // Over-budget is rejected either by the API's pre-read of the contract policy (contract error name) or by GasGuard simulation.
+ const budgetRevert=name==='over-budget'&&['OverPerTx','OverPeriod'].includes(result.error);
+ if(!budgetRevert&&(result.error!==expected||(name==='over-budget'&&result.reason!=='would_revert')))throw new Error(`Scenario not demonstrated: ${result.error??'unknown'} ${result.reason??''}`);
  return {scenario:name,status:'rejected',error:result.error,reason:result.reason??null,evidence:'API/GasGuard rejection; no onchain revert transaction claimed'};
 }

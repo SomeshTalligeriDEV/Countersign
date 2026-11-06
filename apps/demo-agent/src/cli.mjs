@@ -28,4 +28,4 @@ async function main(){
  if(!result.response.ok){console.log(`Merchant returned HTTP ${result.response.status}; no success claimed.`);process.exitCode=1;return;}
  console.log(await result.response.text());
 }
-main().catch(()=>{console.error('Scenario failed or was not demonstrated. Check configuration, policy, deadline and API readiness. No success claimed; keys/signatures are never printed.');process.exitCode=1;});
+main().catch(error=>{const why=String(error?.shortMessage??error?.message??'unknown').replace(/0x[0-9a-fA-F]{120,}/g,'<redacted-hex>').slice(0,200);console.error(`Scenario failed or was not demonstrated (${why}). No success claimed; keys/signatures are never printed.`);process.exitCode=1;});

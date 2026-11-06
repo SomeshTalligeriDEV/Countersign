@@ -15,6 +15,9 @@ test('CLI attack scenarios execute actual signing and reject before fixture-chai
  for(const name of ['tamper-amount','tamper-payout','over-budget']){
   const body=await attackIntent({name,chain,account,mandateId:id,merchantId:id,mandateAddress:address,clock:()=>1000});assert.equal((await submitAttack({name,body,apiUrl:'http://localhost',fetchImpl})).status,'rejected');
  }
+ // live-chain path: API policy pre-read rejects with the contract error name (no broadcast)
+ assert.equal((await submitAttack({name:'over-budget',body:{},apiUrl:'http://localhost',fetchImpl:async()=>Response.json({error:'OverPerTx'},{status:400})})).error,'OverPerTx');
+ await assert.rejects(submitAttack({name:'over-budget',body:{},apiUrl:'http://localhost',fetchImpl:async()=>Response.json({error:'bad_intent_sig'},{status:400})}),/not demonstrated/);
  const saved=await attackIntent({name:'save-replay',chain,account,mandateId:id,merchantId:id,mandateAddress:address,clock:()=>1000});epoch++;
  assert.equal((await submitAttack({name:'replay-after-revoke',body:saved,apiUrl:'http://localhost',fetchImpl})).error,'StaleEpoch');assert.equal(broadcasts,0);
  }finally{db.close();}
