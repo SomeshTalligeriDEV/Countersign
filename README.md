@@ -1,152 +1,176 @@
 # Countersign
 
-**Live demo:** https://web-rouge-one-10.vercel.app (Vercel). API/relayer/attestor run on the build laptop behind a Cloudflare quick tunnel (https://detector-absorption-calculate-methodology.trycloudflare.com), live only while the laptop and tunnel are up. **ENS agent:** `agent1.countersign.eth` on Sepolia ENSv2. **Repo:** https://github.com/SomeshTalligeriDEV/ETHGLOBAL (public, CI green).
+**Spending mandates for AI agents, settled in USDT on Whitechain, with human approval through World ID and an agent identity on ENS.**
 
-Bounded USDT payments for AI agents, targeting Whitechain Sepolia (1874). A treasury owner defines a mandate; its agent signs exact payment terms. The contract checks merchant payout/version, limits, nonce, order, epoch and expiry. Payments at the human threshold additionally require a fresh World identity attestation and owner-wallet approval.
+An owner gives an AI agent a budget. The agent signs exact payment terms; a relayer pays the gas; the **Mandate contract** enforces the limits at the moment USDT moves. Above a threshold, the payment also needs a fresh **World ID** sign-in by the owner plus an owner-wallet signature. The agent is published as **`agent1.countersign.eth`** on ENSv2, with its policy mirrored in text records that the app checks live against the chain.
 
-**Status (2026-11-07):** contracts are deployed on Whitechain testnet (1874) and real official-USDT payments have settled ([INTEGRATION-REPORT.md](docs/proof/INTEGRATION-REPORT.md)). Both contracts are source-verified on Blockscout (2026-11-06T17:55:24Z, after an explorer outage: [VERIFY-OUTAGE.md](docs/proof/VERIFY-OUTAGE.md)). The web app is hosted on Vercel (https://web-rouge-one-10.vercel.app); the services (API, relayer, attestor, observer, demo merchant) run on the build laptop behind a Cloudflare quick tunnel, so they are live only while that laptop and tunnel are up ([I6-live-url.txt](docs/proof/I6-live-url.txt)). Real World sign-in works against the World sandbox issuer (mocked identities per World) via a CIMD public client over a Cloudflare quick tunnel: a 1.50 USDT human-approved payment settled ([0x98fa…b531](https://explorer.testnet.whitechain.io/tx/0x98fa814e805ab35e55124370539bc0c1889aef519d5c408800be2efc709cb531)) and two real failure paths sent no payment ([A2-world-approval.md](docs/proof/A2-world-approval.md)); ENS: `countersign.eth` registered on ENSv2 Sepolia with our own UserRegistry; `agent1.countersign.eth` has its own PermissionedResolver, policy text records, addr = agent, and the agent key scoped to two records; live drift check 7/8 MATCH vs the Whitechain Mandate ([A15-ens-onchain.md](docs/proof/A15-ens-onchain.md)). See [STATUS.md](STATUS.md).
-
-## Live on Whitechain testnet
-
-| | Address / tx |
+| | |
 |---|---|
-| MerchantRegistry | [0x2686f693A2C959568e650e0A5563E6244f2329E2](https://explorer.testnet.whitechain.io/address/0x2686f693A2C959568e650e0A5563E6244f2329E2) (deploy [0x3bf2…d707](https://explorer.testnet.whitechain.io/tx/0x3bf28526ba2ac7629d0b70c030d1f64cd2ba873aa634a1b240a867df9a2cd707)) |
-| Mandate | [0x923298375911A173da34C715da2718c0c9889EbA](https://explorer.testnet.whitechain.io/address/0x923298375911A173da34C715da2718c0c9889EbA) (deploy [0x6351…3a91](https://explorer.testnet.whitechain.io/tx/0x6351883c2e30cf2dbb6d247701b8f2e8cfe36f300ca007c7ec8b2a75fb503a91)) |
-| Official USDT | 0xcedfB56113143d55b2358b8CFbB0dEB5Ad2f55a7 |
-| First real payment (0.50 official USDT) | [0x68629137bf52b628824e92723b299d2b6dcf5703920eda318c4f402af1734021](https://explorer.testnet.whitechain.io/tx/0x68629137bf52b628824e92723b299d2b6dcf5703920eda318c4f402af1734021) |
-| Source verification | VERIFIED both contracts 2026-11-06T17:55:24Z (earlier attempts hit an explorer outage: [VERIFY-OUTAGE.md](docs/proof/VERIFY-OUTAGE.md)) |
+| **Live demo** | https://web-rouge-one-10.vercel.app |
+| **Repository** | https://github.com/SomeshTalligeriDEV/ETHGLOBAL (public, CI green) |
+| **Demo video** | _to be added_ |
+| **Chain** | Whitechain Sepolia testnet, chain ID 1874 |
+| **ENS agent** | `agent1.countersign.eth` (ENSv2, Sepolia) |
 
-Feature acceptance on the live chain: [ACCEPTANCE.md](docs/proof/ACCEPTANCE.md) (14/16 PASS incl. webhooks, World A2/A16 and ENS A15; A7 not run, A14 WAITING-ON-HUMAN). Six-step demo run twice, 5/6 PASS each (order-40 waited on World; later approved for real, see A2-world-approval.md): [G6-demo-run.txt](docs/proof/G6-demo-run.txt). All setup txs: [G2-onchain.md](docs/proof/G2-onchain.md).
+> The web app is on Vercel. The API, relayer, attestor and chain observer run on the build machine behind a Cloudflare quick tunnel (`https://detector-absorption-calculate-methodology.trycloudflare.com`), so the live backend is available only while that machine and tunnel are up.
+
+---
+
+## Prize requirements at a glance
+
+### Whitechain: Stablecoin Payments for Business
+
+| Requirement | Status | Evidence |
+|---|---|---|
+| Contracts deployed on Whitechain Sepolia (1874) and verified | ✅ | MerchantRegistry [0x2686…29E2](https://explorer.testnet.whitechain.io/address/0x2686f693A2C959568e650e0A5563E6244f2329E2), Mandate [0x9232…9EbA](https://explorer.testnet.whitechain.io/address/0x923298375911A173da34C715da2718c0c9889EbA), both source-verified on Blockscout |
+| USDT payment (`0xcedfB561…55a7`) settled in the main flow | ✅ | first payment [0x6862…4021](https://explorer.testnet.whitechain.io/tx/0x68629137bf52b628824e92723b299d2b6dcf5703920eda318c4f402af1734021), plus 3 relayed and 1 human-approved ([A12-payments.csv](docs/proof/A12-payments.csv)) |
+| Why on-chain stablecoin settlement | ✅ | [section below](#why-on-chain-stablecoin-settlement-on-whitechain) |
+| Public repo with steady progress; README with setup, architecture, limitations | ✅ | commit history; this README |
+| Demo video, 2–4 minutes, every party shown | ⏳ | being recorded |
+| `WHITECHAIN_FEEDBACK.md` | ✅ | [WHITECHAIN_FEEDBACK.md](WHITECHAIN_FEEDBACK.md) |
+| _Extras:_ drop-in SDK, merchant and customer views, refunds, CSV export, webhooks | ✅ | `packages/merchant`, `/merchant`, `/r/[paymentId]`, refund [0x921d…6fe3](https://explorer.testnet.whitechain.io/tx/0x921d428645cbf91100523d79be8dc102aacccec8f354aaca343f576d8b706fe3), [A11-webhooks.txt](docs/proof/A11-webhooks.txt) |
+
+### World ID Agent Pass
+
+| Requirement | Status | Evidence |
+|---|---|---|
+| Integrate the official Agent Pass | ✅ | OIDC against `https://sandbox.auth.world.org` (`apps/api/src/world-oidc.mjs`, `world-cimd.mjs`) |
+| Full journey: request, user completes, validated result, protected action | ✅ | owner signs in with World, the backend validates the token, then a 1.50 USDT payment settles: [0x98fa…b531](https://explorer.testnet.whitechain.io/tx/0x98fa814e805ab35e55124370539bc0c1889aef519d5c408800be2efc709cb531) |
+| Unsuccessful path where the action does not occur | ✅ | stale authentication after a real sign-in is refused, and an unanswered approval expires; neither sends a transaction ([A2-world-approval.md](docs/proof/A2-world-approval.md)) |
+| Validate in a secure backend, no exposed secrets | ✅ | server-side PKCE S256, `max_age=0`, nonce, JWKS signature, `iss`/`aud`/`auth_time` ≤ 120 s; no client secret in use |
+| Integration debrief | ✅ | [WORLD_DEBRIEF.md](WORLD_DEBRIEF.md) |
+
+### ENS: Best Use of ENSv2
+
+| Requirement | Status | Evidence |
+|---|---|---|
+| Built on ENSv2 (Sepolia) | ✅ | `countersign.eth` has its own **UserRegistry**; `agent1.countersign.eth` has its own **PermissionedResolver** ([A15-ens-onchain.md](docs/proof/A15-ens-onchain.md)) |
+| ENSv2 central, not cosmetic | ✅ | per-agent namespace; policy published as text records; agent key limited to two records via Enhanced Access Control (`grantSetterRoles`); a live drift check compares ENS with the Mandate |
+| Functional, no hard-coded values | ✅ | `/api/countersign/ens/agent1.countersign.eth/drift` reads Sepolia and Whitechain live: 7/8 MATCH ([A15-ens-live.txt](docs/proof/A15-ens-live.txt)) |
+| Live demo link and open-source code | ✅ | links above |
+
+Feature acceptance on the live chain: **14/16 PASS** ([ACCEPTANCE.md](docs/proof/ACCEPTANCE.md)). Not done: A7 (registry change after approval, covered by contract tests only) and A14 (owner dashboard clicked with a real wallet).
+
+---
+
+## How it works
+
+```
+ Owner ── creates mandate (limits, merchants, attestor) ──► Mandate contract (Whitechain)
+   │                                                            ▲
+   │ World ID sign-in + wallet signature (over threshold)      │ pay(intent, agentSig, ownerSig, attestation)
+   ▼                                                            │
+ Attestor ── co-signs fresh World approval ──► Relayer + GasGuard (pays gas, simulates first)
+                                                                ▲
+ Agent ── signs exact payment terms (amount, merchant, order) ──┘    Agent holds no USDT and no gas
+ Merchant ◄── USDT + signed webhook + on-chain receipt
+ ENS agent1.countersign.eth ── mirrors the policy; the app shows MATCH/MISMATCH against the chain
+```
+
+1. **Owner** approves a USDT allowance and creates a mandate: per-transaction limit, period budget, approval threshold, allowed merchants and attestor.
+2. **Agent** asks a merchant for a priced resource and signs the exact intent.
+3. **Relayer** simulates `pay()`, GasGuard checks target, selector, fee caps and budgets, and only then broadcasts.
+4. **Contract** checks signatures, merchant payout and version, limits, nonce, order, epoch, expiry and pause, then moves USDT from owner to merchant.
+5. **Over the threshold**, the API holds the payment until the owner completes a fresh World sign-in and signs with their wallet; the attestor co-signs, and the contract verifies both.
+6. **Merchant** gets the USDT, an HMAC-signed webhook and a receipt page; refunds are capped at the amount paid.
 
 ## Why on-chain stablecoin settlement on Whitechain
 
-The agent's spending limits, merchant payout binding, replay protection and the human-approval threshold are enforced by the Mandate contract at the moment USDT moves, so neither the agent, the relayer nor our API can exceed them; a card or bank rail would only let us enforce these rules in our own server, which the agent's operator must trust, and could not give the merchant a final, publicly verifiable settlement it can check on the explorer. Whitechain is targeted for low-cost sponsored payments in official USDT; no measured fee/latency figures exist yet.
+The agent's spending limits, merchant payout binding, replay protection and human-approval threshold are enforced by the Mandate contract at the moment USDT moves. Neither the agent, the relayer nor our API can exceed them. A card or bank rail would only let us enforce these rules in our own server, which the agent's operator would have to trust, and it could not give the merchant a final, publicly verifiable settlement it can check on the explorer. Whitechain gives low-cost payments in official USDT; we have no measured fee or latency figures yet.
 
-## Setup
+## Live on Whitechain testnet
 
-Node >=24.10, pnpm, Foundry, Solidity 0.8.30.
+| | Address / transaction |
+|---|---|
+| MerchantRegistry | [0x2686f693A2C959568e650e0A5563E6244f2329E2](https://explorer.testnet.whitechain.io/address/0x2686f693A2C959568e650e0A5563E6244f2329E2) |
+| Mandate | [0x923298375911A173da34C715da2718c0c9889EbA](https://explorer.testnet.whitechain.io/address/0x923298375911A173da34C715da2718c0c9889EbA) |
+| Official USDT | `0xcedfB56113143d55b2358b8CFbB0dEB5Ad2f55a7` |
+| First payment (0.50 USDT) | [0x68629137…4021](https://explorer.testnet.whitechain.io/tx/0x68629137bf52b628824e92723b299d2b6dcf5703920eda318c4f402af1734021) |
+| Human-approved payment (1.50 USDT, World) | [0x98fa814e…b531](https://explorer.testnet.whitechain.io/tx/0x98fa814e805ab35e55124370539bc0c1889aef519d5c408800be2efc709cb531) |
+| Rejected on-chain: tampered amount, tampered payout, over budget, paused, over-refund | links in [INTEGRATION-REPORT.md](docs/proof/INTEGRATION-REPORT.md) |
 
-```sh
-pnpm test                         # root Node suite: 97 pass, 0 fail
-forge test --root contracts -vvv  # 118 pass (docs/proof/G1-forge-test.txt)
-pnpm doctor                       # read-only chain/token/config checks
-pnpm world:smoke                  # live World discovery + JWKS (read-only)
-pnpm ens:smoke                    # live ENS read on Sepolia (read-only)
-npm ci --prefix web && npm --prefix web run dev
-```
-
-Copy env examples to gitignored service-specific files. API/attestor do not load dotenv; use `node --env-file=.env src/server.mjs`. ATTESTOR_KEY belongs only to apps/attestor, RELAYER_KEY only to apps/api. Web needs COUNTERSIGN_API_URL (and COUNTERSIGN_PUBLIC_API_URL for browser World links). Never put keys in NEXT_PUBLIC variables. Testnet only; no substitute USDT outside local tests.
+Every setup transaction: [G2-onchain.md](docs/proof/G2-onchain.md). The six-step demo ran twice on the live chain ([G6-demo-run.txt](docs/proof/G6-demo-run.txt)).
 
 ## Architecture
 
-- `contracts`: MerchantRegistry and Mandate (official USDT fixed in deploy scripts).
-- `apps/api`: SQLite persistence, HTTP validation, World OIDC, observer, owner setup, relayer + GasGuard.
-- `apps/attestor`: separate loopback process; authenticated approval-ID requests, DB digest recomputation, single-use signing.
-- `packages/shared`: single Whitechain 1874 chain definition, EIP-712 definitions, digest vectors, exact decimal arithmetic.
-- `packages/merchant` / `packages/agent`: x402-style custom payment terms and signed intents (not the standard x402 exact scheme).
-- `packages/ens`: ENSv2 policy reads (viem, Sepolia) and write tx builders.
-- `apps/demo-merchant` / `apps/demo-agent`: demo report endpoint and agent CLI.
-- `web`: owner, approval, receipt, merchant, demo pages and landing.
+| Path | Role |
+|---|---|
+| `contracts/` | `MerchantRegistry` and `Mandate` (Solidity 0.8.30, `prague`; official USDT fixed at deploy) |
+| `apps/api/` | HTTP API, SQLite, World OIDC, approvals, chain observer (3-block confirmation, reorg checks), relayer + GasGuard, webhook worker |
+| `apps/attestor/` | separate process holding the attestor key; signs only after recomputing the approval from the database |
+| `apps/demo-agent/`, `apps/demo-merchant/` | agent CLI (purchases and attack scenarios) and a demo merchant using the SDK |
+| `packages/merchant/` | drop-in merchant SDK: charge, middleware, webhook verification |
+| `packages/agent/`, `packages/shared/` | signed intents, EIP-712 types, the single chain definition, exact decimal math |
+| `packages/ens/` | ENSv2 reads, record and role transaction builders, drift check |
+| `web/` | Next.js: owner dashboard, approval page, merchant view, receipts, demo |
 
-Submitted is not settled: the observer requires three subsequent blocks and reads contract logs before projecting payment status. WebSockets send read-only invalidations; clients then fetch authoritative data, with polling fallback.
+## Setup
 
-## Whitechain
+Requirements: Node ≥ 24.10, pnpm, Foundry.
 
-| Piece | Mode | Proof |
-|---|---|---|
-| Chain 1874, RPC, explorer, solc 0.8.30, prague | REAL config | packages/shared/src/chain.mjs; [INTEGRATION-SOURCES.md](docs/proof/INTEGRATION-SOURCES.md); relay-errors test `single chain definition matches official Whitechain Sepolia docs` |
-| Official USDT metadata, 6 decimals | REAL read-only | [USDT-CAPABILITIES.md](docs/proof/USDT-CAPABILITIES.md) (cast calls) |
-| USDT EIP-2612 permit / EIP-3009 present | REAL read-only probe | USDT-CAPABILITIES.md; no signed permit/3009 transfer executed (UNEXECUTED). Countersign uses approve + transferFrom |
-| Mandate / MerchantRegistry contracts | REAL deployed; forge 118/118 locally | addresses above; source verified on Blockscout |
-| USDT payment, explorer link | REAL | first pay() [0x6862…4021](https://explorer.testnet.whitechain.io/tx/0x68629137bf52b628824e92723b299d2b6dcf5703920eda318c4f402af1734021) + 3 relayed payments ([A12-payments.csv](docs/proof/A12-payments.csv)) |
-| Relayer + GasGuard sponsored pay(), agent holds 0 USDT / 0 WBT | REAL | [G2-onchain.md](docs/proof/G2-onchain.md) I2/D5, [G6-demo-run.txt](docs/proof/G6-demo-run.txt) |
-| On-chain reverts (BadIntentSig, RegistryMismatch, OverPerTx, Paused, OverRefund) | REAL | tx links in [INTEGRATION-REPORT.md](docs/proof/INTEGRATION-REPORT.md) |
-| Refund, revoke, pause, webhooks (HMAC), CSV, receipt == chain | REAL (services local) | [ACCEPTANCE.md](docs/proof/ACCEPTANCE.md), [A11-webhooks.txt](docs/proof/A11-webhooks.txt) |
-| Public hosting | PARTIAL | web on Vercel (REAL); API/relayer/attestor on build laptop via Cloudflare quick tunnel, live only while laptop+tunnel are up ([I6-live-url.txt](docs/proof/I6-live-url.txt)) |
-| RPC error handling (429, nonce, replacement) | FIXTURE (mocked RPC) | apps/api/test/relay-errors.test.mjs |
+```sh
+pnpm install
+pnpm test                         # Node suites: 97 pass
+forge test --root contracts -vvv  # contracts: 118 pass
+pnpm doctor                       # read-only chain, token and config checks
+pnpm world:smoke                  # live World discovery + JWKS
+pnpm ens:smoke agent1.countersign.eth   # live ENS read on Sepolia
+npm ci --prefix web && npm --prefix web run dev
+```
 
-## World
+Copy each `.env.example` to a gitignored `.env` next to it. Start services with `node --env-file=.env src/server.mjs`. `ATTESTOR_KEY` lives only in `apps/attestor` and `RELAYER_KEY` only in `apps/api`; never put keys in `NEXT_PUBLIC_*` variables. Deployment uses Foundry keystores (`pnpm human:deploy`) and never takes raw keys. ENS writes use `pnpm ens:setup` (dry run by default, `--execute` to send).
 
-| Piece | Mode | Proof |
-|---|---|---|
-| Sandbox + production discovery, PKCE S256, RS256 JWKS, auth_time, device grant endpoint | REAL read-only | [F2-world-smoke.txt](docs/proof/F2-world-smoke.txt): RESULT PASS for both issuers |
-| Code + PKCE, `max_age=0`, jose JWT/JWKS checks, owner binding | REAL (sandbox) + FIXTURE tests | [A2-world-approval.md](docs/proof/A2-world-approval.md); apps/api/test/world-http, owner-binding, approvals tests |
-| CIMD public client (client metadata served by our API, PKCE without secret; scope `openid offline_access`) | REAL (sandbox, Cloudflare quick tunnel) | apps/api/src/world-cimd.mjs, world-oidc.mjs, server.mjs; portal registration returned `account_not_eligible` |
-| Device flow (headless) | FIXTURE; implemented in apps/api/src/world-device.mjs, not yet routed in server.mjs | world-device test `FIXTURE device flow polls pending/slow_down, verifies nonce-less token, rejects 503 and denial` |
-| Real user sign-in, over-limit approval, failure paths | REAL (sandbox; mocked identities per World) | success [0x98fa…b531](https://explorer.testnet.whitechain.io/tx/0x98fa814e805ab35e55124370539bc0c1889aef519d5c408800be2efc709cb531); stale_auth after real sign-in → `approval_not_ready`, no tx; expired approval → no tx ([A2-world-approval.md](docs/proof/A2-world-approval.md), ACCEPTANCE A2/A16) |
-| IDKit | not built | — |
-
-## ENS
-
-| Piece | Mode | Proof |
-|---|---|---|
-| Policy read via ENS Universal Resolver (viem, Sepolia) | REAL read-only | [F3-ens-smoke.txt](docs/proof/F3-ens-smoke.txt): `nick.eth` PASS, plus web route `mode:"live"` |
-| UI badge Live/Fixture | REAL mode flag | web/src/components/countersign/EnsIdentity.tsx |
-| `countersign.eth` registered with our own UserRegistry subregistry | REAL (Sepolia ENSv2) | [A15-ens-onchain.md](docs/proof/A15-ens-onchain.md) |
-| `agent1.countersign.eth` with its own PermissionedResolver; addr = agent 0x91E3…A293 | REAL | A15-ens-onchain.md |
-| Policy text records (limits, merchants, attestor, mandate, epoch) | REAL | A15-ens-onchain.md |
-| Agent key scoped to agent-endpoint[web] + agent-context via grantSetterRoles (Enhanced Access Control) | REAL | A15-ens-onchain.md |
-| Live drift check ENS vs Whitechain Mandate | REAL: 7/8 MATCH, merchantsHash MISSING by design (Mandate stores a mapping) | [A15-ens-live.txt](docs/proof/A15-ens-live.txt), web route `/api/countersign/ens/agent1.countersign.eth/drift` |
-| Revoke flow (ENS clear + Mandate epoch bump) | BUILT, UNEXECUTED (keeps demo name live) | `pnpm ens:setup -- --revoke`; [ENS-NOTES.md](docs/ENS-NOTES.md) |
+**World without portal registration:** set `WORLD_CLIENT_ID` to `https://<api-origin>/.well-known/world-client.json`. The API serves that client metadata document (CIMD) and runs as a public PKCE client, so no client secret is needed.
 
 ## Security properties mapped to tests
 
-Executed 2026-11-06 on the laptop: forge 118 passed / 0 failed / 6 suites ([G1-forge-test.txt](docs/proof/G1-forge-test.txt)); `pnpm test` 97 pass / 0 fail. Local tests against mocks/fixtures, not deployed-chain evidence. Mandate tests are inherited by other suites, so names repeat.
+Forge 118/0 across 6 suites ([G1-forge-test.txt](docs/proof/G1-forge-test.txt)); `pnpm test` 97/0. These are local tests against mocks; the live-chain evidence is listed above.
 
-| Property | Forge tests (contracts/test) | Node tests (apps/api/test) |
-| --- | --- | --- |
-| Only owner funds move; attacker cannot use victim allowance | `testT01AttackerCannotUseVictimAllowance`, `testSmallPaymentMovesOnlyOwnerFunds` | |
-| Tampered amount/payout/version, inactive merchant | `testT02TamperedAmount`, `testT03TamperedPayout`, `testT04PayoutVersionChanged`, `testT05InactiveMerchant`, `testRiskRegistryChangeSameBlockRejectsCachedTerms`; MerchantRegistry: `testStrangerCannotRedirectPayout`, `testDuplicateCannotTakeOwnership`, `testVersionInvalidatesTermsOnEveryChange` | facilitator: `A-01 tampered signed intent never broadcasts` |
-| Spend limits, period accounting | `testT06HardPerTransactionCap`, `testT07CumulativePeriodCap`, `testT08LimitChangePreservesSpend`, `testT08RaisedLimitAllowsOnlyUnspentRemainder`, `testT09PeriodRolloverPreservesHistory`, `testLoweredBudgetSaturatesRemainingWithoutResettingSpent`, `testRiskPeriodBoundaryExactly`, `invariant_T30AccountingReplayAndRefundBounds` (256 runs) | |
-| Replay / order dedup / revocation | `testT10NonceReplay`, `testT11DuplicateOrderNewNonce`, `testZeroAmountCannotBypassOrderDeduplication`, `testT16RevocationRejectsUnusedIntent`, `testT16RevocationRejectsFullySignedHumanApproval`, `testT17PolicyChangesInvalidateFullApproval`, `testRiskRevokeFrontRunsInFlightPayment`, `testRiskThirdPartyCannotGriefNonceWithInvalidSignature` | facilitator: `successful broadcast is submitted, never prematurely settled; duplicate is blocked` |
-| Human threshold: owner + attestor, freshness | `testT12HumanThresholdRequiresOwner`, `testT13AttestationMustBindOwnerApproval`, `testT14WrongAttestorCannotApprove`, `testT15StaleAndFutureAuthentication`, `testHumanApprovalSettlesExactDigest`, `testRiskMalformedHumanSignaturesCannotConsumeIntent` | facilitator: `threshold payment cannot use automatic path`; approval-service: `missing verified owner binding cannot create a human approval`; attestor-client: `API authenticates attestor, verifies signature and recovers lost response without re-signing` (FIXTURE identities) |
-| Expiry / pause / allowlist / domain separation / malleability | `testT18ExpiredIntent`, `testT19ExpiredMandate`, `testT20PausedMandate`, `testT21MerchantNotAllowed`, `testT22DifferentChainSignatureRejected`, `testT22DifferentContractSignatureRejected`, `testT23MalleableSignatureRejected`, `testRiskMalformedAndOversizedAgentSignatures` | |
-| Reentrancy, atomic rollback, ERC-1271 | `testT24ReentrantTokenCannotExecuteSecondPayment`, `testT25InsufficientAllowanceRollsBackAllEffects`, `testRiskAllowanceExhaustedMidSequenceRollsBack`, `testRiskRevertingPayoutDoesNotReceiveNativeCallback`, `testT29SmartWalletOwnerApprovesExactDigest` | |
-| Refunds and admin auth | `testT26UnauthorizedRefund`, `testT27RefundCannotExceedPaymentOrRestoreBudget`, `testRiskRefundAfterRevokeAndPausePreservesSpend`, `testT28AllAdministrativeCallsRequireOwner` | observer: `confirmed refund updates payment and invalid refund rolls back cursor and outbox` |
-| Off-chain/on-chain digest parity | `testA14SharedFixedDigestVectors` | |
-| World sign-in transport (FIXTURE only) | | world-http: `World browser routes set secure binding cookie and clear it on callback`, `World callback rejects missing browser cookie and duplicate parameters before verifier`; owner-binding: `owner binding requires verified identity plus matching wallet and forbids rebinding` |
-| RPC errors: 429 retries identical signed bytes, nonce/replacement never re-signed | | relay-errors: `429 rebroadcasts identical bytes after Retry-After, then submits`, `persistent 429 leaves outcome unknown for recovery, no new signature`, `nonce too low and replacement underpriced are recorded, never retried or re-signed`, `already known means the same signed tx is in the mempool` |
-| Client IP only from trusted proxy | | client-ip: `forwarded client IP is honoured only from TRUSTED_PROXY_IPS and only when valid` |
-
-## Relayer and GasGuard
-
-The relayer ([apps/api/src/facilitator.mjs](apps/api/src/facilitator.mjs)) only submits `pay` calls to the Mandate after authoritative simulation; the agent holds no gas token. GasGuard ([apps/api/src/gasguard.mjs](apps/api/src/gasguard.mjs)) enforces allowlisted target/selector, per-mandate and global gas budgets, fee caps and pause. Tests: gasguard `A-02/A-03 deny arbitrary calls and failed simulations with audit records`, `A-04 reservations survive restart and prevent budget overspend and duplicates`, `pause, fee caps and global budget fail closed`; facilitator `A-03 authoritative simulation rejection never broadcasts`; relay-ledger `relay persists before broadcast and restart rebroadcasts identical signed bytes`, `recovery retains unknown nonce outcome instead of signing or spending again`. These tests run against mocked RPC; on the live chain the relayer has broadcast sponsored pay() calls and GasGuard has issued real denials (`gas_price_or_limit`, `not_allowlisted_call`), see [G2-onchain.md](docs/proof/G2-onchain.md) and [G6-demo-run.txt](docs/proof/G6-demo-run.txt).
+| Property | Contract tests | API tests |
+|---|---|---|
+| Only owner funds move | `testT01AttackerCannotUseVictimAllowance`, `testSmallPaymentMovesOnlyOwnerFunds` | |
+| Tampered amount, payout or version; inactive merchant | `testT02`–`testT05`, `testRiskRegistryChangeSameBlockRejectsCachedTerms`, registry `testStrangerCannotRedirectPayout` | `A-01 tampered signed intent never broadcasts` |
+| Per-transaction and period limits | `testT06`–`testT09`, `invariant_T30AccountingReplayAndRefundBounds` (256 runs) | |
+| Replay, duplicate orders, revocation | `testT10`, `testT11`, `testT16*`, `testT17PolicyChangesInvalidateFullApproval`, `testRiskRevokeFrontRunsInFlightPayment` | duplicate settlement blocked |
+| Human threshold: owner + attestor + freshness | `testT12`–`testT15`, `testHumanApprovalSettlesExactDigest` | `threshold payment cannot use automatic path`, owner binding required |
+| Expiry, pause, allowlist, domain separation, malleability | `testT18`–`testT23` | |
+| Reentrancy, atomic rollback, ERC-1271 owners | `testT24`, `testT25`, `testT29SmartWalletOwnerApprovesExactDigest` | |
+| Refund bounds, admin auth | `testT26`–`testT28` | observer refund rollback |
+| Relayer cannot be used for arbitrary calls | | GasGuard `A-02/A-03`, `A-04` budgets survive restart |
+| RPC failures never re-sign or double-spend | | relay-errors 429 / nonce / replacement tests |
+| World token and callback validation | | world-http, owner-binding, world-cimd tests |
 
 ## Limitations
 
-- Contracts deployed and source-verified. Web hosted on Vercel; API/relayer/attestor only via a Cloudflare quick tunnel from the build laptop (not durable hosting). World sign-in is sandbox-only (mocked identities) through a Cloudflare quick tunnel, not production `auth.world.org`; IDKit not built. ENS revoke not executed. No video yet.
-- Reservations cover execution gas, not complete OP fee components. Single relayer process/signer required.
-- Automatic deep-reorg recovery, multi-process production and identity recovery/rebinding are unfinished. Webhooks deliver only to an operator-configured URL.
-- Browser tests use a mocked wallet (W5 Playwright 8/8 FIXTURE, docs/proof/W5-playwright.txt); real-wallet run not done.
-- Contracts do not read ENS; ENS is the agent name, public policy mirror and role layer. ENS revoke is built but not executed.
-- No independent audit or production-security claim. Off-chain merchant billing is a proposed business model, not implemented.
-- NO-DUMMY audit: [DUMMY-AUDIT.md](docs/proof/DUMMY-AUDIT.md) (non-web), [DUMMY-AUDIT-web.md](docs/proof/DUMMY-AUDIT-web.md) (web).
+- **Hosting:** the backend runs on the build machine behind a quick tunnel, not durable hosting.
+- **World:** sandbox issuer only (mocked identities, per World); IDKit not built; the headless device flow is implemented but not routed.
+- **ENS:** the Mandate cannot read ENS. ENS is the agent's name, public policy mirror and role layer. The merchants-hash row is not comparable on-chain, and the revoke flow is built but not executed, so the demo name stays live.
+- **Not run live:** A7 (registry change after approval) and owner-dashboard clicks with a real wallet; browser tests use a mocked wallet.
+- **Engineering:** single relayer process; gas reservations cover execution gas only; no deep-reorg recovery; no independent audit.
 
-## Deployment and submission
+## Feedback and reports
 
-[HUMAN-RUN.md](docs/proof/HUMAN-RUN.md) has deploy/verify/first-payment, World and browser steps. Addresses and tx links above come from docs/proof/deployed.json and G2-onchain.md. Live web: https://web-rouge-one-10.vercel.app (backend via quick tunnel, see above). Repo: https://github.com/SomeshTalligeriDEV/ETHGLOBAL. `pnpm evidence` regenerates the block below from deployed.json. Prize mapping: [PRIZE-REQUIREMENTS.md](docs/proof/PRIZE-REQUIREMENTS.md).
+- [WHITECHAIN_FEEDBACK.md](WHITECHAIN_FEEDBACK.md): what worked, the verification outage, docs gaps.
+- [WORLD_DEBRIEF.md](WORLD_DEBRIEF.md): time to first success, friction, the one improvement we'd make.
+- [INTEGRATION-REPORT.md](docs/proof/INTEGRATION-REPORT.md): real vs fixture, per sponsor.
+- [BUILD_REPORT.md](BUILD_REPORT.md): final build status.
 
 ## Prior work disclosure
 
 From [W9-prior-code-inventory.md](docs/proof/W9-prior-code-inventory.md):
-- The supplied UI contained an earlier project (chupke). Its code, landing components, assets, auth/biz routes and libs were removed (F5); the `/` landing was rewritten from scratch.
-- EzPayz (teammate project): `packages/shared/src/amount.mjs` and the `apps/api/src/approvals.mjs` idempotency were rewritten from scratch; no EzPayz code remains.
-- Starter config files (web package.json, tsconfig, next.config, eslint config, Dockerfile, favicon) come from create-next-app scaffolding via the supplied UI. `web/AGENTS.md`, `web/README.md` and the `web/src/app/app/` redirect are still prior/scaffold.
-- No fresh-start or Continuity eligibility is asserted; that is a human/staff decision.
+- The supplied UI contained an earlier project (chupke). Its code, components, assets and routes were removed, and the landing page was rewritten from scratch.
+- EzPayz (teammate project): `amount.mjs` and approval idempotency were rewritten from scratch; no EzPayz code remains.
+- Starter config (web `package.json`, `tsconfig`, `next.config`, ESLint config, Dockerfile, favicon) comes from create-next-app scaffolding.
 
 ## AI tools used
 
-- **OpenAI Codex** (earlier sandbox phase): source editing, local Node/ESLint/TypeScript runs, doc lookup. Its sandbox could not run forge (DNS) or git.
-- **Claude Code** (laptop phase, 2026-11-06): forge 118/118, `pnpm test`, `pnpm doctor`, world:smoke, ens:smoke, USDT read-only probe, F1-F9 code and these docs.
-- No fabricated commits, transactions, feedback, deployment links or test results.
+- **OpenAI Codex** (early phase): source editing and local lint/type checks.
+- **Claude Code** (main phase): contracts and tests, API, integrations, deployment scripts, on-chain runs and documentation, under the author's direction.
+- Every transaction, test count and link in this README comes from a recorded run in `docs/proof/`.
 
 <!-- COUNTERSIGN-EVIDENCE:START -->
 ## Recorded deployment evidence
 
-See "Live on Whitechain testnet" above and [INTEGRATION-REPORT.md](docs/proof/INTEGRATION-REPORT.md). Still TODO-HUMAN: video, durable backend hosting, source eligibility decision.
+See "Live on Whitechain testnet" above and [INTEGRATION-REPORT.md](docs/proof/INTEGRATION-REPORT.md). Still to do: demo video and durable backend hosting.
 
 <!-- COUNTERSIGN-EVIDENCE:END -->
-
-## Risk-reduction commands
-
-`pnpm doctor` checks public configuration, chain/token/balances/contracts/budget, provider discovery, service health, flags and Git cleanliness without printing secrets. `pnpm human:deploy` runs the keystore-based stepwise deployment and first payment in a normal terminal, persisting docs/proof/deployed.json. `pnpm human:deploy` was executed for the deployment and first payment (verification skipped during the outage, then run with forge verify-contract once it ended). Adversarial Solidity tests in contracts/test/AdversarialEdges.t.sol (43 incl. inherited) pass (G1-forge-test.txt). See [CLAIM-AUDIT.md](docs/CLAIM-AUDIT.md).
