@@ -66,6 +66,15 @@ const stats = [
   { v: 3, l: "primitives: Whitechain, World ID, ENS" },
 ];
 
+// Real Mandate rules and settled payments (USDT); bars scaled to the $10 period budget.
+const bars = [
+  { k: "buy-report payment", v: 0.5 },
+  { k: "human-approved order", v: 1.5 },
+  { k: "approval threshold", v: 1 },
+  { k: "per-transaction cap", v: 2 },
+  { k: "period budget", v: 10 },
+];
+
 export default function Home() {
   return (
     <div className="cs-landing">
@@ -111,6 +120,26 @@ export default function Home() {
         </figure>
         </div>
         </div>
+
+        <section className="cs-sec cs-paper" aria-labelledby="limits">
+          <div className="cs-wrap">
+          <p className="cs-eyebrow">Limits</p>
+          <h2 id="limits" className="cs-twotone">Small payments, <span>hard limits.</span></h2>
+          <p className="cs-lede">The agent pays cents for data; the Mandate contract caps every payment, the period budget and when a human must approve.</p>
+          <figure className="cs-bars">
+            <dl>
+              {bars.map(b => (
+                <div key={b.k}><dt>{b.k}</dt><dd><span style={{"--w": b.v / 10} as React.CSSProperties} /><b>${b.v.toFixed(2)}</b></dd></div>
+              ))}
+            </dl>
+            <figcaption>Every bar is enforced by the Mandate contract on Whitechain; anything past the cap reverts on-chain.</figcaption>
+          </figure>
+          <div className="cs-bigstats">
+            <div><p className="cs-stat">6</p><p>Real USDT payments settled on Whitechain Sepolia, each with an explorer-verifiable transaction (docs/proof).</p></div>
+            <div><p className="cs-stat">5</p><p>Attacks refused on-chain: tampered amount, tampered payout, over budget, paused, over-refund.</p></div>
+          </div>
+          </div>
+        </section>
 
         <section className="cs-sec cs-paper" aria-labelledby="how">
           <div className="cs-wrap">

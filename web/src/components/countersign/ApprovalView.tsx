@@ -28,7 +28,7 @@ export default function ApprovalView({ id }: { id: string }) {
   }, [id]);
   const remaining = terms ? Math.max(0, terms.expiresAt - now) : 0;
   const step = !terms ? 0 : terms.status === 'pending_human' ? 0 : terms.status === 'world_ok' ? 1 : 2;
-  return <main className="mx-auto max-w-3xl px-6 py-16">
+  return <main className="cs-comic mx-auto max-w-3xl px-6 py-16">
     <Link href="/" className="text-sm underline">Countersign</Link>
     <div className="mt-10 flex flex-wrap items-center justify-between gap-3"><p className="text-sm uppercase tracking-widest">Whitechain Sepolia · owner review</p><WorldModeBadge/></div>
     <h1 className="mt-3 font-serif text-4xl">Review this payment</h1>

@@ -28,7 +28,7 @@ export default function ReceiptView({ paymentId }: { paymentId: string }) {
     }
     const unsubscribe=subscribeRealtime(()=>{void update();});void update(); return () => { unsubscribe();controller.abort(); clearTimeout(timer); };
   }, [paymentId]);
-  return <main className="mx-auto max-w-3xl px-6 py-16">
+  return <main className="cs-comic mx-auto max-w-3xl px-6 py-16">
     <Link href="/" className="text-sm underline">Countersign</Link>
     <p className="mt-10 text-sm uppercase tracking-widest">Whitechain Sepolia · testnet</p>
     <h1 className="mt-3 font-serif text-4xl">Payment receipt</h1>
