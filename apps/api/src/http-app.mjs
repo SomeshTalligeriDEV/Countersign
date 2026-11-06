@@ -4,12 +4,12 @@ const json=(value,status=200)=>new Response(JSON.stringify(value,(_,v)=>typeof v
 const badRequest=new Set(['OverRefund','NotPayout','NotMerchantOwner','merchant_already_registered','NotOwner','invalid_setup','invalid_amount','amount_precision','amount_overflow','invalid_request','invalid_intent','bad_intent_sig','UnknownMandate','Expired','MandateExpired','StaleEpoch','OverPerTx','Paused']);
 export function createHttpApp({chain,facilitator,approvalService,ownerSignatures,ownerSetup,worldHttp,ownerWorldHttp,ownerBinding,merchants,demoGuard,db,networkStatus,observerName,observerHealthy=()=>true,clock=()=>Math.floor(Date.now()/1000)}){
  db.exec('CREATE TABLE IF NOT EXISTS request_limits (key TEXT PRIMARY KEY, window INTEGER NOT NULL, count INTEGER NOT NULL)');
- function rateLimit(key){
+ function rateLimit(key,max=10){
   const window=Math.floor(clock()/60);
   const row=db.prepare(`INSERT INTO request_limits(key,window,count) VALUES(?,?,1)
    ON CONFLICT(key) DO UPDATE SET window=excluded.window,count=CASE WHEN request_limits.window=excluded.window THEN request_limits.count+1 ELSE 1 END RETURNING count`).get(key,window);
   db.prepare('DELETE FROM request_limits WHERE window<?').run(window-2);
-  return row.count<=10;
+  return row.count<=max;
  }
  return async function handle(request,{ip='unknown'}={}){
   const url=new URL(request.url);
@@ -25,7 +25,7 @@ export function createHttpApp({chain,facilitator,approvalService,ownerSignatures
    }
    if(request.method==='POST'&&path==='/v1/demo/gasguard'){
     if(!demoGuard)return json({error:'demo_disabled'},404);
-    if(!rateLimit(`${path}|${ip}`))return json({error:'rate_limited'},429);
+    if(!rateLimit(`all|${ip}`,60)||!rateLimit(`${path.split('/').slice(0,3).join('/')}|${ip}`))return json({error:'rate_limited'},429); // route class (/v1/<name>), never raw id segments
     demoGuard.reserve({id:'demo-arbitrary',mandateId:'demo',to:'0x0000000000000000000000000000000000000001',functionName:'transfer',gas:1n,maxFeePerGas:1n,simulationSucceeded:true},clock());
     return json({error:'unexpected_guard_acceptance'},500);
    }
@@ -75,7 +75,7 @@ export function createHttpApp({chain,facilitator,approvalService,ownerSignatures
     if(ownerMatch&&!ownerSignatures)return json({error:'owner_signatures_not_configured'},503);
     if(path==='/v1/approvals'&&!approvalService)return json({error:'approvals_not_configured'},503);
     if(path==='/v1/settle'&&!facilitator)return json({error:'relayer_not_configured'},503);
-    if(!rateLimit(`${path}|${ip}`))return json({error:'rate_limited'},429);
+    if(!rateLimit(`all|${ip}`,60)||!rateLimit(`${path.split('/').slice(0,3).join('/')}|${ip}`))return json({error:'rate_limited'},429); // route class (/v1/<name>), never raw id segments
     if(!(request.headers.get('content-type')??'').startsWith('application/json'))return json({error:'json_required'},415);
     const reader=request.body?.getReader();if(!reader)return json({error:'invalid_request'},400);
     const chunks=[];let size=0;
