@@ -14,7 +14,7 @@ const userRegistry = env('ENS_USER_REGISTRY'), resolver = env('ENS_AGENT_RESOLVE
 const owner = env('ENS_OWNER_ADDRESS'), agent = env('ENS_AGENT_ADDRESS');
 
 let txs;
-if (revoke) txs = buildRevoke({ resolver, name, agent, registry: userRegistry, label, unregister: process.argv.includes('--unregister') });
+if (revoke) txs = buildRevoke({ resolver, name, agent, registry: userRegistry, label, unregister: !process.argv.includes('--keep-name') });
 else {
   const ROLE_SET_RESOLVER = 1n << 12n; // ponytail: owner keeps resolver control only; verify bit against RegistryRolesLib before --execute
   txs = [

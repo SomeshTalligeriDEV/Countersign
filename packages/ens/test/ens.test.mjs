@@ -46,7 +46,9 @@ test('revoke clears all policy keys, revokes scoped roles, optionally unregister
   const txs = buildRevoke({ resolver: R, name: 'buyer.demo.eth', agent: A, registry: M, label: 'buyer', unregister: true });
   assert.equal(txs.length, 4);
   const calls = decodeFunctionData({ abi: resolverAbi, data: txs[0].data }).args[0].map((d) => decodeFunctionData({ abi: resolverAbi, data: d }).args);
-  assert.deepEqual(calls.map((c) => c[1]).sort(), Object.values(KEYS).sort());
+  assert.deepEqual(calls.map((c) => c[1]).sort(), [...Object.values(KEYS), 'agent-endpoint[web]', 'agent-context'].sort());
+  assert.ok(calls.every((c) => c[2] === ''), 'every record cleared');
+  assert.equal(buildRevoke({ resolver: R, name: 'buyer.demo.eth', agent: A, registry: M, label: 'buyer' }).length, 4, 'unregister is default');
   assert.ok(calls.every((c) => c[2] === ''));
   assert.equal(decodeFunctionData({ abi: resolverAbi, data: txs[1].data }).args[1], ROLE_SET_TEXT);
   assert.equal(decodeFunctionData({ abi: registryAbi, data: txs[3].data }).functionName, 'unregister');

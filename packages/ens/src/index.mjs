@@ -36,7 +36,8 @@ export const dnsName = (name) => toHex(packetToBytes(normalize(name)));
 export const labelId = (label) => BigInt(keccak256(toHex(label)));
 
 export function sepoliaClient(rpcUrl = DEFAULT_SEPOLIA_RPC) {
-  return createPublicClient({ chain: sepolia, transport: http(rpcUrl, { timeout: 10_000 }) });
+  // ccipRead disabled: server-side resolution must never follow attacker-chosen offchain gateway URLs (SSRF).
+  return createPublicClient({ chain: sepolia, ccipRead: false, transport: http(rpcUrl, { timeout: 10_000 }) });
 }
 
 export function parseMandate(value) {
@@ -103,9 +104,12 @@ export function buildGrantAgentKey({ resolver, agent, key }) {
   return { to: getAddress(resolver), data: encodeFunctionData({ abi: resolverAbi, functionName: 'grantSetterRoles', args: [setter, getAddress(agent)] }) };
 }
 
-/** Owner revoke: clear policy records, revoke the agent's scoped roles, optionally unregister the subname. */
-export function buildRevoke({ resolver, name, agent, registry, label, unregister = false }) {
-  const txs = [buildSetTexts({ resolver, name, records: Object.fromEntries(Object.values(KEYS).map((k) => [k, ''])) })];
+/** Owner revoke: clear policy AND agent-writable records, revoke the agent's roles, and unregister the subname by default.
+ * Unregister is the authoritative revocation: the revokeRoles resource below is UNVERIFIED against the deployed
+ * resolver's grantSetterRoles derivation, so it must not be relied on alone (check hasRoles on-chain before trusting it). */
+export function buildRevoke({ resolver, name, agent, registry, label, unregister = true }) {
+  const cleared = [...Object.values(KEYS), ...AGENT_KEYS];
+  const txs = [buildSetTexts({ resolver, name, records: Object.fromEntries(cleared.map((k) => [k, ''])) })];
   for (const key of AGENT_KEYS) txs.push({ to: getAddress(resolver), data: encodeFunctionData({ abi: resolverAbi, functionName: 'revokeRoles', args: [BigInt(keccak256(toHex(key))), ROLE_SET_TEXT, getAddress(agent)] }) });
   if (unregister) txs.push({ to: getAddress(registry), data: encodeFunctionData({ abi: registryAbi, functionName: 'unregister', args: [labelId(label)] }) });
   return txs;
