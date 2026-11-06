@@ -1,0 +1,14 @@
+G6 six-step demo — live Whitechain testnet (1874), live local API/relayer/GasGuard/attestor/observer, demo merchant :4000
+Mandate 0x923298375911A173da34C715da2718c0c9889EbA · official USDT 0xcedfB561… · agent 0x91E3…A293 holds 0 USDT / 0 WBT throughout
+Rejections below are API/GasGuard pre-flight rejections (nothing broadcast), NOT on-chain revert transactions, unless a tx link is given.
+
+=== RUN 1 — 2026-11-06 19:26–19:28 IST ===
+1 buy-report            PASS  relayed pay() 0.50 USDT  https://explorer.testnet.whitechain.io/tx/0x713fdfa883b7ed7acaebfc5a281f9a77c7cb10cc0622f6626c07420b677939ae  paymentId 0xf455…7e9f; merchant delivered report after observer confirmation
+2 tamper-amount         PASS  rejected: bad_intent_sig (agent signature no longer matches altered amount)
+3 tamper-payout         PASS  rejected: bad_intent_sig (altered payout)
+4 order-40              NOT RUN — WAITING-ON-HUMAN (needs World sandbox app + phone sign-in; World configured=false)
+5 over-budget           PASS  rejected: OverPerTx (policy pre-read; perTx limit 2.00 USDT)
+6 replay-after-revoke   PASS  owner revoke tx https://explorer.testnet.whitechain.io/tx/0x6d7b2c0c3e3c5de6c1a2e69a184208155195dd81ad8707e295502a80cbf1f084 (epoch++), replay of saved signed intent rejected: StaleEpoch
++ arbitrary-relayer-call PASS GasGuard rejected: not_allowlisted_call (no broadcast)
++ earlier real GasGuard denial: gas_price_or_limit (1 gwei cap < 5 gwei base fee), see G2-onchain.md
+Run-1 notes: first attempts at 19:10 failed on venue-network RPC timeouts (Cloudflare itself 5.4 s); the CLI now prints redacted reasons.
