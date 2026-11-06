@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" width="1200" height="760" font-family="Inter, Segoe UI, Helvetica, Arial, sans-serif">
+  <title>Countersign system architecture</title>
+  <desc>Agent, merchant, owner and World ID connect through the Countersign API, attestor and relayer to the Mandate contract on Whitechain; ENSv2 on Sepolia publishes the agent identity and policy, checked live against the chain.</desc>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#3a3a3a"/></marker>
+    <marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1f7a4d"/></marker>
+    <marker id="p" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#5b3fd1"/></marker>
+    <style>
+      .t{font-size:15px;font-weight:600;fill:#161616}
+      .s{font-size:12px;fill:#4a4a4a}
+      .h{font-size:12px;font-weight:700;letter-spacing:.12em;fill:#6b6b6b}
+      .box{fill:#ffffff;stroke:#202020;stroke-width:2}
+      .l{stroke:#3a3a3a;stroke-width:1.6;fill:none}
+      .lg{stroke:#1f7a4d;stroke-width:1.8;fill:none}
+      .lp{stroke:#5b3fd1;stroke-width:1.6;fill:none;stroke-dasharray:6 4}
+      .lab{font-size:11.5px;fill:#2e2e2e}
+    </style>
+  </defs>
+  <rect width="1200" height="760" fill="#f4f4f2"/>
+  <text x="40" y="44" font-size="22" font-weight="700" fill="#111">Countersign · system architecture</text>
+  <text x="40" y="66" class="s">Bounded USDT payments for AI agents: enforced on Whitechain, approved through World ID, identified on ENSv2</text>
+
+  <!-- ENS lane -->
+  <rect x="40" y="90" width="1120" height="128" rx="14" fill="#efeafc" stroke="#5b3fd1" stroke-width="1.5"/>
+  <text x="60" y="114" class="h">ETHEREUM SEPOLIA · ENSv2</text>
+  <rect x="60" y="126" width="250" height="76" rx="10" class="box"/>
+  <text x="76" y="152" class="t">countersign.eth</text>
+  <text x="76" y="172" class="s">our own UserRegistry</text>
+  <text x="76" y="189" class="s">(subname registry)</text>
+  <rect x="350" y="126" width="330" height="76" rx="10" class="box"/>
+  <text x="366" y="152" class="t">agent1.countersign.eth</text>
+  <text x="366" y="172" class="s">own PermissionedResolver · addr = agent</text>
+  <text x="366" y="189" class="s">ENSIP-26 agent-endpoint[web], agent-context</text>
+  <rect x="720" y="126" width="420" height="76" rx="10" class="box"/>
+  <text x="736" y="152" class="t">Policy text records</text>
+  <text x="736" y="172" class="s">countersign.limits · .merchants · .attestor · .mandate · .epoch</text>
+  <text x="736" y="189" class="s">Enhanced Access Control: agent key edits only its 2 agent records</text>
+  <path class="l" d="M310 164H350" marker-end="url(#a)"/>
+  <path class="l" d="M680 164H720" marker-end="url(#a)"/>
+
+  <!-- Actors -->
+  <text x="60" y="258" class="h">PARTIES</text>
+  <rect x="60" y="270" width="200" height="86" rx="10" class="box"/>
+  <text x="76" y="296" class="t">AI agent</text>
+  <text x="76" y="316" class="s">signs exact EIP-712 intent</text>
+  <text x="76" y="334" class="s">holds 0 USDT · 0 WBT</text>
+  <rect x="60" y="380" width="200" height="86" rx="10" class="box"/>
+  <text x="76" y="406" class="t">Merchant</text>
+  <text x="76" y="426" class="s">merchant SDK (402 terms)</text>
+  <text x="76" y="444" class="s">HMAC webhooks · receipts</text>
+  <rect x="60" y="490" width="200" height="86" rx="10" class="box"/>
+  <text x="76" y="516" class="t">Owner</text>
+  <text x="76" y="536" class="s">sets mandate + allowance</text>
+  <text x="76" y="554" class="s">wallet signs approvals</text>
+
+  <!-- World -->
+  <rect x="330" y="560" width="250" height="80" rx="10" fill="#ffffff" stroke="#1f7a4d" stroke-width="2"/>
+  <text x="346" y="586" class="t">World ID Agent Pass</text>
+  <text x="346" y="606" class="s">sandbox.auth.world.org · OIDC</text>
+  <text x="346" y="624" class="s">PKCE S256 · max_age=0 · CIMD client</text>
+
+  <!-- API -->
+  <rect x="440" y="260" width="380" height="250" rx="12" fill="#ffffff" stroke="#202020" stroke-width="2.5"/>
+  <text x="460" y="288" class="t">Countersign API</text>
+  <text x="460" y="306" class="s">Node · SQLite · apps/api</text>
+  <g class="s">
+    <rect x="460" y="320" width="165" height="52" rx="8" fill="#f1f1ef" stroke="#cfcfcf"/>
+    <text x="472" y="342" class="t" font-size="13">Facilitator</text><text x="472" y="360">simulate before send</text>
+    <rect x="635" y="320" width="165" height="52" rx="8" fill="#f1f1ef" stroke="#cfcfcf"/>
+    <text x="647" y="342" class="t" font-size="13">GasGuard</text><text x="647" y="360">allowlist · budgets · fee caps</text>
+    <rect x="460" y="382" width="165" height="52" rx="8" fill="#f1f1ef" stroke="#cfcfcf"/>
+    <text x="472" y="404" class="t" font-size="13">Approvals</text><text x="472" y="422">World token validated</text>
+    <rect x="635" y="382" width="165" height="52" rx="8" fill="#f1f1ef" stroke="#cfcfcf"/>
+    <text x="647" y="404" class="t" font-size="13">Observer</text><text x="647" y="422">3 blocks · reorg checks</text>
+    <rect x="460" y="444" width="340" height="50" rx="8" fill="#f1f1ef" stroke="#cfcfcf"/>
+    <text x="472" y="466" class="t" font-size="13">Relayer + webhook worker</text><text x="472" y="484">pays gas for pay() · delivers signed events</text>
+  </g>
+
+  <!-- Attestor -->
+  <rect x="890" y="300" width="205" height="84" rx="10" class="box"/>
+  <text x="906" y="326" class="t">Attestor</text>
+  <text x="906" y="346" class="s">separate process + key</text>
+  <text x="906" y="364" class="s">co-signs fresh World approval</text>
+
+  <!-- Web -->
+  <rect x="890" y="410" width="250" height="100" rx="10" class="box"/>
+  <text x="906" y="436" class="t">Web app (Vercel)</text>
+  <text x="906" y="456" class="s">owner · approve · merchant · receipts</text>
+  <text x="906" y="474" class="s">live drift check: ENS vs Mandate</text>
+  <text x="906" y="492" class="s">MATCH / MISMATCH per field</text>
+
+  <!-- Whitechain lane -->
+  <rect x="40" y="660" width="1120" height="84" rx="14" fill="#e6f3ec" stroke="#1f7a4d" stroke-width="1.5"/>
+  <text x="60" y="684" class="h">WHITECHAIN SEPOLIA · CHAIN 1874</text>
+  <rect x="620" y="672" width="300" height="62" rx="10" class="box"/>
+  <text x="636" y="696" class="t">Mandate</text>
+  <text x="636" y="716" class="s">limits · nonce · epoch · expiry · pause</text>
+  <rect x="940" y="672" width="200" height="62" rx="10" class="box"/>
+  <text x="956" y="696" class="t">MerchantRegistry</text>
+  <text x="956" y="716" class="s">payout + version binding</text>
+  <rect x="340" y="672" width="250" height="62" rx="10" class="box"/>
+  <text x="356" y="696" class="t">Official USDT</text>
+  <text x="356" y="716" class="s">owner → merchant payout</text>
+
+  <!-- Flows -->
+  <path class="l" d="M260 313H440" marker-end="url(#a)"/><text x="290" y="305" class="lab">signed intent</text>
+  <path class="l" d="M440 423H260" marker-end="url(#a)"/><text x="290" y="415" class="lab">webhook · receipt</text>
+  <path class="lg" d="M260 533C300 533 300 600 330 600" marker-end="url(#g)"/><text x="268" y="590" class="lab">sign in</text>
+  <path class="lg" d="M580 600C640 600 640 520 640 510" marker-end="url(#g)"/><text x="600" y="548" class="lab">ID token (validated server-side)</text>
+  <path class="l" d="M820 342H890" marker-end="url(#a)"/><text x="826" y="334" class="lab">attest</text>
+  <path class="l" d="M890 460H820" marker-end="url(#a)"/>
+  <path class="l" d="M720 510V672" marker-end="url(#a)"/><text x="728" y="600" class="lab">pay(intent, sigs, attestation)</text>
+  <path class="l" d="M620 703H590" marker-end="url(#a)"/>
+  <path class="l" d="M920 703H940" marker-end="url(#a)"/>
+  <path class="lp" d="M1122 410V202" marker-end="url(#p)"/><text x="1030" y="236" class="lab" fill="#5b3fd1">live ENS read</text>
+  <path class="lp" d="M1100 510C1100 600 1100 640 900 672" marker-end="url(#p)"/><text x="1024" y="610" class="lab" fill="#5b3fd1">live chain read</text>
+</svg>

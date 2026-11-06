@@ -85,6 +85,11 @@ Feature acceptance on the live chain: **14/16 PASS** ([ACCEPTANCE.md](docs/proof
 
 ## System design
 
+![Countersign system architecture](docs/architecture.png)
+
+<details><summary>Text version</summary>
+
+
 ```
                     ┌──────────────────────── Ethereum Sepolia (ENSv2) ───────────────────────┐
                     │ countersign.eth ─ UserRegistry (ours) ─ agent1 ─ PermissionedResolver    │
@@ -113,6 +118,8 @@ Feature acceptance on the live chain: **14/16 PASS** ([ACCEPTANCE.md](docs/proof
                     │ owner → merchant payout; MerchantRegistry binds payout + version           │
                     └─────────────────────────────────────────────────────────────────────────────┘
 ```
+
+</details>
 
 ### How each sponsor is used
 
@@ -228,6 +235,30 @@ From [W9-prior-code-inventory.md](docs/proof/W9-prior-code-inventory.md):
 <!-- COUNTERSIGN-EVIDENCE:START -->
 ## Recorded deployment evidence
 
-See "Live on Whitechain testnet" above and [INTEGRATION-REPORT.md](docs/proof/INTEGRATION-REPORT.md). Still to do: demo video and durable backend hosting.
+Human-recorded inputs only. Links have not been independently checked against RPC by this generator. Empty fields are TODO-HUMAN.
+
+- MerchantRegistry: [Explorer](https://explorer.testnet.whitechain.io/address/0x2686f693A2C959568e650e0A5563E6244f2329E2)
+- MerchantRegistry deployment: [Transaction](https://explorer.testnet.whitechain.io/tx/0x3bf28526ba2ac7629d0b70c030d1f64cd2ba873aa634a1b240a867df9a2cd707)
+- MerchantRegistry source verification: human reports verified; TODO-HUMAN independently review source
+- Mandate: [Explorer](https://explorer.testnet.whitechain.io/address/0x923298375911A173da34C715da2718c0c9889EbA)
+- Mandate deployment: [Transaction](https://explorer.testnet.whitechain.io/tx/0x6351883c2e30cf2dbb6d247701b8f2e8cfe36f300ca007c7ec8b2a75fb503a91)
+- Mandate source verification: human reports verified; TODO-HUMAN independently review source
+- createMandate: TODO-HUMAN transaction or explicit API-only rejection proof (no tx)
+- limitedAllowance: TODO-HUMAN transaction or explicit API-only rejection proof (no tx)
+- refund: TODO-HUMAN transaction or explicit API-only rejection proof (no tx)
+- firstPayment: [Transaction](https://explorer.testnet.whitechain.io/tx/0x68629137bf52b628824e92723b299d2b6dcf5703920eda318c4f402af1734021)
+- tamperAmount: TODO-HUMAN transaction or explicit API-only rejection proof (no tx)
+- tamperPayout: TODO-HUMAN transaction or explicit API-only rejection proof (no tx)
+- registryChanged: TODO-HUMAN transaction or explicit API-only rejection proof (no tx)
+- overBudget: TODO-HUMAN transaction or explicit API-only rejection proof (no tx)
+- humanApprovedPayment: TODO-HUMAN transaction or explicit API-only rejection proof (no tx)
+- revoke: TODO-HUMAN transaction or explicit API-only rejection proof (no tx)
+- replayAfterRevoke: TODO-HUMAN transaction or explicit API-only rejection proof (no tx)
+- arbitraryRelayerCall: TODO-HUMAN transaction or explicit API-only rejection proof (no tx)
+- web: TODO-HUMAN public URL
+- api: TODO-HUMAN public URL
+- repo: TODO-HUMAN public URL
+
+TODO-HUMAN: real World success and denied evidence, two ordered demo runs, browser/video proof, source eligibility decision, final CI URL.
 
 <!-- COUNTERSIGN-EVIDENCE:END -->
