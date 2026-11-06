@@ -30,6 +30,14 @@ An owner gives an AI agent a budget. The agent signs exact payment terms; a rela
 | `WHITECHAIN_FEEDBACK.md` | ✅ | [WHITECHAIN_FEEDBACK.md](WHITECHAIN_FEEDBACK.md) |
 | _Extras:_ drop-in SDK, merchant and customer views, refunds, CSV export, webhooks | ✅ | `packages/merchant`, `/merchant`, `/r/[paymentId]`, refund [0x921d…6fe3](https://explorer.testnet.whitechain.io/tx/0x921d428645cbf91100523d79be8dc102aacccec8f354aaca343f576d8b706fe3), [A11-webhooks.txt](docs/proof/A11-webhooks.txt) |
 
+### Whitechain: Scale · Payments Nobody Notices (also applicable)
+
+| Requirement | Status | Evidence |
+|---|---|---|
+| Payer pays USDT without holding WBT | ✅ | the agent wallet holds 0 USDT and 0 WBT; it only signs an EIP-712 intent; the relayer submits `pay()` ([G2-onchain.md](docs/proof/G2-onchain.md)) |
+| How the business pays gas, how the relayer gets WBT, what stops draining | ✅ | [Gas sponsorship section](#gas-sponsorship-and-drain-protection) |
+| Same base qualifications (verified contracts, USDT payment, README line, repo, video, feedback) | ✅ / ⏳ video | as above |
+
 ### World ID Agent Pass
 
 | Requirement | Status | Evidence |
@@ -46,6 +54,7 @@ An owner gives an AI agent a budget. The agent signs exact payment terms; a rela
 |---|---|---|
 | Built on ENSv2 (Sepolia) | ✅ | `countersign.eth` has its own **UserRegistry**; `agent1.countersign.eth` has its own **PermissionedResolver** ([A15-ens-onchain.md](docs/proof/A15-ens-onchain.md)) |
 | ENSv2 central, not cosmetic | ✅ | per-agent namespace; policy published as text records; agent key limited to two records via Enhanced Access Control (`grantSetterRoles`); a live drift check compares ENS with the Mandate |
+| ENSIP-26 agent records | ✅ | `agent-endpoint[web]` and `agent-context` set on `agent1.countersign.eth` and editable by the agent's own key, while the policy records are not ([tx](https://sepolia.etherscan.io/tx/0x5dec4f06eba43c58ebb4690e5edf43c2a12c6b4be9df7a72266c48854e65c93b)) |
 | Functional, no hard-coded values | ✅ | `/api/countersign/ens/agent1.countersign.eth/drift` reads Sepolia and Whitechain live: 7/8 MATCH ([A15-ens-live.txt](docs/proof/A15-ens-live.txt)) |
 | Live demo link and open-source code | ✅ | links above |
 
@@ -73,6 +82,54 @@ Feature acceptance on the live chain: **14/16 PASS** ([ACCEPTANCE.md](docs/proof
 4. **Contract** checks signatures, merchant payout and version, limits, nonce, order, epoch, expiry and pause, then moves USDT from owner to merchant.
 5. **Over the threshold**, the API holds the payment until the owner completes a fresh World sign-in and signs with their wallet; the attestor co-signs, and the contract verifies both.
 6. **Merchant** gets the USDT, an HMAC-signed webhook and a receipt page; refunds are capped at the amount paid.
+
+## System design
+
+```
+                    ┌──────────────────────── Ethereum Sepolia (ENSv2) ───────────────────────┐
+                    │ countersign.eth ─ UserRegistry (ours) ─ agent1 ─ PermissionedResolver    │
+                    │   text: countersign.limits / .merchants / .attestor / .mandate / .epoch  │
+                    │   ENSIP-26: agent-endpoint[web], agent-context (agent key may edit only  │
+                    │   these two via grantSetterRoles); addr = agent wallet                   │
+                    └───────────────▲──────────────────────────────────────────────────────────┘
+                                    │ live read (Universal Resolver)      drift check MATCH/MISMATCH
+ ┌─────────────┐  402 terms   ┌─────┴──────────┐  settle / approvals   ┌───────────────────────────┐
+ │ Demo agent  │◄────────────►│ Merchant + SDK │──────────────────────►│ Countersign API           │
+ │ signs EIP-  │  signed      │ packages/      │◄── HMAC webhooks ─────│ • facilitator (simulate)  │
+ │ 712 intent  │  intent      │ merchant       │                       │ • GasGuard (budgets/caps) │
+ │ 0 USDT/WBT  │              └────────────────┘                       │ • approvals + World OIDC  │
+ └─────────────┘                                                       │ • observer (3 blocks,     │
+                                                                       │   reorg checks) + SQLite  │
+ ┌─────────────┐ World sign-in (PKCE, max_age=0) ┌──────────────────┐  └────┬──────────┬──────────┘
+ │ Owner       │────────────────────────────────►│ World Agent Pass │──────►│ ID token │ attest   │
+ │ wallet sig  │◄── approval page /approve/[id] ─│ sandbox.auth.    │  JWKS │ verified ▼          │
+ └─────────────┘                                 │ world.org        │       │   ┌──────────────┐  │
+                                                 └──────────────────┘       │   │ Attestor     │  │
+                                                                            │   │ (separate    │  │
+                                                                            │   │ key/process) │  │
+                                                                            │   └──────┬───────┘  │
+                    ┌────────────── Whitechain Sepolia (1874) ──────────────────────────▼────────┐
+                    │ Mandate.pay(intent, agentSig, ownerSig?, attestation?) ── USDT transferFrom │
+                    │ owner → merchant payout; MerchantRegistry binds payout + version           │
+                    └─────────────────────────────────────────────────────────────────────────────┘
+```
+
+### How each sponsor is used
+
+- **Whitechain** is the settlement and enforcement layer. `Mandate` holds no funds: it pulls official USDT from the owner's allowance directly to the merchant's registered payout, and it reverts if any rule fails. Limits are per transaction and per period, plus nonce, order dedup, epoch (revoke), expiry and pause. `MerchantRegistry` binds a merchant ID to a payout address and version, so a tampered payout fails on-chain. Refunds are capped at the amount paid. The observer projects status only after 3 confirmations.
+- **World ID Agent Pass** is the human-approval layer for payments at or above the threshold. The API starts an OIDC code flow with PKCE, `max_age=0` and a per-flow nonce. It validates the ID token server-side (JWKS signature, `iss`, `aud`, `nonce`, `auth_time` ≤ 120 s) and checks that the World subject matches the owner bound at onboarding. Only then does the separate attestor sign. The contract requires both the attestor signature and the owner's EIP-712 signature over the exact approval digest.
+- **ENSv2** gives the agent a namespace and a public, verifiable policy. We own the registry under `countersign.eth`, and each agent gets its own PermissionedResolver. The owner holds root roles; the agent key can edit only its ENSIP-26 endpoint and context records. The app reads the records live and shows MATCH or MISMATCH against the Mandate state on Whitechain. Revoking bumps the epoch on-chain and clears the ENS records.
+
+## Gas sponsorship and drain protection
+
+- **Who pays:** the operator's relayer pays gas for `pay()`. The payer (agent) never needs WBT and never sends a transaction.
+- **Funding:** the relayer key is funded with testnet WBT from the Whitechain faucet. In this deployment the relayer and the deployer share one key (`0x1079…5c7D`); in production they would be separate.
+- **What stops draining** ([`apps/api/src/gasguard.mjs`](apps/api/src/gasguard.mjs), [`facilitator.mjs`](apps/api/src/facilitator.mjs)):
+  - only the Mandate address and the `pay` selector are allowed;
+  - every call is simulated first, and a failing simulation is never broadcast;
+  - per-mandate and global gas budgets are reserved before broadcast and survive restarts;
+  - max fee and gas limit caps apply, and an operator pause is available.
+- **Recorded GasGuard denials:** `gas_price_or_limit` and `not_allowlisted_call` ([G2-onchain.md](docs/proof/G2-onchain.md), [G6-demo-run.txt](docs/proof/G6-demo-run.txt)).
 
 ## Why on-chain stablecoin settlement on Whitechain
 
