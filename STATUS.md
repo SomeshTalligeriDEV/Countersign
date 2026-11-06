@@ -1,5 +1,21 @@
 # Countersign status — verified 2026-11-06
 
+## ▶ Current (orchestrator cycle 1, 13:45 IST Fri)
+| WS | State | Evidence |
+|---|---|---|
+| W1 contracts | DONE: 118/118 incl. 9 adversarial + T-30 invariant | docs/proof/G1-forge-test.txt |
+| W2 deploy | WAITING-ON-HUMAN: no `deployer` keystore, no funds, no .env | HUMAN-RUN.md H1–H3 |
+| W3 services live | WAITING-ON-HUMAN (needs W2) | |
+| W4 World | WAITING-ON-HUMAN: World dev MCP not available; app registration + phone sign-in needed | HUMAN-RUN.md H4 |
+| W5 frontend | IN PROGRESS | |
+| W6 demo runs | WAITING-ON-HUMAN (needs W2–W4) | |
+| W7 docs | PENDING | |
+| W8 ship | IN PROGRESS (local); remote CI/live URL need a git remote (H5) | |
+| W9 eligibility | DONE, NEEDS HUMAN DECISION on landing page, EzPayz, removals | docs/proof/W9-prior-code-inventory.md |
+| W10 ENS | SKIPPED unless W1–W6 green before Fri 18:00 IST | |
+
+Everything below this section is the earlier sandbox history and is superseded where it conflicts.
+
 ## Baseline evidence
 
 - `git log --oneline -8`: **fails**, `fatal: not a git repository`. No commit history or remote currently exists in this directory.

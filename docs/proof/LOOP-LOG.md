@@ -64,3 +64,9 @@ Final shared local checkpoint:75 backend/helper tests, signed JWT fixtures, shar
 ## 2026-11-06T13:06:23.726593+05:30 — Risk cycle 6 video helper
 Added pnpm video:checklist covering9 scenes from09 section2 with exact screen/actions and supplied explorer links or TODO-HUMAN. Helper validates testnet evidence schema and does not turn fixtures/API rejections into onchain proof. Command generated VIDEO-CHECKLIST.txt; helper regression passed. Files video helper/test,package,runbook/proofs.
 Final shared local checkpoint:75 backend/helper tests, signed JWT fixtures, shared vectors, UI lint/types pass. Forge/browser/live deployments unexecuted.
+
+## 2026-11-06 13:12–13:45 IST — Orchestrator cycle 1 (Claude Code, laptop, network on)
+- forge build + `forge test -vvv`: **118 passed, 0 failed** (6 suites incl. AdversarialEdges 43, invariant T-30 256 runs/16384 calls). Re-run with 3 random fuzz seeds: 118/118 each. One early run reported 4 suites/74 tests/2 failed; not reproducible in 4 later runs, consistent with a stale build cache from an overlapping invocation. Output: docs/proof/G1-forge-test.txt. **W1 DONE.**
+- `pnpm test`: 75/75 pass. `pnpm doctor`: PASS RPC chain 1874, official USDT code+decimals=6, API health; FAIL deployer funds, contracts, World config, attestor, relayer flags (no .env, no `deployer` keystore).
+- Security finding fixed: rate-limit bucket was shared by all users behind the web proxy → per-endpoint keys + TRUSTED_PROXY_IPS. Remaining: web routes do not yet send x-countersign-client-ip.
+- W9 DONE (inventory, decisions open). W2/W3/W4/W6 WAITING-ON-HUMAN (HUMAN-RUN.md H1–H5). W5, W8 subagents running.
