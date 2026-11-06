@@ -1,0 +1,12 @@
+PASS deployMerchantRegistry: already recorded
+PASS deployMandate: already recorded
+forge verify-contract failed:
+Submitting verification for [src/MerchantRegistry.sol:MerchantRegistry] 0x2686f693A2C959568e650e0A5563E6244f2329E2.
+[2m2026-11-06T11:20:08.920645Z[0m [31mERROR[0m [2metherscan[0m[2m:[0m Failed to deserialize response: data did not match any variant of untagged enum ResponseData [3mres[0m[2m=[0m"{\"message\":\"Contract verification is temporarily unavailable.\"}\n"
+Error: Failed to submit Etherscan contract verification
+
+Context:
+- Failed to deserialize content: data did not match any variant of untagged enum ResponseData
+{"message":"Contract verification is temporarily unavailable."}
+
+STOP verifyMerchantRegistry: preflight/verification failed; fix and rerun
