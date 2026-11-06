@@ -22,7 +22,7 @@ export async function resumeDeploy({steps,state,save,print=console.log}){
 }
 function command(args,safeToRetry=false){
  const result=spawnSync(args[0],args.slice(1),{encoding:'utf8',stdio:['inherit','pipe','pipe'],maxBuffer:2*1024*1024});
- if(result.status!==0){const error=new Error('command_failed');error.safeToRetry=safeToRetry;throw error;}return result.stdout.trim();
+ if(result.status!==0){process.stderr.write(`${args[0]} ${args[1]} failed:\n${(result.stderr||'').split('\n').slice(-8).join('\n')}\n`);const error=new Error('command_failed');error.safeToRetry=safeToRetry;throw error;}return result.stdout.trim();
 }
 async function main(){
  // --dry-run: run every read-only preflight, print the exact forge/cast commands, never broadcast or write state.
