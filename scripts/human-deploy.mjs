@@ -56,7 +56,9 @@ async function main(){
  const wbt=await rpc.getBalance({address:env.OWNER_ADDRESS});check(wbt>0n,'Fund owner with test WBT');
  // A completed first payment need not retain the original token balance.
  const usdt=await rpc.readContract({address:TOKEN,abi:erc20Abi,functionName:'balanceOf',args:[env.OWNER_ADDRESS]});
- if(!state.transactions.firstPayment)check(usdt>=amount,'Need at least0.50 official test USDT');
+ // --contracts-only: deploy + verify with WBT alone; payment steps resume later from the same saved state.
+ const contractsOnly=process.argv.includes('--contracts-only');
+ if(!state.transactions.firstPayment&&!contractsOnly)check(usdt>=amount,'Need at least0.50 official test USDT');
  if(dry)console.log(`PASS chain 1874, token ${TOKEN} decimals=${decimals}, owner WBT wei=${wbt}, owner USDT base=${usdt}, amount=${amount}`);
  command(['forge','build','--root','contracts'],true);
  const abi=name=>JSON.parse(readFileSync(`contracts/out/${name}.sol/${name}.json`,'utf8')).abi;
@@ -89,6 +91,7 @@ async function main(){
   console.log('DRY-RUN complete: nothing broadcast.');return;
  }
  const steps=[deploy('MerchantRegistry'),deploy('Mandate'),verify('MerchantRegistry'),verify('Mandate')];
+ if(contractsOnly){await resumeDeploy({steps,state,save});console.log('Contracts deployed+verified. Rerun without --contracts-only once the deployer holds >=0.50 official test USDT.');return;}
  steps.push({id:'registerMerchant',run:async()=>send(registry(),encode(registryAbi,'register',[state.setup.merchantId,env.DEMO_PAYOUT]))});
  steps.push({id:'createMandate',run:async()=>send(mandate(),encode(mandateAbi,'createMandate',[{agent:env.AGENT_ADDRESS,attestor:env.ATTESTOR_ADDRESS,perTxLimit:amount*4n,periodLimit:amount*10n,humanThreshold:amount*2n,periodLength:86400n,expiry:BigInt(Math.floor(Date.now()/1000)+86400),ensNamehash:'0x'+'0'.repeat(64)},state.setup.salt]))});
  steps.push({id:'setLimits',run:async()=>send(mandate(),encode(mandateAbi,'updateLimits',[state.setup.mandateId,amount*4n,amount*10n,amount*2n]))});
