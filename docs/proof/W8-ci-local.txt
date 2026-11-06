@@ -1,0 +1,598 @@
+
+### $ npm install --prefix packages/shared --ignore-scripts --no-audit --no-fund
+
+up to date in 253ms
+### exit=0
+
+### $ npm ci --prefix apps/api --ignore-scripts
+
+added 2 packages, and audited 3 packages in 2s
+
+1 package is looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+### exit=0
+
+### $ npm test
+
+> test
+> node --test packages/merchant/test/*.test.mjs packages/agent/test/*.test.mjs apps/api/test/*.test.mjs apps/attestor/test/*.test.mjs scripts/test/*.test.mjs
+
+(node:65945) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ approval requests authenticate signed intent and expose only safe polling/terms fields (42.528833ms)
+✔ missing verified owner binding cannot create a human approval (2.666167ms)
+(node:65946) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ A-10 callback and attestation are single-use (4.279334ms)
+✔ A-06 binds callback to initiating browser (2.393708ms)
+✔ A-07 rejects another human (2.595375ms)
+✔ A-08 rejects future and stale authentication (6.257875ms)
+✔ A-09 expires at TTL and cannot attest (1.058958ms)
+✔ A-05 denied approval cannot attest (1.200791ms)
+✔ durable digest uniqueness returns existing approval instead of creating a duplicate (1.032375ms)
+(node:65947) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ approved relay validates both signatures and simulates full pay arguments (55.148833ms)
+✔ live relay requires explicit flag and complete budget configuration (0.155208ms)
+(node:65948) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ CLI attack scenarios execute actual signing and reject before fixture-chain broadcast (100.9775ms)
+(node:65949) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ API authenticates attestor, verifies signature and recovers lost response without re-signing (80.759333ms)
+✔ attestor client rejects non-loopback configuration (0.106666ms)
+(node:65950) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ run-all preserves six-step order and stops on a failed scenario (0.787ms)
+✔ arbitrary-relayer demo route is disabled by default and rejects at real GasGuard (24.153709ms)
+(node:65951) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ A-01 tampered signed intent never broadcasts (70.356666ms)
+✔ A-03 authoritative simulation rejection never broadcasts (7.941625ms)
+✔ successful broadcast is submitted, never prematurely settled; duplicate is blocked (18.7505ms)
+✔ threshold payment cannot use automatic path (5.629375ms)
+(node:65952) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ observer is unavailable while starting/backfilling, stale or failed (1.571ms)
+✔ RPC connectivity alone does not make settlement readiness healthy (55.730333ms)
+(node:65953) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ A-02/A-03 deny arbitrary calls and failed simulations with audit records (1.864958ms)
+✔ A-04 reservations survive restart and prevent budget overspend and duplicates (3.44325ms)
+✔ pause, fee caps and global budget fail closed (0.297625ms)
+(node:65954) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ HTTP maps bad signature and approval-required responses (45.643167ms)
+✔ HTTP limits body and rate without calling settlement (16.745458ms)
+✔ HTTP cannot pretend settlement is configured (0.305709ms)
+(node:65955) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ merchant registration/change preparation enforces registry ownership and history freshness (7.18225ms)
+✔ refund preparation rejects another payout wallet and over-refunds before calldata generation (0.881542ms)
+(node:65956) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ observer waits for confirmations and resumes without duplicate events or webhooks (3.414375ms)
+✔ observer rejects reorganized cursor without publishing additional events (1.141292ms)
+✔ observer rejects removed logs and wrong chain without advancing cursor (0.57075ms)
+✔ confirmed refund updates payment and invalid refund rolls back cursor and outbox (1.081708ms)
+(node:65957) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ owner binding requires verified identity plus matching wallet and forbids rebinding (50.163583ms)
+✔ owner setup encodes bounded allowance using runtime decimals and reset-before-change (3.62575ms)
+✔ owner setup rejects unlimited/over-budget allowance and arbitrary transaction fields (0.284959ms)
+✔ merchant allowlist preparation rejects a different treasury before encoding (0.141167ms)
+(node:65959) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ owner authorization requires fresh attestation and exact owner signature; never claims settlement (187.003167ms)
+(node:65960) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ history is scoped to configured contract and mandate; CSV and query validation (10.38325ms)
+✔ observer runner stops after error and shutdown waits for in-flight tick (0.1555ms)
+(node:65961) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ WebSocket origin checks, read-only messages and bounded invalidations (1.52375ms)
+(node:65962) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ receipt exposes resource binding only from confirmed transaction intent (3.005542ms)
+✔ receipt rejects replaced block and insufficient confirmation depth (0.504416ms)
+(node:65963) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ relay persists before broadcast and restart rebroadcasts identical signed bytes (1.878209ms)
+✔ recovery retains unknown nonce outcome instead of signing or spending again (0.370375ms)
+✔ serializes concurrent work and continues after failed simulation (0.878959ms)
+✔ bounds pending work (0.10975ms)
+✔ reads token decimals from RPC rather than assuming six (2.164083ms)
+✔ fails closed on wrong chain and missing token (1.835209ms)
+(node:65972) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ six-step fake-chain demo executes in order with real signatures, approval and rejection checks (121.0215ms)
+(node:65973) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ webhook retries durable outbox and signs exact transmitted bytes (1.771375ms)
+✔ World configuration fails closed before any network or token handling (0.52875ms)
+✔ World browser routes set secure binding cookie and clear it on callback (22.439333ms)
+✔ World callback rejects missing browser cookie and duplicate parameters before verifier (0.57825ms)
+(node:65977) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ attestor refuses pending identity and recomputes stored digest before signing once (54.77975ms)
+✔ tampered stored digest cannot obtain attestation or consume claim (1.503958ms)
+✔ attestor HTTP authenticates raw body and never accepts caller-supplied digest (13.800042ms)
+✔ agent signs exact intent and retries same signature until confirmation (113.355792ms)
+✔ agent refuses altered resource, foreign token and excess budget without signing (1.706875ms)
+✔ above-threshold request explicitly requires approval without signature or broadcast (0.44525ms)
+✔ configured threshold path signs exact intent and creates an approval without paying (2.62575ms)
+✔ amount conversion uses runtime decimals and exact integers (1.373583ms)
+✔ amount conversion rejects missing precision, overflow and floating-point inputs (1.194208ms)
+(node:65985) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ merchant binds quote to exact resource and never serves on submission (5.3895ms)
+(node:65989) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ HTTP middleware serves only confirmed receipt and polls without repeating submission (3.625042ms)
+✔ middleware rejects malformed payment header and requires exact POST body bytes (0.191291ms)
+✔ A-13 accepts signed raw bytes within freshness window (0.655208ms)
+✔ A-13 rejects tampered payload, wrong key, expired and future signatures (0.144042ms)
+✔ rejects ambiguous headers and requires raw payload (0.185375ms)
+✔ resumable deploy saves before mutation, skips completed fake-chain steps and never retries unknown submission (0.867792ms)
+✔ resumable deployment recovers an interrupted fake-chain step only with evidence (0.092375ms)
+✔ doctor reports fixes without secrets and fails closed on wrong chain (0.831584ms)
+✔ evidence never fills missing claims and accepts only testnet input (0.709459ms)
+✔ video checklist covers nine scenes and does not invent missing proof (0.599708ms)
+ℹ tests 75
+ℹ suites 0
+ℹ pass 75
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1111.130583
+### exit=0
+
+### $ npm --prefix apps/api run test:world-fixtures
+
+> test:world-fixtures
+> node scripts/world-jwt-fixtures.mjs
+
+(node:66039) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+Signed local JWT fixtures passed; NOT real World verification.
+### exit=0
+
+### $ npm test --prefix packages/shared
+
+> @countersign/shared@0.1.0 test
+> node --test test/*.test.mjs
+
+✔ A-14 PaymentIntent matches fixed independently encoded digest (3.054083ms)
+✔ A-14 PaymentApproval matches fixed independently encoded digest (0.43625ms)
+✔ A-14 WorldAttestation matches fixed independently encoded digest (0.308416ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 122.26775
+### exit=0
+
+### $ npm install --prefix contracts --ignore-scripts --package-lock=false
+
+up to date, audited 2 packages in 3s
+
+found 0 vulnerabilities
+### exit=0
+
+### $ forge fmt --root contracts --check
+Diff in /Users/somesh.s.talligeri/Desktop/countersign/contracts/test/Mandate.t.sol:
+388 388  |     }
+389 389  | 
+390 390  |     function testT08RaisedLimitAllowsOnlyUnspentRemainder() public {
+391      |-        for (uint256 n = 1; n <= 10; n++) pay(intent(9, n));
+    391  |+        for (uint256 n = 1; n <= 10; n++) {
+    392  |+            pay(intent(9, n));
+    393  |+        }
+392 394  |         vm.prank(owner);
+393 395  |         mandate.updateLimits(id, 50, 110, 51);
+394 396  |         require(mandate.spent(id, 0) == 90 && mandate.remaining(id) == 20, "spent reset");
+
+Diff in /Users/somesh.s.talligeri/Desktop/countersign/contracts/test/DigestVectors.t.sol:
+3   3    | import {Mandate} from "../src/Mandate.sol";
+4   4    | import {MerchantRegistry} from "../src/MerchantRegistry.sol";
+5   5    | import {TestToken} from "./Mandate.t.sol";
+    6    |+
+6   7    | interface VectorVm {
+7   8    |     function chainId(uint256 id) external;
+8   9    |     function etch(address target, bytes calldata code) external;
+--------------------------------------------------------------------------------11  12   |     function parseJsonAddress(string calldata json, string calldata key) external pure returns (address);
+12  13   |     function parseJsonUint(string calldata json, string calldata key) external pure returns (uint256);
+13  14   | }
+    15   |+
+14  16   | contract DigestVectorsTest {
+15  17   |     VectorVm constant vm = VectorVm(address(uint160(uint256(keccak256("hevm cheat code")))));
+    18   |+
+16  19   |     function testA14SharedFixedDigestVectors() public {
+17  20   |         string memory json = vm.readFile("../packages/shared/vectors/payment.json");
+18  21   |         vm.chainId(vm.parseJsonUint(json, ".domain.chainId"));
+--------------------------------------------------------------------------------24  27   |         vm.etch(verifier, address(implementation).code);
+25  28   |         Mandate target = Mandate(verifier);
+26  29   |         Mandate.PaymentIntent memory i = Mandate.PaymentIntent(
+27       |-            vm.parseJsonBytes32(json,".intent.mandateId"), vm.parseJsonBytes32(json,".intent.merchantId"),
+28       |-            vm.parseJsonAddress(json,".intent.payout"), uint64(vm.parseJsonUint(json,".intent.registryVersion")),
+29       |-            vm.parseJsonUint(json,".intent.amount"), vm.parseJsonBytes32(json,".intent.orderId"),
+30       |-            vm.parseJsonBytes32(json,".intent.resourceHash"), vm.parseJsonUint(json,".intent.nonce"),
+31       |-            uint64(vm.parseJsonUint(json,".intent.epoch")), uint64(vm.parseJsonUint(json,".intent.deadline"))
+    30   |+            vm.parseJsonBytes32(json, ".intent.mandateId"),
+    31   |+            vm.parseJsonBytes32(json, ".intent.merchantId"),
+    32   |+            vm.parseJsonAddress(json, ".intent.payout"),
+    33   |+            uint64(vm.parseJsonUint(json, ".intent.registryVersion")),
+    34   |+            vm.parseJsonUint(json, ".intent.amount"),
+    35   |+            vm.parseJsonBytes32(json, ".intent.orderId"),
+    36   |+            vm.parseJsonBytes32(json, ".intent.resourceHash"),
+    37   |+            vm.parseJsonUint(json, ".intent.nonce"),
+    38   |+            uint64(vm.parseJsonUint(json, ".intent.epoch")),
+    39   |+            uint64(vm.parseJsonUint(json, ".intent.deadline"))
+32  40   |         );
+33  41   |         bytes32 intentDigest = target.hashIntent(i);
+34       |-        require(intentDigest == vm.parseJsonBytes32(json,".expected.intent"), "intent digest mismatch");
+35       |-        Mandate.PaymentApproval memory a = Mandate.PaymentApproval(intentDigest,i.mandateId,i.merchantId,i.payout,i.amount,i.epoch,i.deadline);
+    42   |+        require(intentDigest == vm.parseJsonBytes32(json, ".expected.intent"), "intent digest mismatch");
+    43   |+        Mandate.PaymentApproval memory a =
+    44   |+            Mandate.PaymentApproval(intentDigest, i.mandateId, i.merchantId, i.payout, i.amount, i.epoch, i.deadline);
+36  45   |         bytes32 approvalDigest = target.hashApproval(a);
+37       |-        require(approvalDigest == vm.parseJsonBytes32(json,".expected.approval"), "approval digest mismatch");
+38       |-        Mandate.WorldAttestation memory att = Mandate.WorldAttestation(approvalDigest,
+39       |-            vm.parseJsonBytes32(json,".attestation.ownerSubHash"), uint64(vm.parseJsonUint(json,".attestation.authTime")));
+40       |-        require(target.hashAttestation(att) == vm.parseJsonBytes32(json,".expected.attestation"), "attestation digest mismatch");
+    46   |+        require(approvalDigest == vm.parseJsonBytes32(json, ".expected.approval"), "approval digest mismatch");
+    47   |+        Mandate.WorldAttestation memory att = Mandate.WorldAttestation(
+    48   |+            approvalDigest,
+    49   |+            vm.parseJsonBytes32(json, ".attestation.ownerSubHash"),
+    50   |+            uint64(vm.parseJsonUint(json, ".attestation.authTime"))
+    51   |+        );
+    52   |+        require(
+    53   |+            target.hashAttestation(att) == vm.parseJsonBytes32(json, ".expected.attestation"),
+    54   |+            "attestation digest mismatch"
+    55   |+        );
+41  56   |     }
+42  57   | }
+### exit=1
+
+### $ forge test --root contracts -vvv
+No files changed, compilation skipped
+
+Ran 1 test for test/DigestVectors.t.sol:DigestVectorsTest
+[PASS] testA14SharedFixedDigestVectors() (gas: 2943856)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 10.70ms (5.67ms CPU time)
+
+Ran 34 tests for test/Mandate.t.sol:MandateTest
+[PASS] testHumanApprovalSettlesExactDigest() (gas: 299835)
+[PASS] testLoweredBudgetSaturatesRemainingWithoutResettingSpent() (gas: 2347928)
+[PASS] testSmallPaymentMovesOnlyOwnerFunds() (gas: 279602)
+[PASS] testT01AttackerCannotUseVictimAllowance() (gas: 466872)
+[PASS] testT02TamperedAmount() (gas: 89091)
+[PASS] testT03TamperedPayout() (gas: 75132)
+[PASS] testT04PayoutVersionChanged() (gas: 113399)
+[PASS] testT05InactiveMerchant() (gas: 111817)
+[PASS] testT06HardPerTransactionCap() (gas: 77662)
+[PASS] testT07CumulativePeriodCap() (gas: 2497703)
+[PASS] testT08LimitChangePreservesSpend() (gas: 316467)
+[PASS] testT08RaisedLimitAllowsOnlyUnspentRemainder() (gas: 2566268)
+[PASS] testT09PeriodRolloverPreservesHistory() (gas: 499738)
+[PASS] testT10NonceReplay() (gas: 297718)
+[PASS] testT11DuplicateOrderNewNonce() (gas: 316970)
+[PASS] testT12HumanThresholdRequiresOwner() (gas: 93629)
+[PASS] testT13AttestationMustBindOwnerApproval() (gas: 137079)
+[PASS] testT14WrongAttestorCannotApprove() (gas: 143984)
+[PASS] testT15StaleAndFutureAuthentication() (gas: 274213)
+[PASS] testT16RevocationRejectsFullySignedHumanApproval() (gas: 141497)
+[PASS] testT16RevocationRejectsUnusedIntent() (gas: 99140)
+[PASS] testT17PolicyChangesInvalidateFullApproval() (gas: 296444)
+[PASS] testT18ExpiredIntent() (gas: 63225)
+[PASS] testT19ExpiredMandate() (gas: 65535)
+[PASS] testT20PausedMandate() (gas: 113874)
+[PASS] testT21MerchantNotAllowed() (gas: 107709)
+[PASS] testT22DifferentChainSignatureRejected() (gas: 140620)
+[PASS] testT22DifferentContractSignatureRejected() (gas: 2153198)
+[PASS] testT23MalleableSignatureRejected() (gas: 84175)
+[PASS] testT25InsufficientAllowanceRollsBackAllEffects() (gas: 561010)
+[PASS] testT26UnauthorizedRefund() (gas: 285891)
+[PASS] testT27RefundCannotExceedPaymentOrRestoreBudget() (gas: 414287)
+[PASS] testT28AllAdministrativeCallsRequireOwner() (gas: 166211)
+[PASS] testZeroAmountCannotBypassOrderDeduplication() (gas: 75305)
+Suite result: ok. 34 passed; 0 failed; 0 skipped; finished in 21.01ms (24.94ms CPU time)
+
+Ran 36 tests for test/WalletAndReentrancy.t.sol:WalletAndReentrancyTest
+[PASS] testHumanApprovalSettlesExactDigest() (gas: 299857)
+[PASS] testLoweredBudgetSaturatesRemainingWithoutResettingSpent() (gas: 2347972)
+[PASS] testSmallPaymentMovesOnlyOwnerFunds() (gas: 279646)
+[PASS] testT01AttackerCannotUseVictimAllowance() (gas: 466916)
+[PASS] testT02TamperedAmount() (gas: 89135)
+[PASS] testT03TamperedPayout() (gas: 75176)
+[PASS] testT04PayoutVersionChanged() (gas: 113399)
+[PASS] testT05InactiveMerchant() (gas: 111861)
+[PASS] testT06HardPerTransactionCap() (gas: 77706)
+[PASS] testT07CumulativePeriodCap() (gas: 2497703)
+[PASS] testT08LimitChangePreservesSpend() (gas: 316511)
+[PASS] testT08RaisedLimitAllowsOnlyUnspentRemainder() (gas: 2566312)
+[PASS] testT09PeriodRolloverPreservesHistory() (gas: 499782)
+[PASS] testT10NonceReplay() (gas: 297762)
+[PASS] testT11DuplicateOrderNewNonce() (gas: 317054)
+[PASS] testT12HumanThresholdRequiresOwner() (gas: 93673)
+[PASS] testT13AttestationMustBindOwnerApproval() (gas: 137123)
+[PASS] testT14WrongAttestorCannotApprove() (gas: 144006)
+[PASS] testT15StaleAndFutureAuthentication() (gas: 274213)
+[PASS] testT16RevocationRejectsFullySignedHumanApproval() (gas: 141541)
+[PASS] testT16RevocationRejectsUnusedIntent() (gas: 99184)
+[PASS] testT17PolicyChangesInvalidateFullApproval() (gas: 296488)
+[PASS] testT18ExpiredIntent() (gas: 63269)
+[PASS] testT19ExpiredMandate() (gas: 65579)
+[PASS] testT20PausedMandate() (gas: 113918)
+[PASS] testT21MerchantNotAllowed() (gas: 107753)
+[PASS] testT22DifferentChainSignatureRejected() (gas: 140642)
+[PASS] testT22DifferentContractSignatureRejected() (gas: 2153242)
+[PASS] testT23MalleableSignatureRejected() (gas: 84219)
+[PASS] testT24ReentrantTokenCannotExecuteSecondPayment() (gas: 3870431)
+[PASS] testT25InsufficientAllowanceRollsBackAllEffects() (gas: 561054)
+[PASS] testT26UnauthorizedRefund() (gas: 285935)
+[PASS] testT27RefundCannotExceedPaymentOrRestoreBudget() (gas: 414331)
+[PASS] testT28AllAdministrativeCallsRequireOwner() (gas: 166255)
+[PASS] testT29SmartWalletOwnerApprovesExactDigest() (gas: 962889)
+[PASS] testZeroAmountCannotBypassOrderDeduplication() (gas: 75349)
+Suite result: ok. 36 passed; 0 failed; 0 skipped; finished in 21.31ms (25.49ms CPU time)
+
+Ran 3 tests for test/MerchantRegistry.t.sol:MerchantRegistryTest
+[PASS] testDuplicateCannotTakeOwnership() (gas: 426558)
+[PASS] testStrangerCannotRedirectPayout() (gas: 568786)
+[PASS] testVersionInvalidatesTermsOnEveryChange() (gas: 468645)
+Suite result: ok. 3 passed; 0 failed; 0 skipped; finished in 21.32ms (10.12ms CPU time)
+
+Ran 43 tests for test/AdversarialEdges.t.sol:AdversarialEdgesTest
+[PASS] testHumanApprovalSettlesExactDigest() (gas: 299901)
+[PASS] testLoweredBudgetSaturatesRemainingWithoutResettingSpent() (gas: 2348060)
+[PASS] testRiskAllowanceExhaustedMidSequenceRollsBack() (gas: 768903)
+[PASS] testRiskMalformedAndOversizedAgentSignatures() (gas: 158506)
+[PASS] testRiskMalformedHumanSignaturesCannotConsumeIntent() (gas: 244861)
+[PASS] testRiskPeriodBoundaryExactly() (gas: 551322)
+[PASS] testRiskRefundAfterRevokeAndPausePreservesSpend() (gas: 533510)
+[PASS] testRiskRegistryChangeSameBlockRejectsCachedTerms() (gas: 131319)
+[PASS] testRiskRevertingPayoutDoesNotReceiveNativeCallback() (gas: 454865)
+[PASS] testRiskRevokeFrontRunsInFlightPayment() (gas: 108582)
+[PASS] testRiskThirdPartyCannotGriefNonceWithInvalidSignature() (gas: 349047)
+[PASS] testSmallPaymentMovesOnlyOwnerFunds() (gas: 279668)
+[PASS] testT01AttackerCannotUseVictimAllowance() (gas: 466938)
+[PASS] testT02TamperedAmount() (gas: 89157)
+[PASS] testT03TamperedPayout() (gas: 75264)
+[PASS] testT04PayoutVersionChanged() (gas: 113421)
+[PASS] testT05InactiveMerchant() (gas: 111949)
+[PASS] testT06HardPerTransactionCap() (gas: 77838)
+[PASS] testT07CumulativePeriodCap() (gas: 2497725)
+[PASS] testT08LimitChangePreservesSpend() (gas: 316599)
+[PASS] testT08RaisedLimitAllowsOnlyUnspentRemainder() (gas: 2566334)
+[PASS] testT09PeriodRolloverPreservesHistory() (gas: 499870)
+[PASS] testT10NonceReplay() (gas: 297784)
+[PASS] testT11DuplicateOrderNewNonce() (gas: 317036)
+[PASS] testT12HumanThresholdRequiresOwner() (gas: 93739)
+[PASS] testT13AttestationMustBindOwnerApproval() (gas: 137211)
+[PASS] testT14WrongAttestorCannotApprove() (gas: 144050)
+[PASS] testT15StaleAndFutureAuthentication() (gas: 274213)
+[PASS] testT16RevocationRejectsFullySignedHumanApproval() (gas: 141563)
+[PASS] testT16RevocationRejectsUnusedIntent() (gas: 99272)
+[PASS] testT17PolicyChangesInvalidateFullApproval() (gas: 296510)
+[PASS] testT18ExpiredIntent() (gas: 63357)
+[PASS] testT19ExpiredMandate() (gas: 65667)
+[PASS] testT20PausedMandate() (gas: 114006)
+[PASS] testT21MerchantNotAllowed() (gas: 107841)
+[PASS] testT22DifferentChainSignatureRejected() (gas: 140686)
+[PASS] testT22DifferentContractSignatureRejected() (gas: 2153308)
+[PASS] testT23MalleableSignatureRejected() (gas: 84373)
+[PASS] testT25InsufficientAllowanceRollsBackAllEffects() (gas: 561185)
+[PASS] testT26UnauthorizedRefund() (gas: 286089)
+[PASS] testT27RefundCannotExceedPaymentOrRestoreBudget() (gas: 414397)
+[PASS] testT28AllAdministrativeCallsRequireOwner() (gas: 166343)
+[PASS] testZeroAmountCannotBypassOrderDeduplication() (gas: 75437)
+Suite result: ok. 43 passed; 0 failed; 0 skipped; finished in 21.35ms (32.40ms CPU time)
+
+Ran 1 test for test/MandateInvariant.t.sol:MandateInvariantTest
+[PASS] invariant_T30AccountingReplayAndRefundBounds() (runs: 256, calls: 16384, reverts: 0)
+
+╭----------------+--------------+-------+---------+----------╮
+| Contract       | Selector     | Calls | Reverts | Discards |
++============================================================+
+| MandateHandler | pay          | 3250  | 0       | 0        |
+|----------------+--------------+-------+---------+----------|
+| MandateHandler | refund       | 3282  | 0       | 0        |
+|----------------+--------------+-------+---------+----------|
+| MandateHandler | revoke       | 3283  | 0       | 0        |
+|----------------+--------------+-------+---------+----------|
+| MandateHandler | updateLimits | 3315  | 0       | 0        |
+|----------------+--------------+-------+---------+----------|
+| MandateHandler | warp         | 3254  | 0       | 0        |
+╰----------------+--------------+-------+---------+----------╯
+
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 1.55s (1.53s CPU time)
+
+Ran 6 test suites in 1.56s (1.64s CPU time): 118 tests passed, 0 failed, 0 skipped (118 total tests)
+### exit=0
+
+### $ (cd web && npm ci --ignore-scripts)
+npm warn deprecated eslint@9.39.5: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+
+added 361 packages, and audited 368 packages in 8s
+
+147 packages are looking for funding
+  run `npm fund` for details
+
+8 moderate severity vulnerabilities
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+### exit=0
+
+### $ (cd web && npm run lint)
+
+> zacc@0.1.0 lint
+> eslint
+
+### exit=0
+
+### $ (cd web && npm run build)
+
+> zacc@0.1.0 build
+> next build
+
+▲ Next.js 16.4.5 (Turbopack)
+✓ Running next.config.ts took 1463ms
+- Cache Components enabled
+- Partial Prefetching enabled
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 443ms
+  Running TypeScript ...
+  Finished TypeScript in 510ms ...
+  Collecting page data using 7 workers ...
+  Generating static pages using 7 workers (0/27) ...
+  Generating static pages using 7 workers (6/27) 
+  Generating static pages using 7 workers (13/27) 
+  Generating static pages using 7 workers (20/27) 
+✓ Generating static pages using 7 workers (27/27) in 146ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ƒ /api/auth/login
+├ ƒ /api/auth/logout
+├ ƒ /api/auth/me
+├ ƒ /api/auth/verify
+├ ƒ /api/biz/balance
+├ ƒ /api/biz/cancel
+├ ƒ /api/biz/chat
+├ ƒ /api/biz/confirm
+├ ƒ /api/biz/deposit
+├ ƒ /api/biz/orders
+├ ƒ /api/biz/rules
+├ ƒ /api/countersign/approvals/[id]
+├ ƒ /api/countersign/approvals/[id]/owner-signature
+├ ƒ /api/countersign/demo/[action]
+├ ƒ /api/countersign/mandates/[id]
+├ ƒ /api/countersign/merchant-access
+├ ƒ /api/countersign/merchants/[id]
+├ ƒ /api/countersign/onboarding
+├ ƒ /api/countersign/onboarding/[id]
+├ ƒ /api/countersign/receipts/[paymentId]
+├ ƒ /api/countersign/refunds
+├ ƒ /api/countersign/setup
+├ ƒ /api/network
+├ ○ /app
+├   /approve/[id]
+│ └ ◐ /approve/[id]
+├ ○ /demo
+├ ○ /login
+├ ○ /merchant
+├ ○ /owner
+└   /r/[paymentId]
+  └ ◐ /r/[paymentId]
+
+
+○  (Static)             prerendered as static content
+◐  (Partial Prerender)  prerendered as static HTML with dynamic server-streamed content
+ƒ  (Dynamic)            server-rendered on demand
+
+### exit=0
+
+### RERUN after forge fmt of contracts/test/{Mandate,DigestVectors}.t.sol (whitespace only)
+### $ forge fmt --root contracts --check
+Diff in /Users/somesh.s.talligeri/Desktop/countersign/contracts/test/Mandate.t.sol:
+388 388  |     }
+389 389  | 
+390 390  |     function testT08RaisedLimitAllowsOnlyUnspentRemainder() public {
+391      |-        for (uint256 n = 1; n <= 10; n++) pay(intent(9, n));
+    391  |+        for (uint256 n = 1; n <= 10; n++) {
+    392  |+            pay(intent(9, n));
+    393  |+        }
+392 394  |         vm.prank(owner);
+393 395  |         mandate.updateLimits(id, 50, 110, 51);
+394 396  |         require(mandate.spent(id, 0) == 90 && mandate.remaining(id) == 20, "spent reset");
+
+Diff in /Users/somesh.s.talligeri/Desktop/countersign/contracts/test/DigestVectors.t.sol:
+3   3    | import {Mandate} from "../src/Mandate.sol";
+4   4    | import {MerchantRegistry} from "../src/MerchantRegistry.sol";
+5   5    | import {TestToken} from "./Mandate.t.sol";
+    6    |+
+6   7    | interface VectorVm {
+7   8    |     function chainId(uint256 id) external;
+8   9    |     function etch(address target, bytes calldata code) external;
+--------------------------------------------------------------------------------11  12   |     function parseJsonAddress(string calldata json, string calldata key) external pure returns (address);
+12  13   |     function parseJsonUint(string calldata json, string calldata key) external pure returns (uint256);
+13  14   | }
+    15   |+
+14  16   | contract DigestVectorsTest {
+15  17   |     VectorVm constant vm = VectorVm(address(uint160(uint256(keccak256("hevm cheat code")))));
+    18   |+
+16  19   |     function testA14SharedFixedDigestVectors() public {
+17  20   |         string memory json = vm.readFile("../packages/shared/vectors/payment.json");
+18  21   |         vm.chainId(vm.parseJsonUint(json, ".domain.chainId"));
+--------------------------------------------------------------------------------24  27   |         vm.etch(verifier, address(implementation).code);
+25  28   |         Mandate target = Mandate(verifier);
+26  29   |         Mandate.PaymentIntent memory i = Mandate.PaymentIntent(
+27       |-            vm.parseJsonBytes32(json,".intent.mandateId"), vm.parseJsonBytes32(json,".intent.merchantId"),
+28       |-            vm.parseJsonAddress(json,".intent.payout"), uint64(vm.parseJsonUint(json,".intent.registryVersion")),
+29       |-            vm.parseJsonUint(json,".intent.amount"), vm.parseJsonBytes32(json,".intent.orderId"),
+30       |-            vm.parseJsonBytes32(json,".intent.resourceHash"), vm.parseJsonUint(json,".intent.nonce"),
+31       |-            uint64(vm.parseJsonUint(json,".intent.epoch")), uint64(vm.parseJsonUint(json,".intent.deadline"))
+    30   |+            vm.parseJsonBytes32(json, ".intent.mandateId"),
+    31   |+            vm.parseJsonBytes32(json, ".intent.merchantId"),
+    32   |+            vm.parseJsonAddress(json, ".intent.payout"),
+    33   |+            uint64(vm.parseJsonUint(json, ".intent.registryVersion")),
+    34   |+            vm.parseJsonUint(json, ".intent.amount"),
+    35   |+            vm.parseJsonBytes32(json, ".intent.orderId"),
+    36   |+            vm.parseJsonBytes32(json, ".intent.resourceHash"),
+    37   |+            vm.parseJsonUint(json, ".intent.nonce"),
+    38   |+            uint64(vm.parseJsonUint(json, ".intent.epoch")),
+    39   |+            uint64(vm.parseJsonUint(json, ".intent.deadline"))
+32  40   |         );
+33  41   |         bytes32 intentDigest = target.hashIntent(i);
+34       |-        require(intentDigest == vm.parseJsonBytes32(json,".expected.intent"), "intent digest mismatch");
+35       |-        Mandate.PaymentApproval memory a = Mandate.PaymentApproval(intentDigest,i.mandateId,i.merchantId,i.payout,i.amount,i.epoch,i.deadline);
+    42   |+        require(intentDigest == vm.parseJsonBytes32(json, ".expected.intent"), "intent digest mismatch");
+    43   |+        Mandate.PaymentApproval memory a =
+    44   |+            Mandate.PaymentApproval(intentDigest, i.mandateId, i.merchantId, i.payout, i.amount, i.epoch, i.deadline);
+36  45   |         bytes32 approvalDigest = target.hashApproval(a);
+37       |-        require(approvalDigest == vm.parseJsonBytes32(json,".expected.approval"), "approval digest mismatch");
+38       |-        Mandate.WorldAttestation memory att = Mandate.WorldAttestation(approvalDigest,
+39       |-            vm.parseJsonBytes32(json,".attestation.ownerSubHash"), uint64(vm.parseJsonUint(json,".attestation.authTime")));
+40       |-        require(target.hashAttestation(att) == vm.parseJsonBytes32(json,".expected.attestation"), "attestation digest mismatch");
+    46   |+        require(approvalDigest == vm.parseJsonBytes32(json, ".expected.approval"), "approval digest mismatch");
+    47   |+        Mandate.WorldAttestation memory att = Mandate.WorldAttestation(
+    48   |+            approvalDigest,
+    49   |+            vm.parseJsonBytes32(json, ".attestation.ownerSubHash"),
+    50   |+            uint64(vm.parseJsonUint(json, ".attestation.authTime"))
+    51   |+        );
+    52   |+        require(
+    53   |+            target.hashAttestation(att) == vm.parseJsonBytes32(json, ".expected.attestation"),
+    54   |+            "attestation digest mismatch"
+    55   |+        );
+41  56   |     }
+42  57   | }
+### exit=1
+### $ forge test --root contracts -vvv
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 1.54s (1.52s CPU time)
+
+Ran 6 test suites in 1.55s (1.64s CPU time): 118 tests passed, 0 failed, 0 skipped (118 total tests)
+### exit=0
+
+### RERUN 2 (correct paths)
+### $ forge fmt --root contracts --check
+### exit=0
+### $ forge test --root contracts -vvv
+
+Ran 6 test suites in 1.58s (1.68s CPU time): 118 tests passed, 0 failed, 0 skipped (118 total tests)
+### exit=0

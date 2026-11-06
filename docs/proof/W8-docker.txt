@@ -1,0 +1,21 @@
+W8 docker builds: UNEXECUTED (blocked by the local Docker daemon, not by the Dockerfiles)
+
+$ docker info
+failed to connect to the docker API at unix:///Users/somesh.s.talligeri/.colima/default/docker.sock; ... connect: no such file or directory
+
+Attempt 1: colima start  -> VM "running", hung >9 min; colima status: "error retrieving current runtime: empty value"
+Attempt 2: colima stop -f; colima start  ->
+  [hostagent] [VZ] - vm state change: running
+  [hostagent] Failed to wait for the guest SSH server to become available, falling back to usernet forwarder error="usernet unable to resolve IP for SSH forwarding"
+  docker.sock never appeared.
+Stopped after two failed attempts (hard rule).
+
+Not built: web/Dockerfile, apps/api/Dockerfile, apps/attestor/Dockerfile, deploy/compose.yml (api, attestor, web).
+Commands to run once Docker works (from repo root):
+  docker build -f apps/api/Dockerfile -t countersign-runtime .
+  docker build -f apps/attestor/Dockerfile -t countersign-attestor .
+  docker build -f web/Dockerfile -t countersign-web .
+  docker compose -f deploy/compose.yml build
+Note: the compose file needs deploy/api.env and deploy/attestor.env to exist (env_file) even for build/config; copy the .env.example files first.
+Static check: .dockerignore excludes **/.env*, deploy/*.env, **/*.sqlite*, **/*.keystore, node_modules, web/chupke, so secrets and the local apps/api/countersign.sqlite are kept out of the build context.
+The web build step inside web/Dockerfile (npm run build) passes on the host after this run's fix (see W8-ci-local.txt).
