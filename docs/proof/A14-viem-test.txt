@@ -1,0 +1,17 @@
+
+added 13 packages in 6s
+
+> @countersign/shared@0.1.0 test
+> node --test test/*.test.mjs
+
+✔ A-14 PaymentIntent matches fixed independently encoded digest (3.428084ms)
+✔ A-14 PaymentApproval matches fixed independently encoded digest (0.793208ms)
+✔ A-14 WorldAttestation matches fixed independently encoded digest (0.577959ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 120.641459

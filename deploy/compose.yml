@@ -1,0 +1,40 @@
+services:
+  api:
+    build:
+      context: ..
+      dockerfile: apps/api/Dockerfile
+    env_file: ./api.env
+    environment:
+      HOST: 0.0.0.0
+      DATABASE_PATH: /data/countersign.sqlite
+    ports: ["127.0.0.1:3001:3001"]
+    volumes: ["state:/data"]
+    restart: unless-stopped
+  attestor:
+    build:
+      context: ..
+      dockerfile: apps/api/Dockerfile
+    command: ["node", "apps/attestor/src/server.mjs"]
+    env_file: ./attestor.env
+    environment:
+      DATABASE_PATH: /data/countersign.sqlite
+    network_mode: service:api
+    volumes: ["state:/data"]
+    depends_on: [api]
+    healthcheck:
+      disable: true
+    restart: unless-stopped
+  web:
+    build:
+      context: ..
+      dockerfile: web/Dockerfile
+      args:
+        NEXT_PUBLIC_COUNTERSIGN_WS_URL: ws://127.0.0.1:3001/v1/events
+    environment:
+      COUNTERSIGN_API_URL: http://api:3001
+      COUNTERSIGN_PUBLIC_API_URL: http://127.0.0.1:3001
+    ports: ["127.0.0.1:3000:3000"]
+    depends_on: [api]
+    restart: unless-stopped
+volumes:
+  state:

@@ -1,5 +1,5 @@
 packages:
-  - 'ui '
+  - 'web'
   - 'apps/*'
   - 'packages/*'
   - 'contracts'

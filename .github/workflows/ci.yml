@@ -12,7 +12,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24.10.0'
+      - run: npm install --prefix packages/shared --ignore-scripts --no-audit --no-fund
+      - run: npm ci --prefix apps/api --ignore-scripts
       - run: npm test
+      - run: npm --prefix apps/api run test:world-fixtures
+      - run: npm test --prefix packages/shared
   contracts:
     runs-on: ubuntu-latest
     steps:
@@ -34,8 +38,26 @@ jobs:
         with:
           node-version: '24.10.0'
       - run: npm ci --ignore-scripts
-        working-directory: 'ui '
+        working-directory: 'web'
       - run: npm run lint
-        working-directory: 'ui '
+        working-directory: 'web'
       - run: npm run build
-        working-directory: 'ui '
+        working-directory: 'web'
+
+  browser:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.10.0'
+      - run: npm ci --prefix web --ignore-scripts
+      - run: npm install --prefix web/e2e --ignore-scripts
+      - run: npx playwright install --with-deps chromium
+        working-directory: web/e2e
+      - run: npm --prefix web run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: browser-test-report
+          path: web/e2e/playwright-report

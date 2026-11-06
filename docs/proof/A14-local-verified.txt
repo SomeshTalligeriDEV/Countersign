@@ -1,0 +1,11 @@
+✔ A-14 PaymentIntent matches fixed independently encoded digest (3.21675ms)
+✔ A-14 PaymentApproval matches fixed independently encoded digest (0.714042ms)
+✔ A-14 WorldAttestation matches fixed independently encoded digest (0.551833ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 120.181958

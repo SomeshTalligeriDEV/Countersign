@@ -1,0 +1,106 @@
+Compiling 3 files with Solc 0.8.30
+Solc 0.8.30 finished in 3.89s
+Compiler run successful!
+
+Ran 3 tests for test/MerchantRegistry.t.sol:MerchantRegistryTest
+[PASS] testDuplicateCannotTakeOwnership() (gas: 426558)
+[PASS] testStrangerCannotRedirectPayout() (gas: 568786)
+[PASS] testVersionInvalidatesTermsOnEveryChange() (gas: 468645)
+Suite result: ok. 3 passed; 0 failed; 0 skipped; finished in 480.25µs (876.92µs CPU time)
+
+Ran 36 tests for test/WalletAndReentrancy.t.sol:WalletAndReentrancyTest
+[PASS] testHumanApprovalSettlesExactDigest() (gas: 299857)
+[PASS] testLoweredBudgetSaturatesRemainingWithoutResettingSpent() (gas: 2347972)
+[PASS] testSmallPaymentMovesOnlyOwnerFunds() (gas: 279646)
+[PASS] testT01AttackerCannotUseVictimAllowance() (gas: 466916)
+[PASS] testT02TamperedAmount() (gas: 89135)
+[PASS] testT03TamperedPayout() (gas: 75176)
+[PASS] testT04PayoutVersionChanged() (gas: 113399)
+[PASS] testT05InactiveMerchant() (gas: 111861)
+[PASS] testT06HardPerTransactionCap() (gas: 77706)
+[PASS] testT07CumulativePeriodCap() (gas: 2497703)
+[PASS] testT08LimitChangePreservesSpend() (gas: 316511)
+[PASS] testT08RaisedLimitAllowsOnlyUnspentRemainder() (gas: 2566312)
+[PASS] testT09PeriodRolloverPreservesHistory() (gas: 499782)
+[PASS] testT10NonceReplay() (gas: 297762)
+[PASS] testT11DuplicateOrderNewNonce() (gas: 317054)
+[PASS] testT12HumanThresholdRequiresOwner() (gas: 93673)
+[PASS] testT13AttestationMustBindOwnerApproval() (gas: 137123)
+[PASS] testT14WrongAttestorCannotApprove() (gas: 144006)
+[PASS] testT15StaleAndFutureAuthentication() (gas: 274213)
+[PASS] testT16RevocationRejectsFullySignedHumanApproval() (gas: 141541)
+[PASS] testT16RevocationRejectsUnusedIntent() (gas: 99184)
+[PASS] testT17PolicyChangesInvalidateFullApproval() (gas: 296488)
+[PASS] testT18ExpiredIntent() (gas: 63269)
+[PASS] testT19ExpiredMandate() (gas: 65579)
+[PASS] testT20PausedMandate() (gas: 113918)
+[PASS] testT21MerchantNotAllowed() (gas: 107753)
+[PASS] testT22DifferentChainSignatureRejected() (gas: 140642)
+[PASS] testT22DifferentContractSignatureRejected() (gas: 2153242)
+[PASS] testT23MalleableSignatureRejected() (gas: 84219)
+[PASS] testT24ReentrantTokenCannotExecuteSecondPayment() (gas: 3870431)
+[PASS] testT25InsufficientAllowanceRollsBackAllEffects() (gas: 561054)
+[PASS] testT26UnauthorizedRefund() (gas: 285935)
+[PASS] testT27RefundCannotExceedPaymentOrRestoreBudget() (gas: 414331)
+[PASS] testT28AllAdministrativeCallsRequireOwner() (gas: 166255)
+[PASS] testT29SmartWalletOwnerApprovesExactDigest() (gas: 962889)
+[PASS] testZeroAmountCannotBypassOrderDeduplication() (gas: 75349)
+Suite result: ok. 36 passed; 0 failed; 0 skipped; finished in 5.46ms (17.00ms CPU time)
+
+Ran 34 tests for test/Mandate.t.sol:MandateTest
+[PASS] testHumanApprovalSettlesExactDigest() (gas: 299835)
+[PASS] testLoweredBudgetSaturatesRemainingWithoutResettingSpent() (gas: 2347928)
+[PASS] testSmallPaymentMovesOnlyOwnerFunds() (gas: 279602)
+[PASS] testT01AttackerCannotUseVictimAllowance() (gas: 466872)
+[PASS] testT02TamperedAmount() (gas: 89091)
+[PASS] testT03TamperedPayout() (gas: 75132)
+[PASS] testT04PayoutVersionChanged() (gas: 113399)
+[PASS] testT05InactiveMerchant() (gas: 111817)
+[PASS] testT06HardPerTransactionCap() (gas: 77662)
+[PASS] testT07CumulativePeriodCap() (gas: 2497703)
+[PASS] testT08LimitChangePreservesSpend() (gas: 316467)
+[PASS] testT08RaisedLimitAllowsOnlyUnspentRemainder() (gas: 2566268)
+[PASS] testT09PeriodRolloverPreservesHistory() (gas: 499738)
+[PASS] testT10NonceReplay() (gas: 297718)
+[PASS] testT11DuplicateOrderNewNonce() (gas: 316970)
+[PASS] testT12HumanThresholdRequiresOwner() (gas: 93629)
+[PASS] testT13AttestationMustBindOwnerApproval() (gas: 137079)
+[PASS] testT14WrongAttestorCannotApprove() (gas: 143984)
+[PASS] testT15StaleAndFutureAuthentication() (gas: 274213)
+[PASS] testT16RevocationRejectsFullySignedHumanApproval() (gas: 141497)
+[PASS] testT16RevocationRejectsUnusedIntent() (gas: 99140)
+[PASS] testT17PolicyChangesInvalidateFullApproval() (gas: 296444)
+[PASS] testT18ExpiredIntent() (gas: 63225)
+[PASS] testT19ExpiredMandate() (gas: 65535)
+[PASS] testT20PausedMandate() (gas: 113874)
+[PASS] testT21MerchantNotAllowed() (gas: 107709)
+[PASS] testT22DifferentChainSignatureRejected() (gas: 140620)
+[PASS] testT22DifferentContractSignatureRejected() (gas: 2153198)
+[PASS] testT23MalleableSignatureRejected() (gas: 84175)
+[PASS] testT25InsufficientAllowanceRollsBackAllEffects() (gas: 561010)
+[PASS] testT26UnauthorizedRefund() (gas: 285891)
+[PASS] testT27RefundCannotExceedPaymentOrRestoreBudget() (gas: 414287)
+[PASS] testT28AllAdministrativeCallsRequireOwner() (gas: 166211)
+[PASS] testZeroAmountCannotBypassOrderDeduplication() (gas: 75305)
+Suite result: ok. 34 passed; 0 failed; 0 skipped; finished in 6.30ms (15.23ms CPU time)
+
+Ran 1 test for test/MandateInvariant.t.sol:MandateInvariantTest
+[PASS] invariant_T30AccountingReplayAndRefundBounds() (runs: 256, calls: 16384, reverts: 0)
+
+╭----------------+--------------+-------+---------+----------╮
+| Contract       | Selector     | Calls | Reverts | Discards |
++============================================================+
+| MandateHandler | pay          | 3264  | 0       | 0        |
+|----------------+--------------+-------+---------+----------|
+| MandateHandler | refund       | 3206  | 0       | 0        |
+|----------------+--------------+-------+---------+----------|
+| MandateHandler | revoke       | 3331  | 0       | 0        |
+|----------------+--------------+-------+---------+----------|
+| MandateHandler | updateLimits | 3222  | 0       | 0        |
+|----------------+--------------+-------+---------+----------|
+| MandateHandler | warp         | 3361  | 0       | 0        |
+╰----------------+--------------+-------+---------+----------╯
+
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 1.63s (1.63s CPU time)
+
+Ran 4 test suites in 1.64s (1.65s CPU time): 74 tests passed, 0 failed, 0 skipped (74 total tests)

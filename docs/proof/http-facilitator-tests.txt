@@ -1,0 +1,43 @@
+
+> test
+> node --test packages/merchant/test/*.test.mjs apps/api/test/*.test.mjs
+
+(node:27396) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ A-10 callback and attestation are single-use (5.891208ms)
+✔ A-06 binds callback to initiating browser (0.7425ms)
+✔ A-07 rejects another human (0.422416ms)
+✔ A-08 rejects future and stale authentication (0.52175ms)
+✔ A-09 expires at TTL and cannot attest (0.621333ms)
+✔ A-05 denied approval cannot attest (0.959ms)
+(node:27397) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ A-01 tampered signed intent never broadcasts (20.667958ms)
+✔ A-03 authoritative simulation rejection never broadcasts (2.763667ms)
+✔ successful broadcast is submitted, never prematurely settled; duplicate is blocked (3.888333ms)
+✔ threshold payment cannot use automatic path (2.440208ms)
+(node:27398) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ A-02/A-03 deny arbitrary calls and failed simulations with audit records (2.566875ms)
+✔ A-04 reservations survive restart and prevent budget overspend and duplicates (3.866125ms)
+✔ pause, fee caps and global budget fail closed (0.308791ms)
+(node:27399) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ HTTP maps bad signature and approval-required responses (12.876958ms)
+✔ HTTP limits body and rate without calling settlement (1.697667ms)
+✔ HTTP cannot pretend settlement is configured (0.212833ms)
+✔ serializes concurrent work and continues after failed simulation (0.79075ms)
+✔ bounds pending work (0.10475ms)
+✔ reads token decimals from RPC rather than assuming six (3.113958ms)
+✔ fails closed on wrong chain and missing token (0.941083ms)
+✔ A-13 accepts signed raw bytes within freshness window (1.298459ms)
+✔ A-13 rejects tampered payload, wrong key, expired and future signatures (0.367375ms)
+✔ rejects ambiguous headers and requires raw payload (0.399417ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 23
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 256.768375

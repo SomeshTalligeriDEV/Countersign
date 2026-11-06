@@ -1,0 +1,51 @@
+
+> video:checklist
+> node scripts/video-checklist.mjs
+
+0:00-0:15 Hook: bounded authorization problem
+ SCREEN: docs/ONE-PAGE-BRIEF.md
+ ACTION: Read the prototype/limitations statement; omit unverified historical-incident figures
+ EVIDENCE: TODO-HUMAN final recording
+
+0:15-0:35 Architecture
+ SCREEN: docs/ONE-PAGE-BRIEF.md Mermaid diagram
+ ACTION: Show agent → merchant → API → contract and owner approval boundary
+ EVIDENCE: README security/source links
+
+0:35-0:55 Owner limits/allowance
+ SCREEN: http://127.0.0.1:3000 (local preview, not hosted proof)/owner
+ ACTION: Connect owner; review limits and explicit limited allowance; confirm actual wallet steps
+ EVIDENCE: TODO-HUMAN createMandate proof
+
+0:55-1:20 Automatic0.50 payment
+ SCREEN: http://127.0.0.1:3000 (local preview, not hosted proof)/demo and terminal
+ ACTION: pnpm --dir apps/demo-agent start buy-report; show actual agent WBT/USDT balances, not assumed zero
+ EVIDENCE: TODO-HUMAN firstPayment proof
+
+1:20-2:05 Exact World approval and denied path
+ SCREEN: http://127.0.0.1:3000 (local preview, not hosted proof)/approve/<real-id>
+ ACTION: pnpm --dir apps/demo-agent start order-40; fresh World sign-in; wallet sign; second request denied
+ EVIDENCE: TODO-HUMAN real World success/denied proof; TODO-HUMAN humanApprovedPayment proof
+
+2:05-2:35 Tamper and budget
+ SCREEN: http://127.0.0.1:3000 (local preview, not hosted proof)/demo and explorer
+ ACTION: pnpm --dir apps/demo-agent start tamper-amount; pnpm --dir apps/demo-agent start over-budget
+ EVIDENCE: API rejection is not an explorer revert: TODO-HUMAN tamperAmount proof; TODO-HUMAN overBudget proof
+
+2:35-2:55 Revoke/replay
+ SCREEN: http://127.0.0.1:3000 (local preview, not hosted proof)/owner and /demo
+ ACTION: save-replay; owner revokes; replay-after-revoke within deadline
+ EVIDENCE: TODO-HUMAN revoke proof; TODO-HUMAN replayAfterRevoke proof
+
+2:55-3:15 Merchant/refund/integration
+ SCREEN: http://127.0.0.1:3000 (local preview, not hosted proof)/merchant; apps/demo-merchant/src/server.mjs
+ ACTION: Show confirmed incoming payment; original payout wallet refund; do not show nonexistent webhook delivery
+ EVIDENCE: TODO-HUMAN refund proof; TODO-HUMAN actual integration line count/video
+
+3:15-3:30 Business, limits and team
+ SCREEN: README limitations / one-page brief
+ ACTION: Billing is proposed. State testnet, fixture/live distinction and unresolved provenance
+ EVIDENCE: TODO-HUMAN team names and final video URL
+
+Extra: arbitrary-relayer-call; show GasGuard reason. Do not claim an onchain tx for that rejection.
+

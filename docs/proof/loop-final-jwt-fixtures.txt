@@ -1,0 +1,7 @@
+
+> test:world-fixtures
+> node scripts/world-jwt-fixtures.mjs
+
+(node:57432) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+Signed local JWT fixtures passed; NOT real World verification.

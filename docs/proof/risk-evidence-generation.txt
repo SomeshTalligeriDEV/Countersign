@@ -1,0 +1,5 @@
+
+> evidence
+> node scripts/evidence.mjs
+
+Evidence generated from missing input; all deployment fields TODO-HUMAN. No RPC verification claimed.

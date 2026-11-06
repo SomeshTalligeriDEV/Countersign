@@ -1,0 +1,38 @@
+
+> test
+> node --test packages/merchant/test/*.test.mjs apps/api/test/*.test.mjs
+
+(node:27147) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ A-10 callback and attestation are single-use (2.973292ms)
+✔ A-06 binds callback to initiating browser (0.961625ms)
+✔ A-07 rejects another human (1.703875ms)
+✔ A-08 rejects future and stale authentication (2.241166ms)
+✔ A-09 expires at TTL and cannot attest (0.819083ms)
+✔ A-05 denied approval cannot attest (2.538375ms)
+(node:27148) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ A-01 tampered signed intent never broadcasts (19.977625ms)
+✔ A-03 authoritative simulation rejection never broadcasts (2.810167ms)
+✔ successful broadcast is submitted, never prematurely settled; duplicate is blocked (4.062917ms)
+✔ threshold payment cannot use automatic path (2.450166ms)
+(node:27149) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ A-02/A-03 deny arbitrary calls and failed simulations with audit records (1.867958ms)
+✔ A-04 reservations survive restart and prevent budget overspend and duplicates (5.29525ms)
+✔ pause, fee caps and global budget fail closed (0.347042ms)
+✔ serializes concurrent work and continues after failed simulation (0.830459ms)
+✔ bounds pending work (0.109834ms)
+✔ reads token decimals from RPC rather than assuming six (1.881166ms)
+✔ fails closed on wrong chain and missing token (0.941417ms)
+✔ A-13 accepts signed raw bytes within freshness window (0.678208ms)
+✔ A-13 rejects tampered payload, wrong key, expired and future signatures (1.692208ms)
+✔ rejects ambiguous headers and requires raw payload (0.6135ms)
+ℹ tests 20
+ℹ suites 0
+ℹ pass 20
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 184.842542

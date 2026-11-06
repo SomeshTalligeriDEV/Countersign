@@ -12,3 +12,9 @@ test('A-07 rejects another human',()=>{const {db,service,id,flow}=setup();servic
 test('A-08 rejects future and stale authentication',()=>{for(const auth_time of [800,1002]){const {db,service,id,flow}=setup();service.consume(flow.state,flow.browser,1001);assert.throws(()=>service.verifyClaims(id,{...claims(flow),auth_time},config,1001),/stale_auth/);db.close();}});
 test('A-09 expires at TTL and cannot attest',()=>{const {db,service,id}=setup();assert.equal(service.get(id,1120).state,'expired');assert.throws(()=>service.claimAttestation(id,1120),/refused/);db.close();});
 test('A-05 denied approval cannot attest',()=>{const {db,service,id}=setup();assert.equal(service.deny(id,1001),true);assert.throws(()=>service.claimAttestation(id,1001),/refused/);db.close();});
+test('durable digest uniqueness returns existing approval instead of creating a duplicate',()=>{
+ const {db,service,id}=setup();try{
+ const repeated=service.create({intentDigest:digest,approvalDigest:digest,intent:{deadline:1180},agentSig:'test-signature',ownerSubHash:digest},1000);
+ assert.equal(repeated,id);assert.equal(db.prepare('SELECT count(*) AS n FROM approvals').get().n,1);
+ }finally{db.close();}
+});

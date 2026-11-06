@@ -1,0 +1,32 @@
+
+> test
+> node --test packages/merchant/test/*.test.mjs apps/api/test/*.test.mjs
+
+(node:26124) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ A-10 callback and attestation are single-use (1.653167ms)
+✔ A-06 binds callback to initiating browser (0.397125ms)
+✔ A-07 rejects another human (0.35025ms)
+✔ A-08 rejects future and stale authentication (0.490125ms)
+✔ A-09 expires at TTL and cannot attest (0.334417ms)
+✔ A-05 denied approval cannot attest (0.566541ms)
+(node:26125) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ A-02/A-03 deny arbitrary calls and failed simulations with audit records (1.278083ms)
+✔ A-04 reservations survive restart and prevent budget overspend and duplicates (3.580084ms)
+✔ pause, fee caps and global budget fail closed (0.289542ms)
+✔ serializes concurrent work and continues after failed simulation (0.796875ms)
+✔ bounds pending work (0.10575ms)
+✔ reads token decimals from RPC rather than assuming six (1.521333ms)
+✔ fails closed on wrong chain and missing token (1.173208ms)
+✔ A-13 accepts signed raw bytes within freshness window (0.63625ms)
+✔ A-13 rejects tampered payload, wrong key, expired and future signatures (0.144125ms)
+✔ rejects ambiguous headers and requires raw payload (0.191875ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 50.84225

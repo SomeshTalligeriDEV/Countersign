@@ -1,0 +1,2 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';import {videoChecklist} from '../video-checklist.mjs';
+test('video checklist covers nine scenes and does not invent missing proof',()=>{const output=videoChecklist({});assert.equal((output.match(/SCREEN:/g)??[]).length,9);assert.match(output,/TODO-HUMAN/);assert.match(output,/not an explorer revert/);assert.throws(()=>videoChecklist({chainId:1}),/testnet/);});

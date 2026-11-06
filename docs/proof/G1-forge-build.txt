@@ -1,0 +1,130 @@
+Compiling 33 files with Solc 0.8.30
+Solc 0.8.30 finished in 4.59s
+Compiler run successful!
+warning[missing-events-access-control]: `policies` is changed without an event but is used for access control
+    ╭▸ src/Mandate.sol:180:9
+    │
+180 │         p.perTxLimit = perTx;
+    │         ━━━━━━━━━━━━
+    │
+    ╰ help: https://getfoundry.sh/forge/linting/missing-events-access-control
+
+warning[missing-events-access-control]: `policies` is changed without an event but is used for access control
+    ╭▸ src/Mandate.sol:189:9
+    │
+189 │         policies[id].agent = agent;
+    │         ━━━━━━━━━━━━━━━━━━
+    │
+    ╰ help: https://getfoundry.sh/forge/linting/missing-events-access-control
+
+warning[missing-events-access-control]: `policies` is changed without an event but is used for access control
+    ╭▸ src/Mandate.sol:196:9
+    │
+196 │         policies[id].attestor = attestor;
+    │         ━━━━━━━━━━━━━━━━━━━━━
+    │
+    ╰ help: https://getfoundry.sh/forge/linting/missing-events-access-control
+
+warning[missing-events-access-control]: `policies` is changed without an event but is used for access control
+    ╭▸ src/Mandate.sol:207:9
+    │
+207 │         policies[id].paused = paused;
+    │         ━━━━━━━━━━━━━━━━━━━
+    │
+    ╰ help: https://getfoundry.sh/forge/linting/missing-events-access-control
+
+warning[block-timestamp]: usage of `block.timestamp` in a comparison may be manipulated by validators
+    ╭▸ src/Mandate.sol:147:89
+    │
+147 │         if (p.agent == address(0) || p.attestor == address(0) || p.periodLength == 0 || p.expiry <= block.timestamp) {
+    │                                                                                         ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    │
+    ╰ help: https://getfoundry.sh/forge/linting/block-timestamp
+
+warning[unsafe-typecast]: typecast can truncate values
+    ╭▸ src/Mandate.sol:160:13
+    │
+160 │             uint64(block.timestamp),
+    │             ━━━━━━━━━━━━━━━━━━━━━━━
+    │
+    ├ note: consider disabling this lint if you're certain the cast is safe
+    │       
+    │       // casting to 'uint64' is safe because [explain why]
+    │       // forge-lint: disable-next-line(unsafe-typecast)
+    │       
+    │       
+    ╰ help: https://getfoundry.sh/forge/linting/unsafe-typecast
+
+warning[arbitrary-send-erc20]: `transferFrom` uses an arbitrary `from`; require it to equal `msg.sender` or `address(this)`
+    ╭▸ src/Mandate.sol:265:9
+    │
+265 │         usdt.safeTransferFrom(p.owner, i.payout, i.amount);
+    │         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    │
+    ╰ help: https://getfoundry.sh/forge/linting/arbitrary-send-erc20
+
+warning[block-timestamp]: usage of `block.timestamp` in a comparison may be manipulated by validators
+    ╭▸ src/Mandate.sol:245:13
+    │
+245 │         if (block.timestamp > i.deadline) revert Expired();
+    │             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    │
+    ╰ help: https://getfoundry.sh/forge/linting/block-timestamp
+
+warning[block-timestamp]: usage of `block.timestamp` in a comparison may be manipulated by validators
+    ╭▸ src/Mandate.sol:246:13
+    │
+246 │         if (block.timestamp >= p.expiry) revert MandateExpired();
+    │             ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    │
+    ╰ help: https://getfoundry.sh/forge/linting/block-timestamp
+
+warning[reentrancy-events]: event emitted after an external call; reentrancy can reorder or fabricate logs that off-chain consumers rely on
+    ╭▸ src/Mandate.sol:266:9
+    │
+266 │         emit PaymentExecuted(paymentId, i.mandateId, i.merchantId, i.payout, i.amount, i.orderId, humanApproved);
+    │         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    │
+    ╰ help: https://getfoundry.sh/forge/linting/reentrancy-events
+
+warning[unsafe-typecast]: typecast can truncate values
+    ╭▸ src/Mandate.sol:264:76
+    │
+264 │         payments[paymentId] = Payment(i.mandateId, i.merchantId, i.payout, uint128(i.amount), 0);
+    │                                                                            ━━━━━━━━━━━━━━━━━
+    │
+    ├ note: consider disabling this lint if you're certain the cast is safe
+    │       
+    │       // casting to 'uint128' is safe because [explain why]
+    │       // forge-lint: disable-next-line(unsafe-typecast)
+    │       
+    │       
+    ╰ help: https://getfoundry.sh/forge/linting/unsafe-typecast
+
+warning[block-timestamp]: usage of `block.timestamp` in a comparison may be manipulated by validators
+    ╭▸ src/Mandate.sol:291:13
+    │
+291 │         if (att.authTime > block.timestamp || block.timestamp - att.authTime > MAX_AUTH_AGE) revert StaleAuth();
+    │             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    │
+    ╰ help: https://getfoundry.sh/forge/linting/block-timestamp
+
+warning[block-timestamp]: usage of `block.timestamp` in a comparison may be manipulated by validators
+    ╭▸ src/Mandate.sol:291:47
+    │
+291 │         if (att.authTime > block.timestamp || block.timestamp - att.authTime > MAX_AUTH_AGE) revert StaleAuth();
+    │                                               ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    │
+    ╰ help: https://getfoundry.sh/forge/linting/block-timestamp
+
+warning[environment-read-across-mutation]: `block.chainid` may be reused across `vm.chainId`
+    ╭▸ test/Mandate.t.sol:270:33
+    │
+270 │         uint256 originalChain = block.chainid;
+    │                                 ━━━━━━━━━━━━━
+271 │         vm.chainId(originalChain + 1);
+    │         ───────────────────────────── `vm.chainId` changes this environment here
+    │
+    ├ help: capture it with `vm.getChainId()` instead
+    ╰ help: https://getfoundry.sh/forge/linting/environment-read-across-mutation
+

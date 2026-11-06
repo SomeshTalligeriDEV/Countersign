@@ -1,0 +1,82 @@
+
+> test
+> node --test packages/merchant/test/*.test.mjs packages/agent/test/*.test.mjs apps/api/test/*.test.mjs apps/attestor/test/*.test.mjs
+
+(node:45793) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ approval requests authenticate signed intent and expose only safe polling/terms fields (42.5485ms)
+✔ missing verified owner binding cannot create a human approval (2.623875ms)
+(node:45794) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ A-10 callback and attestation are single-use (4.659709ms)
+✔ A-06 binds callback to initiating browser (0.460209ms)
+✔ A-07 rejects another human (0.372542ms)
+✔ A-08 rejects future and stale authentication (0.546125ms)
+✔ A-09 expires at TTL and cannot attest (0.289125ms)
+✔ A-05 denied approval cannot attest (0.529375ms)
+(node:45795) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ A-01 tampered signed intent never broadcasts (32.185542ms)
+✔ A-03 authoritative simulation rejection never broadcasts (3.055834ms)
+✔ successful broadcast is submitted, never prematurely settled; duplicate is blocked (4.438792ms)
+✔ threshold payment cannot use automatic path (3.043917ms)
+(node:45796) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ observer is unavailable while starting/backfilling, stale or failed (1.706708ms)
+✔ RPC connectivity alone does not make settlement readiness healthy (9.602334ms)
+(node:45797) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ A-02/A-03 deny arbitrary calls and failed simulations with audit records (2.425041ms)
+✔ A-04 reservations survive restart and prevent budget overspend and duplicates (8.869375ms)
+✔ pause, fee caps and global budget fail closed (0.359958ms)
+(node:45798) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ HTTP maps bad signature and approval-required responses (16.193333ms)
+✔ HTTP limits body and rate without calling settlement (1.988875ms)
+✔ HTTP cannot pretend settlement is configured (0.305333ms)
+(node:45799) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ observer waits for confirmations and resumes without duplicate events or webhooks (1.614375ms)
+✔ observer rejects reorganized cursor without publishing additional events (0.543458ms)
+✔ observer rejects removed logs and wrong chain without advancing cursor (0.264375ms)
+✔ confirmed refund updates payment and invalid refund rolls back cursor and outbox (0.492459ms)
+(node:45800) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ history is scoped to configured contract and mandate; CSV and query validation (10.443958ms)
+✔ observer runner stops after error and shutdown waits for in-flight tick (0.1365ms)
+(node:45801) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ receipt exposes resource binding only from confirmed transaction intent (2.383041ms)
+✔ receipt rejects replaced block and insufficient confirmation depth (0.512541ms)
+✔ serializes concurrent work and continues after failed simulation (0.805708ms)
+✔ bounds pending work (0.102667ms)
+✔ reads token decimals from RPC rather than assuming six (1.377958ms)
+✔ fails closed on wrong chain and missing token (1.051917ms)
+(node:45804) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ webhook retries durable outbox and signs exact transmitted bytes (2.968792ms)
+(node:45805) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ attestor refuses pending identity and recomputes stored digest before signing once (22.354917ms)
+✔ tampered stored digest cannot obtain attestation or consume claim (1.187166ms)
+✔ agent signs exact intent and retries same signature until confirmation (29.674875ms)
+✔ agent refuses altered resource, foreign token and excess budget without signing (1.373209ms)
+✔ above-threshold request explicitly requires approval without signature or broadcast (0.417209ms)
+(node:45807) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ merchant binds quote to exact resource and never serves on submission (3.075709ms)
+(node:45808) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ HTTP middleware serves only confirmed receipt and polls without repeating submission (3.144667ms)
+✔ middleware rejects malformed payment header and requires exact POST body bytes (0.170083ms)
+✔ A-13 accepts signed raw bytes within freshness window (0.710667ms)
+✔ A-13 rejects tampered payload, wrong key, expired and future signatures (0.138125ms)
+✔ rejects ambiguous headers and requires raw payload (0.180459ms)
+ℹ tests 44
+ℹ suites 0
+ℹ pass 44
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 450.319917

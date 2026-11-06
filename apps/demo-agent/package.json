@@ -1,0 +1,10 @@
+{
+  "name": "@countersign/demo-agent",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node src/cli.mjs",
+    "run-all": "node src/run-all.mjs",
+    "control": "node src/control.mjs"
+  }
+}

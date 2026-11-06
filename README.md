@@ -1,47 +1,104 @@
 # Countersign
 
-Contract-enforced spending mandates for agents paying merchants in USDT, with transaction-bound human approval.
+Bounded USDT payments for AI agents, targeting Whitechain Sepolia (1874). A treasury owner defines a mandate; its agent signs exact payment terms. The contract checks merchant payout/version, limits, nonce, order, epoch and expiry. Payments at the human threshold additionally require a fresh identity attestation and owner-wallet approval.
 
-## Current implementation
+**Work in progress:** no independently verified Countersign deployment, real official-USDT payment, real World issuer sign-in or live URL has been recorded. See [STATUS.md](STATUS.md) and [human runbook](docs/proof/HUMAN-RUN.md). Component tests are not end-to-end deployment evidence.
 
-The shared EIP-712 schema, MerchantRegistry and Mandate Solidity source are written. Registry and initial Mandate security tests are written. Sixteen Node tests pass for raw-body webhook authentication serialized relay work and persistent GasGuard reservations; these primitives are not yet integrated into a running API. Compilation and execution have **not** been verified: dependency and Solidity compiler downloads fail with DNS errors in the current environment. No contracts are deployed and no payment has settled. The backend, World integration, wallets and application adaptation remain to be implemented.
+## Setup
 
-The supplied Next.js application remains in the exact `ui ` directory (including its trailing space). Its landing page now describes Countersign using the supplied layout and components. Legacy login and app routes are still awaiting replacement and are not Countersign payment flows.
+Use Node >=24.10, Foundry and Solidity 0.8.30. In a terminal with normal network access:
 
-## Development
+```sh
+npm install --prefix packages/shared --ignore-scripts --no-audit --no-fund
+npm install --prefix apps/api --ignore-scripts --no-audit --no-fund
+npm install --prefix contracts --ignore-scripts --no-audit --no-fund
+npm ci --prefix web --ignore-scripts
+npm test
+npm --prefix packages/shared test
+npm --prefix apps/api run test:world-fixtures
+forge build --root contracts
+forge test --root contracts -vvv
+```
 
-Install Node.js, pnpm and Foundry. Run `pnpm install`, then `pnpm test:contracts`. Run `pnpm dev` to start the supplied UI. Dependencies and Solidity 0.8.30 must be downloadable on first setup.
+Copy env examples to gitignored service-specific files and populate only real deployment values. API/attestor do not implicitly load dotenv; use `node --env-file=.env src/server.mjs` from each service directory. Both use the same absolute SQLite file. ATTESTOR_KEY belongs only to apps/attestor. A dedicated RELAYER_KEY belongs only to apps/api. No mainnet or substitute USDT.
 
-## Intended architecture
+Start API, attestor (when configured), and `npm --prefix web run dev` in separate terminals. Web server needs COUNTERSIGN_API_URL; browser-facing World links need COUNTERSIGN_PUBLIC_API_URL. Optional WS configuration is in the examples/runbook. Never put secret keys in NEXT_PUBLIC variables.
 
-Agent → merchant payment challenge → API / GasGuard → Mandate → official USDT transfer from owner treasury to merchant. Above-threshold payments additionally require owner EIP-712 authorization and a separate World attestor signature. Confirmed chain logs will be the settlement source of truth.
+## Architecture and behavior
 
-The contract makes the creator the treasury owner, never accepts an arbitrary treasury, preserves period spending across policy changes and refunds, and supports ERC-1271 owner approvals. Merchant allowlist updates increment the epoch as an additional replay defense. Token decimals must be read at runtime by integrations.
+- `contracts`: MerchantRegistry and Mandate; official USDT is fixed in deployment scripts and verified by the chain adapter.
+- `apps/api`: SQLite persistence, HTTP validation, OIDC, observer, owner setup and relayer.
+- `apps/attestor`: separate loopback process, authenticated approval-ID requests, DB digest recomputation and single-use signing.
+- `packages/shared`: EIP-712 definitions, digest vectors and exact decimal arithmetic.
+- `packages/merchant` / `packages/agent`: x402-style custom payment terms and signed intents. This is not the standard x402 exact scheme.
+- `apps/demo-merchant` / `apps/demo-agent`: separately integrated report endpoint and agent CLI. The 0.50 and 40 USDT reports are priced network-diagnostic resources, not fabricated goods or market data. Attack commands and ordered run-all exist; actual chain rejection and two live runs remain unverified.
+- `web`: our owner, approval, receipt, merchant and demo pages. Legacy Chupke entrypoints are retired. Mocked-wallet browser tests exist but remain unexecuted.
 
-## Why Whitechain
+Submitted is not settled. The observer requires three subsequent blocks and reads contract logs before projecting payment status. Receipt lookup also checks matching direct pay calldata. WebSockets send read-only state-change invalidations, then clients fetch authoritative data; reconnect has polling fallback. Stale/backfilling observers cannot present payment history as current.
 
-The proposed flow uses onchain stablecoin settlement so spending limits, payment terms and authorization can be checked by a contract and independently inspected by merchants. The relayer is intended to sponsor gas. No measured latency or fee claim is made before deployment.
+## Security evidence and limits
 
-## Submission evidence
+Human-run `docs/proof/G1-forge-with-vectors.txt`: 75 Solidity tests passed, including inherited duplicates, T30 invariant runs and A14 Solidity parity. Shared viem vectors passed three tests. Latest Node/UI proof is linked in STATUS.md.
 
-Official event source: https://ethglobal.com/events/mumbai/prizes
+- Treasury ownership: T01; owner is createMandate caller.
+- Tampered terms/payout/version: T02–T05 and local facilitator signature/simulation tests.
+- Spending limits and monotonic accounting: T06–T09/T30.
+- Nonce/order replay and revocation: T10/T11/T16/T17.
+- Fresh two-party approval: T12–T15; backend JWT/attestor/owner tests use disclosed local identities.
+- Reentrancy/ERC1271/refund caps: T24/T26/T27/T29.
+- GasGuard: allowlisted pay only, simulation first, reservations, per-mandate/global budgets and pause. Signed transaction bytes/hash/nonce persist before broadcast; restart retries identical bytes. Unknown nonce outcomes block further work.
 
-Still required: verified Whitechain deployments, official-USDT settlement transaction, successful World approval and failure paths, contract and API security tests, live demo, public repository with genuine development history, sponsor feedback and a 2–4 minute video. ENS is optional and not implemented.
+M2's permitted cut: reservations cover execution gas, not complete OP fee components. Dedicated single relayer process/signer required. Automatic deep-reorg recovery, production multi-process claims, identity recovery/rebinding and full webhook transport are unfinished. Wallet browser execution and real provider discovery/client-auth compatibility are unverified. No independent audit or production-security claim.
 
-## Starting point and AI disclosure
+The configured relayer is intended to sponsor payment gas from test WBT; no actual sponsored payment has been recorded. Offchain company/merchant billing is a proposed business model, not implemented billing. Low-cost payments are the reason for targeting Whitechain; no measured fee/latency claims are made yet.
 
-The user supplied the numbered project specifications and the `ui ` application before implementation in this workspace. Original UI authorship and creation date have not been independently verified; eligibility must be disclosed accurately. No historical commits have been fabricated.
+## Deployment and submission
 
-OpenAI Codex assisted with repository inspection, official-documentation lookup, workspace setup and contract implementation.
+[HUMAN-RUN.md](docs/proof/HUMAN-RUN.md) contains deploy/verify/first-payment, World and browser steps. [DEPLOYMENT.md](DEPLOYMENT.md) describes current container/CI status. No actual contract addresses, tx links or hosted URLs are invented here. Record them after execution.
 
-## Limitations
+Still needed: real USDT pay, verified contracts, real World success plus failure, attack/revoke demos twice, recorded browser evidence, live URL, final CI, video and submission form.
 
-Uncompiled, unaudited, undeployed work in progress. No claim of hackathon qualification or production readiness. The planned World testing environment does not imply production identity assurance. Owner identity binding must be enforced by the attestor service; the contract verifies the designated attestor's signature. Compromise of owner and attestor together remains a risk within hard caps and treasury allowance. The payment protocol is x402-style, not the standard x402 exact scheme.
+## Before and during / provenance
 
-CI and container publication configuration: see [DEPLOYMENT.md](DEPLOYMENT.md). Not yet executed remotely.
+The supplied UI included an earlier Chupke project. EzPayz main was separately reviewed; selected amount/idempotency patterns were adapted, then the decimal parser independently rewritten. Existing prior code/history still needs an eligibility decision. See [prior-code inventory](docs/PRIOR-CODE-INVENTORY.md) and [EzPayz review](docs/EZPAYZ-INTEGRATION.md). No fresh-start eligibility or Continuity/prize interpretation is asserted. Pactra's relationship and the Scale-track one-time treasury allowance question remain unanswered by the human/staff.
 
-Offline npm cache recovery installed the supplied UI dependencies and generated its lockfile. Its TypeScript check and lint now pass. Read-only API diagnostics are available through `node apps/api/src/server.mjs`: `/health/live`, `/health/ready`, `/v1/network`. Readiness fails with HTTP 503 without working configured Whitechain RPC; no sample chain data is returned. Payment endpoints remain unimplemented.
+## AI tools used
 
-The landing page has no fake waitlist submission or static successful payment fallback. Its network widget proxies the configured `COUNTERSIGN_API_URL` diagnostics service and reports unavailable states. System fonts replace network-fetched Google fonts for offline builds; the original custom typography is therefore not preserved exactly.
+OpenAI Codex assisted with code, tests, documentation, repository inspection and official-documentation browsing. Skills consulted include blockchain-master, frontend-design-guidelines and World's official integration skill; current World MCP availability/configuration is documented separately. Tools used include local Node/TypeScript/ESLint tests, human-run Foundry tests and documentation web lookup. Test chain/World fixtures are disclosed; no fake real-world success evidence was generated.
 
-Approval persistence now implements PKCE/state/nonce generation, browser-bound one-time callback consumption, expiry, validated-claim checks and atomic one-time attestation claims. These are internal primitives, not exposed World endpoints: cryptographic JWT verification, code exchange, owner onboarding and attestor signing are not yet integrated. Tests use local fixtures only.
+<!-- COUNTERSIGN-EVIDENCE:START -->
+## Recorded deployment evidence
+
+Human-recorded inputs only. Links have not been independently checked against RPC by this generator. Empty fields are TODO-HUMAN.
+
+- MerchantRegistry: TODO-HUMAN address
+- MerchantRegistry deployment: TODO-HUMAN deployment transaction
+- MerchantRegistry source verification: TODO-HUMAN verify source
+- Mandate: TODO-HUMAN address
+- Mandate deployment: TODO-HUMAN deployment transaction
+- Mandate source verification: TODO-HUMAN verify source
+- createMandate: TODO-HUMAN transaction or explicit API-only rejection proof (no tx)
+- limitedAllowance: TODO-HUMAN transaction or explicit API-only rejection proof (no tx)
+- refund: TODO-HUMAN transaction or explicit API-only rejection proof (no tx)
+- firstPayment: TODO-HUMAN transaction or explicit API-only rejection proof (no tx)
+- tamperAmount: TODO-HUMAN transaction or explicit API-only rejection proof (no tx)
+- tamperPayout: TODO-HUMAN transaction or explicit API-only rejection proof (no tx)
+- registryChanged: TODO-HUMAN transaction or explicit API-only rejection proof (no tx)
+- overBudget: TODO-HUMAN transaction or explicit API-only rejection proof (no tx)
+- humanApprovedPayment: TODO-HUMAN transaction or explicit API-only rejection proof (no tx)
+- revoke: TODO-HUMAN transaction or explicit API-only rejection proof (no tx)
+- replayAfterRevoke: TODO-HUMAN transaction or explicit API-only rejection proof (no tx)
+- arbitraryRelayerCall: TODO-HUMAN transaction or explicit API-only rejection proof (no tx)
+- web: TODO-HUMAN public URL
+- api: TODO-HUMAN public URL
+- repo: TODO-HUMAN public URL
+
+TODO-HUMAN: real World success and denied evidence, two ordered demo runs, browser/video proof, source eligibility decision, final CI URL.
+
+<!-- COUNTERSIGN-EVIDENCE:END -->
+
+## Risk-reduction commands
+
+`pnpm doctor` checks public configuration, chain/token/balances/contracts/budget, provider discovery, service health, flags and Git cleanliness without printing secrets. `pnpm human:deploy` runs the keystore-based stepwise deployment and first payment in a normal terminal, persisting docs/proof/deployed.json. These live adapters are unexecuted; fixture orchestration tests do not prove a live deployment. Unknown submissions stop for reconciliation.
+
+New adversarial Solidity tests are in contracts/test/AdversarialEdges.t.sol and remain UNEXECUTED. Earlier75-test evidence does not cover them. See docs/CLAIM-AUDIT.md.

@@ -13,6 +13,13 @@ export function openStore(path) {
       id INTEGER PRIMARY KEY, mandate_id TEXT NOT NULL, decision TEXT NOT NULL,
       reason TEXT NOT NULL, at INTEGER NOT NULL
     );
+    CREATE TABLE IF NOT EXISTS confirmed_payments (
+      observer TEXT NOT NULL, payment_id TEXT NOT NULL, mandate_id TEXT NOT NULL,
+      merchant_id TEXT NOT NULL, payout TEXT NOT NULL, amount TEXT NOT NULL,
+      refunded TEXT NOT NULL DEFAULT '0', status TEXT NOT NULL,
+      tx_hash TEXT NOT NULL, payload TEXT NOT NULL,
+      PRIMARY KEY(observer,payment_id)
+    );
     CREATE TABLE IF NOT EXISTS observer_cursor (name TEXT PRIMARY KEY, block TEXT NOT NULL, block_hash TEXT NOT NULL);
     CREATE TABLE IF NOT EXISTS chain_events (
       id TEXT PRIMARY KEY, block TEXT NOT NULL, block_hash TEXT NOT NULL,

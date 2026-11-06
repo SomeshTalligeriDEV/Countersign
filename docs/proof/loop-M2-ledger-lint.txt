@@ -1,0 +1,10 @@
+
+> zacc@0.1.0 lint
+> eslint
+
+
+/Users/somesh.s.talligeri/Desktop/countersign/web/src/components/countersign/MandateActions.tsx
+  6:109  warning  'setMerchant' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+✖ 1 problem (0 errors, 1 warning)
+

@@ -1,0 +1,12 @@
+{
+  "name": "@countersign/agent",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.mjs",
+    "./approvals": "./src/approvals.mjs"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  }
+}

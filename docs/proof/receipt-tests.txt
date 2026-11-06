@@ -1,0 +1,63 @@
+
+> test
+> node --test packages/merchant/test/*.test.mjs apps/api/test/*.test.mjs
+
+(node:36404) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ A-10 callback and attestation are single-use (2.10975ms)
+✔ A-06 binds callback to initiating browser (0.509667ms)
+✔ A-07 rejects another human (0.389792ms)
+✔ A-08 rejects future and stale authentication (0.625292ms)
+✔ A-09 expires at TTL and cannot attest (0.299292ms)
+✔ A-05 denied approval cannot attest (0.298791ms)
+(node:36405) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ A-01 tampered signed intent never broadcasts (25.182166ms)
+✔ A-03 authoritative simulation rejection never broadcasts (3.161625ms)
+✔ successful broadcast is submitted, never prematurely settled; duplicate is blocked (4.290833ms)
+✔ threshold payment cannot use automatic path (2.397042ms)
+(node:36406) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ A-02/A-03 deny arbitrary calls and failed simulations with audit records (1.869416ms)
+✔ A-04 reservations survive restart and prevent budget overspend and duplicates (3.428542ms)
+✔ pause, fee caps and global budget fail closed (0.27825ms)
+(node:36407) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ HTTP maps bad signature and approval-required responses (12.944208ms)
+✔ HTTP limits body and rate without calling settlement (2.008625ms)
+✔ HTTP cannot pretend settlement is configured (0.337875ms)
+(node:36408) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ observer waits for confirmations and resumes without duplicate events or webhooks (2.644708ms)
+✔ observer rejects reorganized cursor without publishing additional events (1.626208ms)
+✔ observer rejects removed logs and wrong chain without advancing cursor (0.334792ms)
+✔ confirmed refund updates payment and invalid refund rolls back cursor and outbox (0.51375ms)
+(node:36409) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ history is scoped to configured contract and mandate; CSV and query validation (10.188167ms)
+✔ observer runner stops after error and shutdown waits for in-flight tick (0.134375ms)
+(node:36410) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ receipt exposes resource binding only from confirmed transaction intent (2.729375ms)
+✔ receipt rejects replaced block and insufficient confirmation depth (0.519625ms)
+✔ serializes concurrent work and continues after failed simulation (0.818083ms)
+✔ bounds pending work (0.108834ms)
+✔ reads token decimals from RPC rather than assuming six (1.445375ms)
+✔ fails closed on wrong chain and missing token (0.67525ms)
+(node:36413) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ webhook retries durable outbox and signs exact transmitted bytes (1.81525ms)
+(node:36414) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ merchant binds quote to exact resource and never serves on submission (2.875083ms)
+✔ A-13 accepts signed raw bytes within freshness window (0.761917ms)
+✔ A-13 rejects tampered payload, wrong key, expired and future signatures (0.132ms)
+✔ rejects ambiguous headers and requires raw payload (0.216583ms)
+ℹ tests 33
+ℹ suites 0
+ℹ pass 33
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 274.649916

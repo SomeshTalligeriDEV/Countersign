@@ -6,5 +6,7 @@
 **/*.sqlite*
 contracts/out
 contracts/cache
-ui /chupke
-ui /chupke.zip
+web/chupke
+web/chupke.zip
+deploy/*.env
+**/*.keystore

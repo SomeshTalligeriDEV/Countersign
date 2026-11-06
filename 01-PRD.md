@@ -1,5 +1,7 @@
 # 01 · PRD: Countersign
 
+> Design specification, not verified build evidence. Present-tense goals and historical incident references below are not independently revalidated by this build. Use STATUS.md, BUILD_REPORT.md and docs/ONE-PAGE-BRIEF.md for demonstrated behavior.
+
 ## 1. One-liner
 
 Countersign lets a company's AI agents pay businesses in USDT on Whitechain inside limits a smart contract enforces. A tampered price or payout address is rejected onchain. Any payment above the human threshold needs the owner to approve the exact terms with a fresh World ID sign-in.

@@ -1,0 +1,48 @@
+
+> test
+> node --test packages/merchant/test/*.test.mjs apps/api/test/*.test.mjs
+
+(node:27495) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ A-10 callback and attestation are single-use (3.50225ms)
+✔ A-06 binds callback to initiating browser (0.55625ms)
+✔ A-07 rejects another human (0.38ms)
+✔ A-08 rejects future and stale authentication (0.508625ms)
+✔ A-09 expires at TTL and cannot attest (0.269083ms)
+✔ A-05 denied approval cannot attest (0.858667ms)
+(node:27496) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ A-01 tampered signed intent never broadcasts (19.74125ms)
+✔ A-03 authoritative simulation rejection never broadcasts (2.902959ms)
+✔ successful broadcast is submitted, never prematurely settled; duplicate is blocked (3.895167ms)
+✔ threshold payment cannot use automatic path (2.232292ms)
+(node:27497) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ A-02/A-03 deny arbitrary calls and failed simulations with audit records (1.485042ms)
+✔ A-04 reservations survive restart and prevent budget overspend and duplicates (3.335917ms)
+✔ pause, fee caps and global budget fail closed (0.267542ms)
+(node:27498) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ HTTP maps bad signature and approval-required responses (11.625042ms)
+✔ HTTP limits body and rate without calling settlement (1.91725ms)
+✔ HTTP cannot pretend settlement is configured (0.213375ms)
+(node:27499) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ observer waits for confirmations and resumes without duplicate events or webhooks (2.469375ms)
+✔ observer rejects reorganized cursor without publishing additional events (0.888125ms)
+✔ observer rejects removed logs and wrong chain without advancing cursor (0.309208ms)
+✔ serializes concurrent work and continues after failed simulation (0.806458ms)
+✔ bounds pending work (0.115958ms)
+✔ reads token decimals from RPC rather than assuming six (1.907125ms)
+✔ fails closed on wrong chain and missing token (0.819875ms)
+✔ A-13 accepts signed raw bytes within freshness window (0.5945ms)
+✔ A-13 rejects tampered payload, wrong key, expired and future signatures (0.125292ms)
+✔ rejects ambiguous headers and requires raw payload (0.176292ms)
+ℹ tests 26
+ℹ suites 0
+ℹ pass 26
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 245.027084

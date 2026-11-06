@@ -28,6 +28,6 @@ jobs:
       - uses: docker/build-push-action@v6
         with:
           context: .
-          file: 'ui /Dockerfile'
+          file: 'web/Dockerfile'
           push: true
           tags: ${{ steps.image.outputs.name }}:${{ github.event.workflow_run.head_sha }}

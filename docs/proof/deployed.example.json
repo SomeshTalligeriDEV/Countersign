@@ -1,0 +1,9 @@
+{
+  "chainId": 1874,
+  "contracts": {
+    "MerchantRegistry": {"address": null, "deploymentTx": null, "verified": false},
+    "Mandate": {"address": null, "deploymentTx": null, "verified": false}
+  },
+  "transactions": {"firstPayment": null, "tamperAmount": null, "tamperPayout": null, "registryChanged": null, "overBudget": null, "humanApprovedPayment": null, "revoke": null, "replayAfterRevoke": null, "arbitraryRelayerCall": null},
+  "urls": {"web": null, "api": null, "repo": null}
+}
