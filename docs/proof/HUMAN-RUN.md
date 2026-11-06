@@ -25,6 +25,8 @@ Expected: nonzero WBT; USDT ≥ 1000000 (6 decimals).
 
 **H5. Git remote (W8).** `gh repo create countersign --public --source . --push` (or give the agent a remote URL). Needed for remote CI and form permalinks.
 
+**H6. Docker (W8, BLOCKED for agent after 2 attempts).** colima VM fails: `usernet unable to resolve IP for SSH forwarding`. Fix with `colima delete -f && colima start` or start Docker Desktop, then `docker info` must succeed. Agent will then run the builds in docs/proof/W8-docker.txt.
+
 After H1–H3 tell the agent "funded"; it will run `pnpm human:deploy`, verify on Blockscout, and run W3/W6.
 
 ---
