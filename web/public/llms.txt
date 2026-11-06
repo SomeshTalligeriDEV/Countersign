@@ -1,0 +1,25 @@
+# Countersign
+
+> Spending mandates for AI agents. USDT settles on Whitechain Sepolia testnet (chain ID 1874); a Mandate smart contract enforces the owner's limits; payments above a threshold need World ID human approval; the agent identity is agent1.countersign.eth on ENSv2 (Sepolia). Testnet development preview, not for real funds.
+
+## How it works
+- Owner creates a mandate: per-transaction limit, period budget, approval threshold, allowed merchants, attestor.
+- Agent signs the exact payment intent (amount, merchant, order). The agent holds no USDT and no gas.
+- Relayer + GasGuard simulate and submit `pay()`; the contract checks signatures, payout, limits, nonce, expiry and pause, then moves USDT or reverts.
+- Over the threshold, the owner completes a fresh World ID sign-in and wallet signature; a separate attestor co-signs; the contract verifies both.
+- ENS text records mirror the policy; a live drift check compares ENS with the contract (MATCH/MISMATCH).
+
+## Pages
+- [Home](https://web-rouge-one-10.vercel.app/): overview and live network status
+- [Live demo](https://web-rouge-one-10.vercel.app/demo): run testnet agent scenarios
+- [Owner console](https://web-rouge-one-10.vercel.app/owner): create and manage a mandate
+- [Merchant workspace](https://web-rouge-one-10.vercel.app/merchant): payments, refunds, receipts
+
+## On-chain
+- Mandate: 0x923298375911A173da34C715da2718c0c9889EbA (https://explorer.testnet.whitechain.io/address/0x923298375911A173da34C715da2718c0c9889EbA)
+- MerchantRegistry: 0x2686f693A2C959568e650e0A5563E6244f2329E2
+- Official test USDT: 0xcedfB56113143d55b2358b8CFbB0dEB5Ad2f55a7
+- Human-approved payment: 0x98fa814e805ab35e55124370539bc0c1889aef519d5c408800be2efc709cb531
+
+## Source
+- https://github.com/SomeshTalligeriDEV/ETHGLOBAL
