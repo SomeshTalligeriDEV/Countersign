@@ -1,0 +1,22 @@
+/* Countersign base styles. Written fresh for W9; replaces the supplied-ui globals.css. */
+@import "tailwindcss";
+
+:root {
+  --cs-paper: #faf7f0;
+  --cs-ink: #171717;
+  --cs-focus: #6d28d9;
+}
+
+@theme inline {
+  --color-background: var(--cs-paper);
+  --color-foreground: var(--cs-ink);
+  --font-sans: ui-sans-serif, system-ui, Arial, sans-serif;
+  --font-serif: Georgia, "Times New Roman", serif;
+}
+
+body { background: var(--cs-paper); color: var(--cs-ink); }
+:focus-visible { outline: 2px solid var(--cs-focus); outline-offset: 4px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}

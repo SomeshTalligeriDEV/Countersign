@@ -1,5 +1,35 @@
 # Human-run commands
 
+## ▶ CURRENT HANDOFF (orchestrator, Fri 6 Nov 2026 13:30 IST) — do these first
+
+Items 1–2 below are DONE by the agent (forge 118/118 executed). Remaining blockers are yours:
+
+**H1. Deployer keystore (W2, WAITING-ON-HUMAN).** No `deployer` keystore exists (only `pactra-deployer`, which the agent will not use).
+```sh
+cast wallet import deployer --interactive
+cast wallet import agent --interactive      # separate key; holds no USDT/WBT
+cast wallet address --account deployer      # prints public address
+```
+Expected: two public addresses. Paste only the addresses back.
+
+**H2. Fund deployer (W2).** WBT from the Whitechain testnet faucet + ≥1.00 official test USDT (0xcedfB56113143d55b2358b8CFbB0dEB5Ad2f55a7) from the booth/Discord to the deployer address.
+```sh
+cast balance $(cast wallet address --account deployer) --rpc-url https://rpc.testnet.whitechain.io
+cast call 0xcedfB56113143d55b2358b8CFbB0dEB5Ad2f55a7 "balanceOf(address)(uint256)" $(cast wallet address --account deployer) --rpc-url https://rpc.testnet.whitechain.io
+```
+Expected: nonzero WBT; USDT ≥ 1000000 (6 decimals).
+
+**H3. `.env` (gitignored).** `cp .env.example .env`, then fill OWNER_ADDRESS, AGENT_ADDRESS, DEMO_PAYOUT, ATTESTOR_ADDRESS, DEPLOYER_ACCOUNT=deployer, AGENT_ACCOUNT=agent, WORLD_ISSUER, WORLD_CLIENT_ID, WORLD_CLIENT_SECRET. Never paste values into chat.
+
+**H4. World sandbox app (W4).** The World developer MCP is not available to the agent. Register a sandbox app in the World developer portal, set redirect URI `http://localhost:3000/api/world/callback` (plus the live URL once deployed), copy client id/secret into `.env`. Then sign in once at `/approve/<id>` with your World App (phone step). Expected: approval page shows "verified" with a fresh auth_time.
+
+**H5. Git remote (W8).** `gh repo create countersign --public --source . --push` (or give the agent a remote URL). Needed for remote CI and form permalinks.
+
+After H1–H3 tell the agent "funded"; it will run `pnpm human:deploy`, verify on Blockscout, and run W3/W6.
+
+---
+
+
 Status: dependency repair and contract tests are ready to run. Deployment script is written but unexecuted. Do not deploy before full G1 validation, including digest parity, passes. API/SDK/World integration and real payment script are not ready yet. This is an incremental handoff, not the completed items 1–5 handoff.
 
 ## 1. Fix the actual missing dependency
