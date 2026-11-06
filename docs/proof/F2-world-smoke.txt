@@ -1,0 +1,28 @@
+World smoke 2026-11-06T08:16:29.882Z env=sandbox issuer=https://sandbox.auth.world.org
+PASS discovery http 200
+PASS issuer matches https://sandbox.auth.world.org
+PASS authorization_endpoint same origin https://sandbox.auth.world.org/api/v1/authorize
+PASS token_endpoint same origin https://sandbox.auth.world.org/api/v1/token
+PASS jwks_uri same origin https://sandbox.auth.world.org/.well-known/jwks.json
+PASS PKCE S256
+PASS RS256 id_token
+PASS auth_time claim
+PASS iss in authz response
+PASS device grant https://sandbox.auth.world.org/api/v1/device_authorization
+PASS JWKS has RSA keys SjxoYTY6TKyO9wDOz9VmG4ze3tJsvwsPE5zgkOqqwAo
+PASS jose remote JWKS resolves kid
+RESULT PASS
+World smoke 2026-11-06T08:16:33.116Z env=production issuer=https://auth.world.org
+PASS discovery http 200
+PASS issuer matches https://auth.world.org
+PASS authorization_endpoint same origin https://auth.world.org/api/v1/authorize
+PASS token_endpoint same origin https://auth.world.org/api/v1/token
+PASS jwks_uri same origin https://auth.world.org/.well-known/jwks.json
+PASS PKCE S256
+PASS RS256 id_token
+PASS auth_time claim
+PASS iss in authz response
+PASS device grant https://auth.world.org/api/v1/device_authorization
+PASS JWKS has RSA keys xDQ0qjmm6_Jlrx61ER2YuxNLQmXgmC7eDQITsMMuDGM
+PASS jose remote JWKS resolves kid
+RESULT PASS
