@@ -23,7 +23,7 @@
   <img src="https://img.shields.io/badge/Node-24-339933?style=flat-square&logo=nodedotjs&logoColor=white" alt="Node 24" />
   <img src="https://img.shields.io/badge/viem-2.35-1E1E20?style=flat-square" alt="viem" />
   <img src="https://img.shields.io/badge/EIP--712-typed%20intents-627EEA?style=flat-square&logo=ethereum&logoColor=white" alt="EIP-712" />
-  <a href="https://github.com/SomeshTalligeriDEV/ETHGLOBAL/actions"><img src="https://github.com/SomeshTalligeriDEV/ETHGLOBAL/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
+  <a href="https://github.com/SomeshTalligeriDEV/Countersign/actions"><img src="https://github.com/SomeshTalligeriDEV/Countersign/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
 
   <p>
     <a href="https://countersign.someshtalligeri12.workers.dev"><strong>Open app</strong></a> ·
@@ -54,6 +54,83 @@ An autonomous agent should be able to request a purchase without receiving unres
 | **Whitechain · Stablecoin Payments / Payments Nobody Notices** | Mandate + MerchantRegistry contracts (verified) enforce per-payment cap, period budget, merchant allowlist, expiry, pause and epoch. The agent holds 0 USDT / 0 WBT; the relayer sponsors gas under GasGuard limits; payments settle in **official testnet USDT** in seconds. | [Payment 0xefc8692e…](https://explorer.testnet.whitechain.io/tx/0xefc8692e551bfdef4f468f85bee2e1a06d4491432a24e3277776b53c177a3c3d) · [pause](https://explorer.testnet.whitechain.io/tx/0x1a232e63524f6a992271cccdee1e37122366f03d5cdc5aa86f8714c370ccf9cc) / [unpause](https://explorer.testnet.whitechain.io/tx/0x97d66455a328b2b8cb5cc434c7635ff20f557ee74f948cdeb9ea6fd58a2f4d98) |
 | **World · Agent Pass** | Payments above the threshold require fresh World Agent Pass sign-in (OIDC, PKCE S256, `max_age=0`, CIMD public client), then the owner signs the **exact** payment and a separate attestor co-signs. | [World-approved 1.50 USDT](https://explorer.testnet.whitechain.io/tx/0x98fa814e805ab35e55124370539bc0c1889aef519d5c408800be2efc709cb531) · [proof](docs/proof/A2-world-approval.md) |
 | **ENS · Best Use of ENSv2** | `countersign.eth` with our own UserRegistry; `agent1.countersign.eth` with its own PermissionedResolver, ENSIP-26 agent records, policy text records and scoped role grants. The live app compares every ENS policy field against the Whitechain contract (**7/8 MATCH**). | [Live passport](https://countersign.someshtalligeri12.workers.dev/agent/agent1.countersign.eth) · [ENS transactions](docs/proof/A15-ens-onchain.md) |
+
+## Built on Whitechain · World · ENS
+
+Three protocols, three jobs, one payment that cannot go wrong. Each one does what it is best at, and none can move money alone.
+
+<table>
+<tr>
+<td width="33%" align="center" valign="top">
+<img src="docs/assets/partners/whitechain.png" alt="Whitechain" width="200" /><br />
+<h3>Whitechain</h3>
+<b>The contract is the judge.</b>
+</td>
+<td width="33%" align="center" valign="top">
+<img src="docs/assets/partners/world.png" alt="World" width="200" /><br />
+<h3>World ID · Agent Pass</h3>
+<b>A real human, on the exact payment.</b>
+</td>
+<td width="33%" align="center" valign="top">
+<img src="docs/assets/partners/ens.png" alt="ENS" width="200" /><br />
+<h3>ENSv2</h3>
+<b>Agents get a name and a public policy.</b>
+</td>
+</tr>
+<tr>
+<td valign="top">
+
+**What we built**
+- `Mandate` + `MerchantRegistry`, deployed and **source-verified** on Whitechain Sepolia (1874)
+- Every rule enforced on-chain: per-payment cap, period budget, merchant allowlist, payout binding, expiry, pause, nonce, epoch
+- Settles in **official testnet USDT**; the agent holds 0 USDT and 0 WBT, and our relayer sponsors gas within GasGuard limits
+
+**Why Whitechain**
+EVM-compatible and fast, with fees low enough that **50-cent agent purchases make sense**: payments nobody notices, enforced by code nobody can bypass.
+
+[`Mandate.pay()`](https://github.com/SomeshTalligeriDEV/Countersign/blob/acf3c9e7b9bc3b183f2ace167cec9bd34a62f614/contracts/src/Mandate.sol#L235-L267) · [live payment](https://explorer.testnet.whitechain.io/tx/0xefc8692e551bfdef4f468f85bee2e1a06d4491432a24e3277776b53c177a3c3d)
+
+</td>
+<td valign="top">
+
+**What we built**
+- Above the owner's threshold, payments **stop** until the owner signs in with World Agent Pass
+- OIDC + PKCE S256, `max_age=0` (fresh auth every time), CIMD public client, ID token checked against World's published keys
+- The owner signs the **exact** payment; a separate attestor co-signs; the contract rejects stale or missing attestations
+
+**Why World**
+A login is not a payment approval. World proves a **unique human** is present, and we bind that proof to one amount, one merchant, one order.
+
+[on-chain approval check](https://github.com/SomeshTalligeriDEV/Countersign/blob/acf3c9e7b9bc3b183f2ace167cec9bd34a62f614/contracts/src/Mandate.sol#L260-L294) · [World-approved payment](https://explorer.testnet.whitechain.io/tx/0x98fa814e805ab35e55124370539bc0c1889aef519d5c408800be2efc709cb531)
+
+</td>
+<td valign="top">
+
+**What we built**
+- `countersign.eth` with **our own UserRegistry**; `agent1.countersign.eth` with its **own PermissionedResolver**
+- ENSIP-26 `agent-endpoint[web]` + `agent-context`, plus the spending policy published as text records
+- Scoped roles: the agent key edits only its two agent records, never the policy; live **ENS vs chain** check (7/8 MATCH)
+
+**Why ENSv2**
+Hierarchical registries and resource-scoped permissions turn a name into a **verifiable agent passport** that anyone can audit against the contract.
+
+[ENS module](https://github.com/SomeshTalligeriDEV/Countersign/blob/acf3c9e7b9bc3b183f2ace167cec9bd34a62f614/packages/ens/src/index.mjs#L51-L139) · [on-chain records](docs/proof/A15-ens-onchain.md) · [live passport](https://countersign.someshtalligeri12.workers.dev/agent/agent1.countersign.eth)
+
+</td>
+</tr>
+</table>
+
+### Tech stack
+
+| Layer | Technologies |
+|---|---|
+| Smart contracts | Solidity 0.8.30, Foundry 1.9, OpenZeppelin Contracts 5.4, EIP-712, ERC-1271 |
+| Chains | Whitechain Sepolia (1874) for settlement · Ethereum Sepolia for ENSv2 |
+| Backend | Node.js 24, viem 2.35, SQLite, WebSocket events, HMAC webhooks, separate attestor process |
+| Identity | World Agent Pass (OIDC, PKCE, CIMD), ENSv2 UserRegistry + PermissionedResolver, ENSIP-26 |
+| Frontend | Next.js 16, React, Tailwind CSS, comic and manhwa design system |
+| Hosting | Cloudflare Workers (OpenNext) · Render (Docker) · Vercel mirror |
+| Quality | Foundry unit, invariant and adversarial tests · Node test runner · Playwright · GitHub Actions secret scan |
 
 ## Release status
 
