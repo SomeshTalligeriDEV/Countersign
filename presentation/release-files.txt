@@ -1,4 +1,5 @@
 README.md
+docs/release/GITHUB-METADATA.md
 presentation/COUNTERSIGN-7-Slide-Comic-Deck.pdf
 presentation/COUNTERSIGN-7-Slide-Comic-Deck.pptx
 presentation/GIT-HANDOFF.md

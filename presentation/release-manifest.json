@@ -4,8 +4,8 @@
   "git_blocker": "Read-only metadata; branch creation failed",
   "files": {
     "README.md": {
-      "sha256": "d2b76d3f18eb3bad3a49e2be3ee57a9704aa66a3285ccf273d040801909ae4f6",
-      "bytes": 19769
+      "sha256": "26f8e598aa61dba5b93b8f0535c30df7eb59979e3acff0010f2139b8ce79127b",
+      "bytes": 25631
     },
     "presentation/COUNTERSIGN-7-Slide-Comic-Deck.pdf": {
       "sha256": "b536347f9eff516328dc90c915e1381833744db8b8d882a21168b2f49fc8c707",
@@ -100,8 +100,8 @@
       "bytes": 96350
     },
     "presentation/release-files.txt": {
-      "sha256": "89a0bf84f02b2ea6d54f2eb8a69a492620c15eae0e9e13fbda5bd8d00d3f3beb",
-      "bytes": 2597
+      "sha256": "752ad806016f5d78ba759375c01bbc8ddbfbbd6a4166a688678f53081040cfe2",
+      "bytes": 2629
     },
     "research/PDF-QUALITY-REPORT.md": {
       "sha256": "0ede9bf77f4336bfdb1cb84820a0e385fc0c22b71f3f66b2a77febd45fd41164",
@@ -270,6 +270,10 @@
     "research/paper/quality/balanced-review/clean-archive-build.json": {
       "sha256": "3455b7e2f88ad6210587fdbd051503343d63cf303d26d9cb19b1ee4607c76a86",
       "bytes": 1541
+    },
+    "docs/release/GITHUB-METADATA.md": {
+      "sha256": "f04b601490a62b0225a6d7407e2bcbfba97336af2b1adfa81231af784c4b49b3",
+      "bytes": 1598
     }
   }
 }

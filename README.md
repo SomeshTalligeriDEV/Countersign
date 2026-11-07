@@ -1,12 +1,59 @@
-# Countersign
+<div align="center">
+  <img src="presentation/assets/countersign-logo.png" alt="Countersign emblem" width="104" />
+  <h1>Countersign</h1>
+  <p><strong>Agents have identities. Identities have permissions. Payments have proofs.</strong></p>
+  <p>Bounded agent payments with Whitechain, World and ENSv2.</p>
 
-**Agents have identities. Identities have permissions. Payments have proofs.**
+  <a href="#whitechain-settlement-and-spending-policy"><img src="https://img.shields.io/badge/Whitechain-Sepolia%20%C2%B7%201874-111B26?style=flat-square" alt="Whitechain Sepolia chain 1874" /></a>
+  <a href="#world-human-authentication-and-exact-approval"><img src="https://img.shields.io/badge/World-Agent%20Pass%20sandbox-111B26?style=flat-square" alt="World Agent Pass sandbox" /></a>
+  <a href="#ensv2-identity-and-authority"><img src="https://img.shields.io/badge/ENSv2-Identity%20%26%20permissions-111B26?style=flat-square" alt="ENSv2 identity and permissions" /></a>
+  <br />
+  <a href="presentation/evidence/node-tests.txt"><img src="https://img.shields.io/badge/Node-157%20local%20tests-27856E?style=flat-square" alt="157 passing local Node tests, recorded 7 November 2026" /></a>
+  <a href="#tests-and-research-reproducibility"><img src="https://img.shields.io/badge/Solidity-131%20recorded%20executions-27856E?style=flat-square" alt="131 recorded Solidity test executions, including repetitions" /></a>
+  <a href="research/PUBLICATION-STATUS.md"><img src="https://img.shields.io/badge/Research-Preprint%20revision-D6A344?style=flat-square" alt="Research preprint revision" /></a>
+  <a href="#release-status"><img src="https://img.shields.io/badge/Release-Testnet%20%C2%B7%20acceptance%20incomplete-D6A344?style=flat-square" alt="Testnet release, acceptance incomplete" /></a>
+  <br />
+  <a href="https://countersign.someshtalligeri12.workers.dev"><img src="https://img.shields.io/badge/Live%20app-Cloudflare%20Workers-F38020?style=for-the-badge&logo=cloudflare&logoColor=white" alt="Live app on Cloudflare Workers" /></a>
+  <a href="https://countersign-api-44lz.onrender.com/health/ready"><img src="https://img.shields.io/badge/API-Render-46E3B7?style=for-the-badge&logo=render&logoColor=black" alt="API on Render" /></a>
+  <a href="https://ethglobal.com/events/mumbai"><img src="https://img.shields.io/badge/ETHGlobal-Mumbai%202026-5B3FD1?style=for-the-badge&logo=ethereum&logoColor=white" alt="ETHGlobal Mumbai 2026" /></a>
+  <br />
+  <img src="https://img.shields.io/badge/Solidity-0.8.30-363636?style=flat-square&logo=solidity" alt="Solidity 0.8.30" />
+  <img src="https://img.shields.io/badge/Foundry-1.9-black?style=flat-square" alt="Foundry" />
+  <img src="https://img.shields.io/badge/Next.js-16-000?style=flat-square&logo=nextdotjs" alt="Next.js 16" />
+  <img src="https://img.shields.io/badge/Node-24-339933?style=flat-square&logo=nodedotjs&logoColor=white" alt="Node 24" />
+  <img src="https://img.shields.io/badge/viem-2.35-1E1E20?style=flat-square" alt="viem" />
+  <img src="https://img.shields.io/badge/EIP--712-typed%20intents-627EEA?style=flat-square&logo=ethereum&logoColor=white" alt="EIP-712" />
+  <a href="https://github.com/SomeshTalligeriDEV/ETHGLOBAL/actions"><img src="https://github.com/SomeshTalligeriDEV/ETHGLOBAL/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
 
-Countersign combines ENSv2 agent identities and scoped record permissions with contract-enforced USDT spending mandates on Whitechain. Sensitive payments require fresh World sandbox authentication, a separate attestor signature and the owner's signature over the exact payment.
+  <p>
+    <a href="https://countersign.someshtalligeri12.workers.dev"><strong>Open app</strong></a> ·
+    <a href="#demo-video">Demo &amp; transactions</a> ·
+    <a href="https://countersign.someshtalligeri12.workers.dev/release/countersign-deck.pdf">Pitch deck</a> ·
+    <a href="research/paper/COUNTERSIGN-Research-Paper.pdf">Research paper</a> ·
+    <a href="#repository-and-setup">Build locally</a>
+  </p>
+</div>
 
-This is a **testnet implementation and systems-security research artifact with a locally revised manuscript**. It is not independently audited, production-ready or a new cryptographic authorization primitive.
+---
 
-**[Live app](https://countersign.someshtalligeri12.workers.dev)** · [Live API](https://countersign-api-44lz.onrender.com/health/ready) · [Source](https://github.com/SomeshTalligeriDEV/ETHGLOBAL) · [Project owner](https://github.com/SomeshTalligeriDEV) · [Research PDF](research/paper/COUNTERSIGN-Research-Paper.pdf) · [Security](SECURITY.md) · [Release evidence](docs/FINAL-RELEASE-REPORT.md)
+An autonomous agent should be able to request a purchase without receiving unrestricted control of a treasury. **Countersign binds each protected payment to exact signed terms and an owner-configured spending policy.** Sensitive payments additionally require fresh World sandbox authentication, an attestor assertion and the owner's signature.
+
+| Whitechain | World | ENSv2 |
+|---|---|---|
+| **Enforce the payment.** Mandates, merchant payout binding, limits, replay protection and official-USDT settlement. | **Authenticate the human.** Fresh sandbox authentication, session/subject binding and a separate exact-payment approval. | **Discover the agent.** Hierarchical identity, scoped resolver permissions and inspectable policy references. |
+| Financial authority lives in the payment contract. | A login alone cannot authorize a transfer. | Editing identity metadata cannot grant spending rights. |
+
+> **Evidence first.** This is a testnet systems-security implementation. Local tests, recorded transactions and unverified integration paths are labeled separately. It is not independently audited or production-ready. Badge counts are recorded checkpoints, not live CI status.
+
+**Navigate:** [How it works](#what-countersign-protects) · [Architecture](#what-countersign-protects) · [Deployments](#recorded-deployments-and-settlement) · [Security](#security-boundaries) · [Research](#research-draft) · [Disclosures](#sponsor-alignment-and-disclosures)
+
+## ETHGlobal Mumbai 2026 · prize tracks
+
+| Track | What we built for it | Proof |
+|---|---|---|
+| **Whitechain · Stablecoin Payments / Payments Nobody Notices** | Mandate + MerchantRegistry contracts (verified) enforce per-payment cap, period budget, merchant allowlist, expiry, pause and epoch. The agent holds 0 USDT / 0 WBT; the relayer sponsors gas under GasGuard limits; payments settle in **official testnet USDT** in seconds. | [Payment 0xefc8692e…](https://explorer.testnet.whitechain.io/tx/0xefc8692e551bfdef4f468f85bee2e1a06d4491432a24e3277776b53c177a3c3d) · [pause](https://explorer.testnet.whitechain.io/tx/0x1a232e63524f6a992271cccdee1e37122366f03d5cdc5aa86f8714c370ccf9cc) / [unpause](https://explorer.testnet.whitechain.io/tx/0x97d66455a328b2b8cb5cc434c7635ff20f557ee74f948cdeb9ea6fd58a2f4d98) |
+| **World · Agent Pass** | Payments above the threshold require fresh World Agent Pass sign-in (OIDC, PKCE S256, `max_age=0`, CIMD public client), then the owner signs the **exact** payment and a separate attestor co-signs. | [World-approved 1.50 USDT](https://explorer.testnet.whitechain.io/tx/0x98fa814e805ab35e55124370539bc0c1889aef519d5c408800be2efc709cb531) · [proof](docs/proof/A2-world-approval.md) |
+| **ENS · Best Use of ENSv2** | `countersign.eth` with our own UserRegistry; `agent1.countersign.eth` with its own PermissionedResolver, ENSIP-26 agent records, policy text records and scoped role grants. The live app compares every ENS policy field against the Whitechain contract (**7/8 MATCH**). | [Live passport](https://countersign.someshtalligeri12.workers.dev/agent/agent1.countersign.eth) · [ENS transactions](docs/proof/A15-ens-onchain.md) |
 
 ## Release status
 
@@ -15,7 +62,7 @@ This is a **testnet implementation and systems-security research artifact with a
 | Area | Implemented and evidenced | Remaining acceptance gap |
 |---|---|---|
 | ENSv2 identity and permissions | Recorded registry/resolver setup and scoped grants; local passport and permission logic | Deployed-state fork execution, negative-permission and revocation verification |
-| Whitechain settlement | Recorded verified contracts and official-USDT payments; local budget, replay and payout-binding tests | Fresh settlement against the changed application and full merchant/browser journey |
+| Whitechain settlement | Recorded verified contracts and official-USDT payments; local budget, replay and payout-binding tests | Fresh settlement and owner pause/unpause recorded 7 Nov 2026 (see [Demo video](#demo-video)); full merchant/browser journey still open |
 | World human approval | Recorded sandbox-approved payment; local JWT, exact-signature, session and cancellation tests | Fresh integrated sandbox sign-in and browser acceptance; no production identity assurance |
 | Passport and policy monitoring | Block-specific reads, effective spending calculations, persistent monitor and strict relay gate tested with fixtures | Complete live authority evidence, monitoring configuration and current policy comparison |
 | Independent receipts | Historical receipt, transfer, signature and policy checks tested with fake RPC responses | Real archive-RPC verification and browser upload/download acceptance |
@@ -25,7 +72,7 @@ This is a **testnet implementation and systems-security research artifact with a
 
 The [acceptance matrix](docs/release/FINAL-GAP-MATRIX.md) is the detailed source of truth. No production-ready claim is made.
 
-## Live deployment
+## Application endpoints
 
 | Component | URL | Host |
 |---|---|---|
@@ -37,15 +84,15 @@ Render's free tier sleeps when idle, so the first request can take about 50 s. I
 
 ## Demo video
 
-Narrated 3:37 walkthrough recorded on 7 November 2026 (video link on the ETHGlobal submission page). The live scenes ran against Whitechain Sepolia as they were recorded:
+The project records a **3:37 narrated walkthrough**, captured on 7 November 2026. Its video link is on the ETHGlobal submission page; no direct video URL is stored here. The recorded Whitechain Sepolia scenes and transaction references are:
 
-| Scene | Real on-chain result |
+| Recorded scene | Evidence / enforcement layer |
 |---|---|
 | Owner connects wallet (mandate owner `0x1079…25c7D`) and **pauses** the mandate | [pause tx 0x1a232e63…f9cc](https://explorer.testnet.whitechain.io/tx/0x1a232e63524f6a992271cccdee1e37122366f03d5cdc5aa86f8714c370ccf9cc) |
-| Agent tries to pay while paused | Refused (`inactive_agent_policy`), no transfer |
+| Agent tries to pay while paused | Service refused (`inactive_agent_policy`); no transfer, not a mined revert |
 | Owner **unpauses** | [unpause tx 0x97d66455…4d98](https://explorer.testnet.whitechain.io/tx/0x97d66455a328b2b8cb5cc434c7635ff20f557ee74f948cdeb9ea6fd58a2f4d98) |
 | Agent pays 0.50 USDT, gas sponsored by the relayer | [payment tx 0xefc8692e…3c3d](https://explorer.testnet.whitechain.io/tx/0xefc8692e551bfdef4f468f85bee2e1a06d4491432a24e3277776b53c177a3c3d) |
-| Tampered amount / redirected payout | Both refused (`bad_intent_sig`), no transfer |
+| Tampered amount / redirected payout | Both refused (`bad_intent_sig`); no transfer, not a mined revert |
 | World-approved 1.50 USDT payment | [tx 0x98fa814e…b531](https://explorer.testnet.whitechain.io/tx/0x98fa814e805ab35e55124370539bc0c1889aef519d5c408800be2efc709cb531) (recorded earlier, labelled as such in the video) |
 
 In the recording, the owner wallet is a browser EIP-1193 provider that forwards each request to the owner's local Foundry keystore. The key never enters the browser. Other real payments made on 7 November: [0xc79f0923…bfff](https://explorer.testnet.whitechain.io/tx/0xc79f0923082896c15041bfc3afb8024a3c919802ae3da38a5f3a480531bcfbff), [0x80c41d70…872d](https://explorer.testnet.whitechain.io/tx/0x80c41d70946df6061391e5e1bdb70f8ad74048be4f1e2c2ec43340a55a12872d), [0x3b7fe78d…09d9](https://explorer.testnet.whitechain.io/tx/0x3b7fe78d21cf28f3fe883a04ed7617bba6a22f62889775da41ccd465c27009d9).
@@ -62,6 +109,25 @@ An agent may request a payment without receiving unrestricted control of the tre
 6. The Mandate executes the protected transfer. The observer derives confirmed status from logs; merchants receive receipts, signed webhooks and history.
 
 ![Architecture](docs/architecture.svg)
+
+## Whitechain settlement and spending policy
+
+The treasury owner creates a `Mandate` and approves a limited allowance of the official test USDT. `MerchantRegistry` binds merchant identities to active payout addresses and versions. A signed payment must match both the selected merchant terms and current mandate policy before `transferFrom` can move funds.
+
+- **Exact intent:** EIP-712 binds the deployment, chain, merchant, payout, amount, order, resource, nonce, epoch and deadline.
+- **Bounded execution:** per-payment and period limits, an allowlist, expiry, pause, nonce consumption and order deduplication are enforced onchain.
+- **Sponsored payment gas:** the relayer validates and simulates requests before reserving GasGuard capacity. Treasury setup still costs gas.
+- **Merchant operations:** HTTP 402 middleware, an agent client, event-derived receipts, signed webhooks, history, CSV and bounded merchant-funded refunds.
+
+[Mandate source](contracts/src/Mandate.sol) · [Registry source](contracts/src/MerchantRegistry.sol) · [Merchant SDK](packages/merchant) · [Agent SDK](packages/agent)
+
+## World human authentication and exact approval
+
+At or above the configured threshold, a payment requires an additional human checkpoint. The backend performs OIDC authorization-code authentication with PKCE S256, state/nonce checks, JWKS-backed token validation, subject/session binding and authentication freshness. The owner then signs the exact payment approval; the separate attestor process signs the corresponding assertion.
+
+Authentication, owner consent and execution are separate decisions. Denied, expired, mismatched and cancelled requests are handled explicitly. Local signed JWT fixtures test validation failures; the recorded sandbox-approved payment is a different evidence class. Sandbox identities do not establish production proof of personhood, and cancellation cannot retract an already exported signature.
+
+[OIDC implementation](apps/api/src/world-oidc.mjs) · [Owner approval](apps/api/src/owner-signature.mjs) · [Attestor](apps/attestor) · [Recorded sandbox flow](docs/proof/A2-world-approval.md)
 
 ## ENSv2 identity and authority
 
@@ -80,7 +146,7 @@ New local features:
 
 ## Recorded deployments and settlement
 
-These are preserved project execution records, not fresh RPC corroboration of this release.
+These are preserved project execution records. This README styling pass did not re-query chain state or independently verify endpoint uptime.
 
 | Item | Recorded evidence |
 |---|---|
@@ -118,6 +184,7 @@ Historical six-step demos each passed 5/6 steps and missed World approval at the
 | `apps/demo-merchant/`, `apps/demo-agent/` | Separate merchant integration and payment scenarios |
 | `web/` | Owner, merchant, approval, receipt and ENS views |
 | `research/` | Draft manuscript, references, historical raw results and reproduction scripts |
+| `presentation/` | Seven-slide comic deck, original logo, speaker notes and reproducible layout |
 
 Toolchain: Node 24.10+, Foundry 1.9.0, solc 0.8.30, Prague, viaIR and optimizer 200. OpenZeppelin 5.4.0 and viem 2.35.0 are pinned. Use lockfiles:
 
@@ -137,7 +204,7 @@ Configure service-local gitignored environment files from examples. Never place 
 
 Run `npm run release:verify` from a normal network/port-enabled terminal for evidence-preserving local, RPC, fork and browser checks. This command never signs, broadcasts, deploys or publishes. It distinguishes fixture/fork checks from pending live runs.
 
-The latest local regression checks are in [gap-closure checks](docs/evidence/gap-closure/final-checks/checks.json). Four acceptance-runner tests also pass. [Gap-closure report and blockers](docs/release/GAP-CLOSURE.md). The [human laptop acceptance run](docs/evidence/acceptance/20261107T000728602239Z/results.json) passed the production build and executed browser fixtures:35passed,5failed,zero skipped. Four alert-selector failures and a homepage contrast issue have source fixes pending rerun. ENS fork compilation passes, but RPC HTTP errors blocked execution in that run. [Current project summary](docs/release/CURRENT-PROJECT-SUMMARY.md). New monitor, verifier and wallet tests explicitly use fixtures.
+The latest local regression checks are in [gap-closure checks](docs/evidence/gap-closure/final-checks/checks.json). Four acceptance-runner tests also pass. [Gap-closure report and blockers](docs/release/GAP-CLOSURE.md). The [human laptop acceptance run](docs/evidence/acceptance/20261107T000728602239Z/results.json) passed the production build and executed browser fixtures: **35 passed, 5 failed, zero skipped**. Four alert-selector failures and a homepage contrast issue have source fixes pending rerun. ENS fork compilation passes, but RPC HTTP errors blocked execution in that run. [Current project summary](docs/release/CURRENT-PROJECT-SUMMARY.md). New monitor, verifier and wallet tests explicitly use fixtures.
 
 ```sh
 npm test
@@ -149,9 +216,7 @@ web/node_modules/.bin/tsc --project web/tsconfig.json --noEmit
 python3 scripts/secret-scan.py --self-test
 ```
 
-The manuscript is **Countersign: Transaction-Bound Agent Payments with Whitechain, World and ENSv2**, provisionally attributed to Somesh S. Talligeri. Its recorded evaluation checkpoint remains separate from the newer integration tests; historical measurements were not replaced. The 22-page PDF compiles and has been internally inspected page by page. [Source rebuild and provenance](research/paper/REPRODUCIBILITY.md) · [Related work](research/LITERATURE_REVIEW.md) · [Publication status](research/PUBLICATION-STATUS.md).
-
-Gas figures are single-case **local mock-token call-region measurements**, excluding intrinsic gas, setup, network fees and human time. They are not Whitechain mainnet/public-testnet benchmarks. The contribution is a systems-security implementation and evaluation, not a claimed new authorization primitive. Author/contributor consent, scientific sign-off and separate paper/software licenses remain unresolved. No arXiv submission occurred.
+The paper and its build package are described in [Research draft](#research-draft). Application tests and manuscript compilation are separate checks.
 
 ## Sponsor alignment and disclosures
 
@@ -163,22 +228,51 @@ AI assistance: OpenAI Codex assisted with implementation, debugging, tests, coor
 
 ## Research draft
 
-The manuscript is an **locally revised systems-security preprint draft**. Its original diagrams describe the implementation; gas charts use preserved local mock-token measurements. The user supplied [Zenodo record 24025815](https://zenodo.org/records/24025815); its deposited version could not be independently retrieved in this pass. The balanced local revision has not been uploaded.
+**Countersign: Transaction-Bound Agent Payments with Whitechain, World and ENSv2**
 
-[Reader PDF](research/paper/COUNTERSIGN-Research-Paper.pdf) · [Rebuild instructions](research/paper/REPRODUCIBILITY.md) · [Quality report](research/PDF-QUALITY-REPORT.md).
+A systems-security implementation and evaluation with balanced coverage of settlement, human authentication and delegated identity. The local revision contains **22 pages, 25 cited references and eight vector figures**. It compiles from the packaged sources and has undergone internal visual review; that is not independent scientific peer review.
 
-Author/contributor consent, manuscript licensing and scientific sign-off remain pending. No peer review or publication of this local revision is claimed.
+| Read | Reproduce | Inspect |
+|---|---|---|
+| [Research PDF](research/paper/COUNTERSIGN-Research-Paper.pdf) | [Build instructions](research/paper/REPRODUCIBILITY.md) | [Quality report](research/PDF-QUALITY-REPORT.md) |
+| [Prepared Zenodo bundle](research/zenodo/COUNTERSIGN-Zenodo-Upload.zip) | [LaTeX source archive](research/paper/COUNTERSIGN-arxiv-source.zip) | [Three-protocol revision](research/THREE-PROTOCOL-REVISION.md) |
 
-## Project metadata
+Gas figures are single-case **local mock-token call-region measurements**, excluding intrinsic gas, setup, network fees and human time. They are not Whitechain mainnet/public-testnet benchmarks. Historical measurements and test checkpoints remain distinct from later application runs; no new cryptographic primitive is claimed.
+
+The project owner supplied [Zenodo record 24025815](https://zenodo.org/records/24025815). Its deposited file/version was not independently retrieved in this pass; the balanced local revision has not been uploaded by this agent. [Publication status](research/PUBLICATION-STATUS.md) records that distinction. No arXiv submission occurred.
+
+Displayed author: **Somesh S. Talligeri**, subject to final contributor consent, author order, rights, separate manuscript licensing and scientific sign-off. [Related work](research/LITERATURE_REVIEW.md).
+
+## Maintainer and repository topics
 
 Maintainer profile: [SomeshTalligeriDEV](https://github.com/SomeshTalligeriDEV). This identifies the GitHub project owner; manuscript author order and contributor consent are separate publication decisions.
 
-Suggested GitHub topics: `ens`, `ensv2`, `ethereum`, `solidity`, `web3`, `agent-identity`, `delegated-authorization`, `eip-712`, `stablecoin-payments`, `whitechain`, `world-id`, `security-research`, `reproducible-research`, `ethglobal`.
+Suggested GitHub topics:
 
+```text
+whitechain world-id ens ensv2 ethereum solidity agent-identity
+stablecoin-payments delegated-authorization eip-712 erc-1271
+security-research reproducible-research ethglobal
+```
+
+These are discovery labels, not sponsor endorsements, release tags or certification.
 [Repository description and topic settings](docs/release/GITHUB-METADATA.md) are prepared locally. Public GitHub metadata and the remote branch have not been changed by this documentation update.
 
-## Illustrated project presentation
+## Illustrated presentation
 
 [Seven-slide PowerPoint](presentation/COUNTERSIGN-7-Slide-Comic-Deck.pptx) · [PDF](presentation/COUNTERSIGN-7-Slide-Comic-Deck.pdf) · [Offline deck and notes](presentation/README.md) · [Original transparent logo](presentation/assets/countersign-logo.png).
 
-The manhwa-inspired deck explains Whitechain settlement, World authentication and ENSv2 discovery with equal architectural attention. Illustrations explain the story; they are not product screenshots or live-chain evidence. The notes distinguish current local tests, historical transactions and open verification gaps.
+The seven-slide manhwa-inspired deck explains the problem, architecture, ENS permissions, automatic payment journey, World checkpoint, security checks and evidence. Editable labels and diagrams sit alongside original illustrative artwork. Whitechain, World and ENS receive equal architectural attention. Illustrations explain the story; they are not product screenshots or live-chain evidence. The notes distinguish current local tests, historical transactions and open verification gaps.
+
+<details>
+<summary><strong>Preview the seven-slide presentation</strong></summary>
+
+![Seven-slide Countersign presentation preview](presentation/previews/contact-sheet.jpg)
+
+Illustrative artwork, not application screenshots or proof of live execution. See the slide notes for sources and limitations.
+
+</details>
+
+---
+
+**Identity through ENSv2. Human authentication through World. Financial enforcement through Whitechain.**
