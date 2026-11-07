@@ -37,15 +37,18 @@ Render's free tier sleeps when idle, so the first request can take about 50 s. I
 
 ## Demo video
 
-Narrated 2:39 walkthrough recorded on 7 November 2026 (video link on the ETHGlobal submission page). The recording shows:
+Narrated 3:37 walkthrough recorded on 7 November 2026 (video link on the ETHGlobal submission page). The live scenes ran against Whitechain Sepolia as they were recorded:
 
-- landing page, live mandate read from Whitechain, and the ENSv2 passport with live ENS-vs-chain comparison;
-- **a fresh real 0.50 USDT payment made during the recording**: [tx 0x3b7fe78d…09d9](https://explorer.testnet.whitechain.io/tx/0x3b7fe78d21cf28f3fe883a04ed7617bba6a22f62889775da41ccd465c27009d9), gas sponsored by the relayer;
-- tampered-amount and redirected-payout attacks refused (`bad_intent_sig`, no transfer);
-- the World-approved 1.50 USDT payment ([tx 0x98fa814e…b531](https://explorer.testnet.whitechain.io/tx/0x98fa814e805ab35e55124370539bc0c1889aef519d5c408800be2efc709cb531)). This payment was recorded earlier, and the video labels it as such;
-- merchant receipts and signed webhooks.
+| Scene | Real on-chain result |
+|---|---|
+| Owner connects wallet (mandate owner `0x1079…25c7D`) and **pauses** the mandate | [pause tx 0x1a232e63…f9cc](https://explorer.testnet.whitechain.io/tx/0x1a232e63524f6a992271cccdee1e37122366f03d5cdc5aa86f8714c370ccf9cc) |
+| Agent tries to pay while paused | Refused (`inactive_agent_policy`), no transfer |
+| Owner **unpauses** | [unpause tx 0x97d66455…4d98](https://explorer.testnet.whitechain.io/tx/0x97d66455a328b2b8cb5cc434c7635ff20f557ee74f948cdeb9ea6fd58a2f4d98) |
+| Agent pays 0.50 USDT, gas sponsored by the relayer | [payment tx 0xefc8692e…3c3d](https://explorer.testnet.whitechain.io/tx/0xefc8692e551bfdef4f468f85bee2e1a06d4491432a24e3277776b53c177a3c3d) |
+| Tampered amount / redirected payout | Both refused (`bad_intent_sig`), no transfer |
+| World-approved 1.50 USDT payment | [tx 0x98fa814e…b531](https://explorer.testnet.whitechain.io/tx/0x98fa814e805ab35e55124370539bc0c1889aef519d5c408800be2efc709cb531) (recorded earlier, labelled as such in the video) |
 
-Other real payments made on 7 November: [0xc79f0923…bfff](https://explorer.testnet.whitechain.io/tx/0xc79f0923082896c15041bfc3afb8024a3c919802ae3da38a5f3a480531bcfbff), [0x80c41d70…872d](https://explorer.testnet.whitechain.io/tx/0x80c41d70946df6061391e5e1bdb70f8ad74048be4f1e2c2ec43340a55a12872d).
+In the recording, the owner wallet is a browser EIP-1193 provider that forwards each request to the owner's local Foundry keystore. The key never enters the browser. Other real payments made on 7 November: [0xc79f0923…bfff](https://explorer.testnet.whitechain.io/tx/0xc79f0923082896c15041bfc3afb8024a3c919802ae3da38a5f3a480531bcfbff), [0x80c41d70…872d](https://explorer.testnet.whitechain.io/tx/0x80c41d70946df6061391e5e1bdb70f8ad74048be4f1e2c2ec43340a55a12872d), [0x3b7fe78d…09d9](https://explorer.testnet.whitechain.io/tx/0x3b7fe78d21cf28f3fe883a04ed7617bba6a22f62889775da41ccd465c27009d9).
 
 ## What Countersign protects
 
