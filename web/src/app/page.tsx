@@ -77,6 +77,8 @@ export default function Home() {
       />
 
       <main>
+        <div className="cs-hero-stage">
+        <video className="cs-hero-bg" src="/media/countersign-overview.mp4" poster="/media/countersign-overview.jpg" autoPlay muted loop playsInline preload="metadata" aria-hidden="true" />
         <section className="cs-hero" aria-labelledby="hero-title">
           <p className="cs-trust cs-rise" style={{ "--d": "0s" } as React.CSSProperties}><span className="cs-trust-dot" aria-hidden="true" />Testnet · Whitechain · World ID · ENS</p>
           <h1 id="hero-title" className="cs-headline"><span>Spending mandates</span><span>for AI&nbsp;agents.</span></h1>
@@ -96,9 +98,6 @@ export default function Home() {
           </dl>
           <p className="cs-muted">Local test checkpoint: 7 November 2026. Counts are recorded evidence, not live network activity.</p>
         </section>
-
-        <div className="cs-wrap cs-film-wrap">
-          <video className="cs-film" src="/media/countersign-overview.mp4" poster="/media/countersign-overview.jpg" autoPlay muted loop playsInline preload="metadata" aria-label="Countersign overview animation" />
         </div>
 
         <div className="cs-wrap cs-term-wrap">
