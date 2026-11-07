@@ -1,0 +1,15 @@
+\begin{figure}[htbp]\centering
+\begin{tikzpicture}[x=1cm,y=1cm,>=Stealth,font=\small]
+\foreach \x/\name in {0/Owner,4/API,8/World,12/Attestor}{\node at (\x,0){\name};\draw[dashed,gray] (\x,-.3)--(\x,-8.7);}
+\draw[->] (0,-1)--node[above,font=\scriptsize,text width=36mm,align=center]{Inspect exact stored terms}(4,-1);
+\draw[->] (4,-2)--node[above,font=\scriptsize,text width=36mm,align=center]{PKCE, state, nonce; max\_age=0}(8,-2);
+\draw[->] (8,-3)--node[above,font=\scriptsize,text width=36mm,align=center]{Code exchange; JWT/JWKS validation}(4,-3);
+\draw[->] (4,-4)--node[above,font=\scriptsize,text width=36mm,align=center]{world\_ok: authentication only}(0,-4);
+\draw[->] (0,-5)--node[above,font=\scriptsize,text width=36mm,align=center]{Sign exact PaymentApproval}(4,-5);
+\draw[->] (4,-6)--node[above,font=\scriptsize]{Validated owner signature; request attestation}(12,-6);
+\draw[->] (12,-7)--node[above,font=\scriptsize]{Recompute stored digests; claim once; signed attestation}(4,-7);
+\node[draw,align=center,text width=105mm,font=\small] at (6,-9.5) {API rechecks policy and simulates. Relayer submits to Whitechain. Contract checks all signatures, current policy and freshness before transfer.};
+\draw[->] (4,-7.3)--(4,-8.3)--(6,-8.3)--(6,-9);
+\end{tikzpicture}
+\caption{Threshold-payment authorization. World authenticates; the owner signs the financial action. Denial, expiry and subject mismatch stop the backend path. A later database cancellation cannot invalidate signatures already released.}\label{fig:approval}
+\end{figure}

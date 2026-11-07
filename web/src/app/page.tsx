@@ -183,6 +183,36 @@ export default function Home() {
           </dl>
           </div>
         </section>
+        <section className="cs-sec cs-paper" aria-labelledby="kit">
+          <div className="cs-wrap">
+          <p className="cs-eyebrow">Press kit</p>
+          <h2 id="kit">Deck, paper and media</h2>
+          <div className="cs-kit">
+            <a className="cs-kit-hero" href="/release/countersign-deck.pdf" target="_blank" rel="noopener">
+              <img src="/release/slides-preview.jpg" alt="Preview of the seven Countersign slides" width={1100} height={1375} />
+              <span className="cs-kit-tag">7 slides · comic deck</span>
+            </a>
+            <ul className="cs-kit-list">
+              {[
+                ["Presentation (PDF)", "/release/countersign-deck.pdf", "Seven reviewed slides"],
+                ["Presentation (PowerPoint)", "/release/countersign-deck.pptx", "Editable .pptx"],
+                ["Research paper (PDF)", "/release/countersign-research-paper.pdf", "Revised 22-page preprint draft"],
+                ["Speaker notes", "/release/countersign-speaker-notes.md", "Per-slide talk track and evidence"],
+                ["Logo (transparent PNG)", "/release/countersign-logo.png", "For posts and slides"],
+                ["Zenodo upload bundle", "/release/countersign-zenodo-bundle.zip", "Paper, sources, metadata draft"],
+              ].map(([t, h, d], i) => (
+                <li key={h} className="cs-kit-item" style={{ "--i": i } as React.CSSProperties}>
+                  <a href={h} download={h.endsWith(".pdf") ? undefined : ""} target={h.endsWith(".pdf") ? "_blank" : undefined} rel="noopener">
+                    <span className="cs-kit-n">{String(i + 1).padStart(2, "0")}</span>
+                    <span><strong>{t}</strong><small>{d}</small></span>
+                    <span aria-hidden="true">↓</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+          </div>
+        </section>
         <section className="cs-sec cs-paper" aria-labelledby="faq">
           <div className="cs-wrap">
           <p className="cs-eyebrow">FAQ</p>

@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "scope": "Local package hashes and ZIP integrity; no remote operation",
+  "files": {
+    "COUNTERSIGN-Research-Paper.pdf": "30d616e3c6ae7d1c9b992849717c9646206410d35ba14ed4cb00248113da1270",
+    "COUNTERSIGN-source.zip": "b5fd6068ee07a863fe21141a365a0213d6e39d342a101df9b923ab31f4fb954d",
+    "UPLOAD.md": "97135abc10f7996e0747732167bd1cc9a9f91a12ebef5070a561c59f6b4c75f6",
+    "metadata-draft.json": "3a0567a510a49ef76f01105b2de8aac7a82c67f20dfee6327206d91375c39d26"
+  },
+  "zip_sha256": "6efaca032eb9c65335bb6d08cefb1c886dfc1acc857d9a5e97a9ccf5347775e2"
+}

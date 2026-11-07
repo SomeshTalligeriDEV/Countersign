@@ -1,0 +1,7 @@
+{
+  "status": "PASS",
+  "archive": "COUNTERSIGN-arxiv-source.zip",
+  "entries": 23,
+  "sha256": "b5fd6068ee07a863fe21141a365a0213d6e39d342a101df9b923ab31f4fb954d",
+  "claims": "ZIP integrity and allowlisted source closure; local PDF built separately, arXiv compilation untested, no submission approval"
+}

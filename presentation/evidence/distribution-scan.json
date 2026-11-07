@@ -1,0 +1,6 @@
+{
+  "status": "PASS",
+  "scope": "Contextual heuristic, not a full history audit",
+  "files_or_archive_entries": 74,
+  "findings": []
+}

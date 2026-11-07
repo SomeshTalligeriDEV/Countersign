@@ -1,0 +1,14 @@
+\begin{figure}[htbp]\centering
+\begin{tikzpicture}[x=1cm,y=1cm,>=Stealth,font=\small]
+\foreach \x/\name in {0/Agent,4/Merchant,8/API + relay,12/Whitechain}{\node at (\x,0){\name};\draw[dashed,gray] (\x,-.4)--(\x,-8.5);}
+\draw[->] (0,-1)--node[above,font=\scriptsize]{Resource request}(4,-1);
+\draw[->] (4,-2)--node[above,font=\scriptsize]{402 exact quote}(0,-2);
+\draw[->] (0,-3)--node[above,font=\scriptsize]{Signed intent; threshold approval collected separately}(8,-3);
+\draw[->] (8,-4)--node[above,font=\scriptsize,text width=36mm,align=center]{Simulate against current chain state}(12,-4);
+\draw[->] (8,-5)--node[above,font=\scriptsize,text width=36mm,align=center]{Reserve gas; persist bytes; broadcast}(12,-5);
+\draw[->] (12,-6)--node[above,font=\scriptsize,text width=36mm,align=center]{Receipt/logs: observer checks inclusion}(8,-6);
+\draw[->] (8,-7)--node[above,font=\scriptsize]{Confirmed receipt after three successor blocks}(0,-7);
+\draw[->] (0,-8)--node[above,font=\scriptsize,text width=36mm,align=center]{Retry resource; merchant checks receipt}(4,-8);
+\end{tikzpicture}
+\caption{Payment request and settlement sequence. A transaction hash alone does not release the resource. Observation is through RPC; the confirmation policy is not Ethereum finality. RPC errors and unknown outcomes do not become success.}\label{fig:payment}
+\end{figure}

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="430" viewBox="0 0 1000 430">
+<rect width="1000" height="430" fill="white"/>
+<g font-family="sans-serif" fill="#182734">
+<text x="30" y="32" font-size="21">Local mock-token execution-region gas</text>
+<text x="30" y="58" font-size="14">One recorded sample per configuration; no statistical uncertainty estimate</text>
+<path d="M300.0 82V326" stroke="#d8dce0"/>
+<text x="300.0" y="350" text-anchor="middle" font-size="13">0</text>
+<path d="M400.0 82V326" stroke="#d8dce0"/>
+<text x="400.0" y="350" text-anchor="middle" font-size="13">50,000</text>
+<path d="M500.0 82V326" stroke="#d8dce0"/>
+<text x="500.0" y="350" text-anchor="middle" font-size="13">100,000</text>
+<path d="M600.0 82V326" stroke="#d8dce0"/>
+<text x="600.0" y="350" text-anchor="middle" font-size="13">150,000</text>
+<path d="M700.0 82V326" stroke="#d8dce0"/>
+<text x="700.0" y="350" text-anchor="middle" font-size="13">200,000</text>
+<path d="M800.0 82V326" stroke="#d8dce0"/>
+<text x="800.0" y="350" text-anchor="middle" font-size="13">250,000</text>
+<path d="M900.0 82V326" stroke="#d8dce0"/>
+<text x="900.0" y="350" text-anchor="middle" font-size="13">300,000</text>
+<text x="285" y="119" text-anchor="end" font-size="15">Direct ERC20</text>
+<rect x="300" y="100" width="116.472" height="28" fill="#28577b"/>
+<text x="424.472" y="119" font-size="14">58,236</text>
+<text x="285" y="174" text-anchor="end" font-size="15">ERC20 allowance</text>
+<rect x="300" y="155" width="119.272" height="28" fill="#28577b"/>
+<text x="427.272" y="174" font-size="14">59,636</text>
+<text x="285" y="229" text-anchor="end" font-size="15">Countersign automatic</text>
+<rect x="300" y="210" width="481.342" height="28" fill="#28577b"/>
+<text x="789.342" y="229" font-size="14">240,671</text>
+<text x="285" y="284" text-anchor="end" font-size="15">Countersign human fixture</text>
+<rect x="300" y="265" width="517.256" height="28" fill="#28577b"/>
+<text x="825.256" y="284" font-size="14">258,628</text>
+<path d="M300 326H900" stroke="#182734"/>
+<text x="600" y="382" text-anchor="middle" font-size="16">Call-region gas (gas units)</text>
+<text x="30" y="413" font-size="12">Source: research/results/gas.csv; setup and intrinsic gas excluded; not public-chain fees.</text>
+</g></svg>

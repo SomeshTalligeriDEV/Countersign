@@ -7,7 +7,7 @@ export async function POST(request:Request){
  try{
   const raw=await request.text();if(raw.length>200)return Response.json({error:'Request too large.'},{status:413,headers});
   const body=JSON.parse(raw);if(!/^0x[\da-fA-F]{64}$/.test(body.mandateId))throw new Error('invalid_id');
-  const response=await fetch(new URL('/v1/onboarding',base),{method:'POST',headers:forwardHeaders(request,{'content-type':'application/json'}),body:JSON.stringify({mandateId:body.mandateId}),redirect:'error',signal:AbortSignal.timeout(10000)});
+  const response=await fetch(new URL('/v1/onboarding',base),{method:'POST',headers:forwardHeaders(request,{'content-type':'application/json'}),body:JSON.stringify({mandateId:body.mandateId}),redirect: 'manual',signal:AbortSignal.timeout(10000)});
   if(!response.ok)throw new Error('unavailable');const data=await response.json();
   if(!/^[a-f0-9-]{36}$/.test(data.onboardingId))throw new Error('invalid_response');
   const start=new URL('/auth/world/onboard/start',publicBase);start.searchParams.set('approvalId',data.onboardingId);

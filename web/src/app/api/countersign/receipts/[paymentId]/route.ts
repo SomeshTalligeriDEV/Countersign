@@ -7,8 +7,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ paym
   if (!base) return Response.json({ error: 'Receipt service is not configured.' }, { status: 503, headers });
   try {
     const [receipt, network] = await Promise.all([
-      fetch(new URL(`/v1/payments/${paymentId}`, base), { headers: forwardHeaders(request), cache: 'no-store', redirect: 'error', signal: AbortSignal.timeout(10000) }),
-      fetch(new URL('/v1/network', base), { headers: forwardHeaders(request), cache: 'no-store', redirect: 'error', signal: AbortSignal.timeout(10000) }),
+      fetch(new URL(`/v1/payments/${paymentId}`, base), { headers: forwardHeaders(request), cache: 'no-store', redirect: 'manual', signal: AbortSignal.timeout(10000) }),
+      fetch(new URL('/v1/network', base), { headers: forwardHeaders(request), cache: 'no-store', redirect: 'manual', signal: AbortSignal.timeout(10000) }),
     ]);
     if (receipt.status === 404) return Response.json({ error: 'No confirmed receipt yet. A payment may be pending or this ID may be unknown.' }, { status: 404, headers });
     if (!receipt.ok || !network.ok) throw new Error('unavailable');

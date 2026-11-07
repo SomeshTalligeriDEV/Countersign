@@ -5,7 +5,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
  const base=process.env.COUNTERSIGN_API_URL;
  if(!base)return Response.json({error:'Mandate service is not configured.'},{status:503,headers});
  try{
-  const response=await fetch(new URL(`/v1/mandates/${id}`,base),{headers: forwardHeaders(request), cache:'no-store',redirect:'error',signal:AbortSignal.timeout(10000)});
+  const response=await fetch(new URL(`/v1/mandates/${id}`,base),{headers: forwardHeaders(request), cache:'no-store',redirect: 'manual',signal:AbortSignal.timeout(10000)});
   if(!response.ok)throw new Error('unavailable');
   const data=await response.json();
   if(data.chainId!==1874||!/^0x[\da-fA-F]{40}$/.test(data.owner)||!Number.isInteger(data.decimals)||data.decimals<0||data.decimals>255||typeof data.paused!=='boolean')throw new Error('invalid_snapshot');

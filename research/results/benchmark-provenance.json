@@ -1,0 +1,9 @@
+{
+  "commit": "8b24bf3471312f78e661d07a9682b32e06501cab",
+  "source_sha256": "d86986df97d429140e9b0fa4890a949910bd5b62a61d6f289c7ca16d28a60b51",
+  "raw_sha256": "b67f0c0636afd01807a3e2cd5d83c71d239cb40b8fc6a553796f1f5147f23156",
+  "environment": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+  "method": "gasleft before/after external token or Mandate call; setup/signing excluded; warmness not normalized; local mock token only",
+  "samples_per_configuration": 1,
+  "statistical_inference": "none"
+}

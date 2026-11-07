@@ -1,0 +1,17 @@
+{
+  "source_sha256": "db55a91e5b6450f73a8d192dd0e880093a1af4363f774cffd1267a2adc80f9e2",
+  "generator_sha256": "d5a41ca28c3afc82d3f8f30a64e3fa9febd2ea9cae3109064800f440e83ff023",
+  "raw_trace": "docs/proof/research/benchmark-forge.txt",
+  "values_gas": [
+    58236,
+    59636,
+    240671,
+    258628
+  ],
+  "samples_per_configuration": 1,
+  "environment": "LOCAL_MOCK_TOKEN",
+  "outputs": {
+    "gas.tex": "3b0ed37bf17271ba5df6a48b1b463cf5eefe05e5bbbba2f6db02b6e7ef8f43d5",
+    "gas.svg": "84811e77bce0a6491f7c32df361cf59916517fee6a9f037d533cd62af19b7a17"
+  }
+}

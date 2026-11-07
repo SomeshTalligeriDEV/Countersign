@@ -4,7 +4,7 @@
 
 Countersign combines ENSv2 agent identities and scoped record permissions with contract-enforced USDT spending mandates on Whitechain. Sensitive payments require fresh World sandbox authentication, a separate attestor signature and the owner's signature over the exact payment.
 
-This is a **testnet implementation and unpublished systems-security research artifact**. It is not independently audited, production-ready or a new cryptographic authorization primitive.
+This is a **testnet implementation and systems-security research artifact with a locally revised manuscript**. It is not independently audited, production-ready or a new cryptographic authorization primitive.
 
 **[Live app](https://countersign.someshtalligeri12.workers.dev)** · [Live API](https://countersign-api-44lz.onrender.com/health/ready) · [Source](https://github.com/SomeshTalligeriDEV/ETHGLOBAL) · [Project owner](https://github.com/SomeshTalligeriDEV) · [Research PDF](research/paper/COUNTERSIGN-Research-Paper.pdf) · [Security](SECURITY.md) · [Release evidence](docs/FINAL-RELEASE-REPORT.md)
 
@@ -21,7 +21,7 @@ This is a **testnet implementation and unpublished systems-security research art
 | Independent receipts | Historical receipt, transfer, signature and policy checks tested with fake RPC responses | Real archive-RPC verification and browser upload/download acceptance |
 | Browser and hosting | Routes and deployment configuration implemented; lint/types pass | Human laptop build passes; browser fixtures 35 passed / 5 failed (fixes awaiting rerun); reliable public backend not established |
 | Full demonstrations | Two historical six-step runs each reached **5/6** | Two fresh complete runs remain **NOT_RUN** |
-| Research | **20-page PDF, 25 references, eight vector figures**, clean source rebuild and internal page review | Author/rights/license confirmation and scientific sign-off; manuscript unpublished |
+| Research | **22-page balanced PDF, 25 references, eight vector figures**, clean source rebuild and internal page review | Author/rights/license confirmation and scientific sign-off; local revision not deposited; user-provided Zenodo record not rechecked |
 
 The [acceptance matrix](docs/release/FINAL-GAP-MATRIX.md) is the detailed source of truth. No production-ready claim is made.
 
@@ -149,7 +149,7 @@ web/node_modules/.bin/tsc --project web/tsconfig.json --noEmit
 python3 scripts/secret-scan.py --self-test
 ```
 
-The manuscript is **Countersign: ENS-Native Identity and Verifiable Spending Authorization for Autonomous AI Agents**, provisionally attributed to Somesh S. Talligeri. Its recorded evaluation checkpoint remains separate from the newer integration tests; historical measurements were not replaced. The 20-page PDF compiles and has been internally inspected page by page. [Source rebuild and provenance](research/paper/REPRODUCIBILITY.md) · [Related work](research/LITERATURE_REVIEW.md) · [Publication status](research/PUBLICATION-STATUS.md).
+The manuscript is **Countersign: Transaction-Bound Agent Payments with Whitechain, World and ENSv2**, provisionally attributed to Somesh S. Talligeri. Its recorded evaluation checkpoint remains separate from the newer integration tests; historical measurements were not replaced. The 22-page PDF compiles and has been internally inspected page by page. [Source rebuild and provenance](research/paper/REPRODUCIBILITY.md) · [Related work](research/LITERATURE_REVIEW.md) · [Publication status](research/PUBLICATION-STATUS.md).
 
 Gas figures are single-case **local mock-token call-region measurements**, excluding intrinsic gas, setup, network fees and human time. They are not Whitechain mainnet/public-testnet benchmarks. The contribution is a systems-security implementation and evaluation, not a claimed new authorization primitive. Author/contributor consent, scientific sign-off and separate paper/software licenses remain unresolved. No arXiv submission occurred.
 
@@ -163,11 +163,11 @@ AI assistance: OpenAI Codex assisted with implementation, debugging, tests, coor
 
 ## Research draft
 
-The manuscript is an **unpublished systems-security preprint draft**. Its original diagrams describe the implementation; gas charts use preserved local mock-token measurements. Publication work is deferred during the final demo window.
+The manuscript is an **locally revised systems-security preprint draft**. Its original diagrams describe the implementation; gas charts use preserved local mock-token measurements. The user supplied [Zenodo record 24025815](https://zenodo.org/records/24025815); its deposited version could not be independently retrieved in this pass. The balanced local revision has not been uploaded.
 
 [Reader PDF](research/paper/COUNTERSIGN-Research-Paper.pdf) · [Rebuild instructions](research/paper/REPRODUCIBILITY.md) · [Quality report](research/PDF-QUALITY-REPORT.md).
 
-Author/contributor consent, manuscript licensing and scientific sign-off remain pending. No external publication or peer review is claimed.
+Author/contributor consent, manuscript licensing and scientific sign-off remain pending. No peer review or publication of this local revision is claimed.
 
 ## Project metadata
 
@@ -176,3 +176,9 @@ Maintainer profile: [SomeshTalligeriDEV](https://github.com/SomeshTalligeriDEV).
 Suggested GitHub topics: `ens`, `ensv2`, `ethereum`, `solidity`, `web3`, `agent-identity`, `delegated-authorization`, `eip-712`, `stablecoin-payments`, `whitechain`, `world-id`, `security-research`, `reproducible-research`, `ethglobal`.
 
 [Repository description and topic settings](docs/release/GITHUB-METADATA.md) are prepared locally. Public GitHub metadata and the remote branch have not been changed by this documentation update.
+
+## Illustrated project presentation
+
+[Seven-slide PowerPoint](presentation/COUNTERSIGN-7-Slide-Comic-Deck.pptx) · [PDF](presentation/COUNTERSIGN-7-Slide-Comic-Deck.pdf) · [Offline deck and notes](presentation/README.md) · [Original transparent logo](presentation/assets/countersign-logo.png).
+
+The manhwa-inspired deck explains Whitechain settlement, World authentication and ENSv2 discovery with equal architectural attention. Illustrations explain the story; they are not product screenshots or live-chain evidence. The notes distinguish current local tests, historical transactions and open verification gaps.

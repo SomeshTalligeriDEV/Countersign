@@ -1,0 +1,29 @@
+{
+  "directory": "/var/folders/m5/jgbj4wrs7w73nlmnntgrnk1c0000gn/T/countersign-paper-b5q48wdf",
+  "scope": "Clean extracted manuscript source build; no publication",
+  "commands": [
+    {
+      "command": [
+        "python3",
+        "verify-source.py"
+      ],
+      "exit": 0,
+      "output": "{\n  \"scope\": \"SOURCE ONLY: does not validate typesetting, scientific truth or arXiv acceptance\",\n  \"bibliography_entries\": 25,\n  \"cited_entries\": 25,\n  \"missing_inputs\": [],\n  \"missing_citations\": [],\n  \"unused_references\": [],\n  \"duplicate_bibkeys\": [],\n  \"missing_labels\": [],\n  \"duplicate_labels\": [],\n  \"environment_errors\": [],\n  \"gas_source_hash_matches\": true,\n  \"gas_output_hashes_match\": true,\n  \"python_syntax\": {\n    \"build.py\": \"PASS\",\n    \"verify-source.py\": \"PASS\",\n    \"package-source.py\": \"PASS\",\n    \"inspect-pdf.py\": \"PASS\",\n    \"generate-gas-figure.py\": \"PASS\"\n  },\n  \"historical_results_unchanged\": null,\n  \"status\": \"PASS\"\n}\n",
+      "error": ""
+    },
+    {
+      "command": [
+        "python3",
+        "build.py",
+        "--engine",
+        "tectonic",
+        "--timeout",
+        "180"
+      ],
+      "exit": 0,
+      "output": "{\n  \"status\": \"PASS\",\n  \"engine\": \"tectonic\",\n  \"result\": \"/private/var/folders/m5/jgbj4wrs7w73nlmnntgrnk1c0000gn/T/countersign-paper-b5q48wdf/quality/build-20261107T020057368900Z/result.json\",\n  \"pdf_copied\": true,\n  \"blocker\": null\n}\n",
+      "error": ""
+    }
+  ],
+  "status": "PASS"
+}

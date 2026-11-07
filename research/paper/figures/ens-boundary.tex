@@ -1,0 +1,15 @@
+\begin{figure}[htbp]\centering
+\begin{tikzpicture}[x=1cm,y=1cm,>=Stealth,box/.style={draw,rounded corners,align=center,font=\small,text width=42mm,minimum height=11mm}]
+\node[box] (root) at (0,0) {Sepolia ENSv2\\owner-administered registry};
+\node[box] (res) at (0,-1.8) {Agent subname\\dedicated permissioned resolver};
+\node[box] (read) at (6,0) {Passport / ordinary RPC\\identified blocks and hashes};
+\node[box] (pay) at (6,-3.6) {Whitechain Mandate\\signer, epoch, limits, expiry};
+\node[box] (roles) at (0,-3.6) {Agent: endpoint/context keys\\Owner: protected policy keys};
+\draw[->] (root)--(res);
+\draw[->] (res)--(roles);
+\draw[->,dashed] (res.east)--node[above,sloped,font=\scriptsize]{RPC read}(read.west);
+\draw[->,dashed] (pay)--node[right,font=\scriptsize]{block-specific read}(read);
+\node[font=\small,align=center,text width=115mm] at (3,-5) {No synchronous bridge. ENS edits do not update the financial policy.\\Reconciliation requires a separate owner-authorized Whitechain action.};
+\end{tikzpicture}
+\caption{ENS permissions and cross-chain trust. Setter scope is a text key across a resolver, so dedicated resolvers are required for the claimed agent isolation. Ordinary RPC observations can detect disagreement but are not cross-chain proofs. Recorded grants exist; permission-negative/revocation fork execution is blocked.}\label{fig:ens}
+\end{figure}

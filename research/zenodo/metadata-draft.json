@@ -1,0 +1,40 @@
+{
+  "status": "DRAFT_NOT_AN_API_PAYLOAD",
+  "target": "Zenodo",
+  "resource_type": "publication/preprint",
+  "title": "Countersign: Transaction-Bound Agent Payments with Whitechain, World and ENSv2",
+  "description": "Systems-security implementation case study giving Whitechain settlement, World sandbox authentication and ENSv2 identity/delegation equal analytical attention. Transaction-bound agent and owner signatures connect these distinct trust boundaries. The 22-page local revision includes 25 references, eight vector figures, recorded testnet evidence and reproducible local tests. A fresh 157-test Node checkpoint is separate from historical 109/154-test checkpoints and 131 Solidity executions including repetition. Gas results are four single-sample local mock-token observations, not public-network benchmarks. ENS fork execution and browser acceptance remain incomplete; two historical acceptance runs remain 5/6 each. No new cryptographic primitive, independent audit, production personhood or network performance superiority is claimed.",
+  "language": "eng",
+  "keywords": [
+    "ENSv2",
+    "autonomous agents",
+    "transaction authorization",
+    "EIP-712",
+    "World ID sandbox",
+    "Whitechain",
+    "security evaluation"
+  ],
+  "candidate_creators": [
+    {
+      "name": "Talligeri, Somesh S.",
+      "confirmed": false
+    }
+  ],
+  "creators_confirmation": "PENDING_AUTHOR_AND_CONTRIBUTOR_CONSENT",
+  "license": null,
+  "license_confirmation": "PENDING_SEPARATE_PAPER_LICENSE",
+  "publication_date": null,
+  "publication_date_instruction": "Use actual deposit/publication date; do not backdate",
+  "doi": null,
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/SomeshTalligeriDEV/ETHGLOBAL",
+      "relation": "isSupplementTo",
+      "resource_type": "software"
+    }
+  ],
+  "ai_disclosure": "Significant Codex assistance in engineering, literature review, writing, diagrams and artifact preparation; human authors must review every claim and reference.",
+  "video": "Latest repository README reports a recorded walkthrough; video not embedded",
+  "publication_status": "LOCAL_REVISION_NOT_DEPOSITED_EXISTING_RECORD_NOT_RETRIEVED",
+  "user_provided_existing_record": "https://zenodo.org/records/24025815"
+}

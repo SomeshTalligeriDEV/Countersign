@@ -1,0 +1,123 @@
+{
+  "scope": "Internal visual production review, not scientific peer review",
+  "pdf_sha256": "30d616e3c6ae7d1c9b992849717c9646206410d35ba14ed4cb00248113da1270",
+  "pages": 22,
+  "historical_results_unchanged": true,
+  "page_review": [
+    {
+      "page": 1,
+      "status": "PASS",
+      "review": "Rendered page inspected for clipping, blank sections, figure/table layout and citation rendering."
+    },
+    {
+      "page": 2,
+      "status": "PASS",
+      "review": "Rendered page inspected for clipping, blank sections, figure/table layout and citation rendering."
+    },
+    {
+      "page": 3,
+      "status": "PASS",
+      "review": "Rendered page inspected for clipping, blank sections, figure/table layout and citation rendering."
+    },
+    {
+      "page": 4,
+      "status": "PASS",
+      "review": "Rendered page inspected for clipping, blank sections, figure/table layout and citation rendering."
+    },
+    {
+      "page": 5,
+      "status": "PASS",
+      "review": "Rendered page inspected for clipping, blank sections, figure/table layout and citation rendering."
+    },
+    {
+      "page": 6,
+      "status": "PASS",
+      "review": "Rendered page inspected for clipping, blank sections, figure/table layout and citation rendering."
+    },
+    {
+      "page": 7,
+      "status": "PASS",
+      "review": "Rendered page inspected for clipping, blank sections, figure/table layout and citation rendering."
+    },
+    {
+      "page": 8,
+      "status": "PASS",
+      "review": "Rendered page inspected for clipping, blank sections, figure/table layout and citation rendering."
+    },
+    {
+      "page": 9,
+      "status": "PASS",
+      "review": "Rendered page inspected for clipping, blank sections, figure/table layout and citation rendering."
+    },
+    {
+      "page": 10,
+      "status": "PASS",
+      "review": "Rendered page inspected for clipping, blank sections, figure/table layout and citation rendering."
+    },
+    {
+      "page": 11,
+      "status": "PASS",
+      "review": "Rendered page inspected for clipping, blank sections, figure/table layout and citation rendering."
+    },
+    {
+      "page": 12,
+      "status": "PASS",
+      "review": "Rendered page inspected for clipping, blank sections, figure/table layout and citation rendering."
+    },
+    {
+      "page": 13,
+      "status": "PASS",
+      "review": "Rendered page inspected for clipping, blank sections, figure/table layout and citation rendering."
+    },
+    {
+      "page": 14,
+      "status": "PASS",
+      "review": "Rendered page inspected for clipping, blank sections, figure/table layout and citation rendering."
+    },
+    {
+      "page": 15,
+      "status": "PASS",
+      "review": "Rendered page inspected for clipping, blank sections, figure/table layout and citation rendering."
+    },
+    {
+      "page": 16,
+      "status": "PASS",
+      "review": "Rendered page inspected for clipping, blank sections, figure/table layout and citation rendering."
+    },
+    {
+      "page": 17,
+      "status": "PASS",
+      "review": "Rendered page inspected for clipping, blank sections, figure/table layout and citation rendering."
+    },
+    {
+      "page": 18,
+      "status": "PASS",
+      "review": "Rendered page inspected for clipping, blank sections, figure/table layout and citation rendering."
+    },
+    {
+      "page": 19,
+      "status": "PASS",
+      "review": "Rendered page inspected for clipping, blank sections, figure/table layout and citation rendering."
+    },
+    {
+      "page": 20,
+      "status": "PASS",
+      "review": "Rendered page inspected for clipping, blank sections, figure/table layout and citation rendering."
+    },
+    {
+      "page": 21,
+      "status": "PASS",
+      "review": "Rendered page inspected for clipping, blank sections, figure/table layout and citation rendering."
+    },
+    {
+      "page": 22,
+      "status": "PASS",
+      "review": "Rendered page inspected for clipping, blank sections, figure/table layout and citation rendering."
+    }
+  ],
+  "unresolved": [
+    "Independent scientific review",
+    "Author, contributor and license confirmation",
+    "Comparison with inaccessible user-provided Zenodo deposited file"
+  ]
+}

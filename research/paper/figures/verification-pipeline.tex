@@ -1,0 +1,18 @@
+\begin{figure}[htbp]\centering
+\begin{tikzpicture}[x=1cm,y=1cm,>=Stealth,
+ box/.style={draw,rounded corners,align=center,font=\small,text width=40mm,minimum height=15mm,inner sep=2mm}]
+\node[box,fill=blue!6] (file) at (0,0) {1. Public evidence file\\Schema, size, content hash};
+\node[box,fill=blue!6] (anchor) at (6.5,0) {2. Independent anchors\\Name, chains, deployment code};
+\node[box,fill=orange!8] (rpc) at (6.5,-2) {3. Identified RPC state\\Blocks, transaction, receipt};
+\node[box,fill=orange!8] (auth) at (0,-2) {4. Authorization checks\\Intent, signatures, policy};
+\node[box,fill=green!7] (scope) at (0,-4) {5. Separate results\\Transfer, authorization, linkage};
+\node[box,fill=red!5] (limit) at (6.5,-4) {Missing or ambiguous state\\UNVERIFIED, never success};
+\draw[->] (file)--(anchor);
+\draw[->] (anchor)--(rpc);
+\draw[->] (rpc)--(auth);
+\draw[->] (auth)--(scope);
+\draw[->,dashed] (rpc)--(limit);
+\draw[->,dashed] (auth.south east)--(limit.north west);
+\end{tikzpicture}
+\caption{Original diagram of the later locally tested payment verifier. File hashes prove integrity only relative to a trusted hash. Ordinary RPC reads do not supply consensus proofs. Earlier same-block policy mutations, unsupported historical smart-wallet validation or unavailable archive data prevent complete verification. No new live-chain result is implied.}\label{fig:verification}
+\end{figure}

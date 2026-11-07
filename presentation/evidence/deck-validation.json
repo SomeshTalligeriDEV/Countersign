@@ -1,0 +1,10 @@
+{
+  "status": "PASS",
+  "scope": "ZIP/XML/relationship closure, seven slides and seven speaker-note parts; seven PDF pages rendered and visually reviewed. Office application opening NOT TESTED.",
+  "slides": 7,
+  "notes": 7,
+  "files": {
+    "COUNTERSIGN-7-Slide-Comic-Deck.pptx": "ad12a83a93bc7eaf0993cd17c96d84600e25dd49fcf5472aeeb540afd07b4587",
+    "COUNTERSIGN-7-Slide-Comic-Deck.pdf": "b536347f9eff516328dc90c915e1381833744db8b8d882a21168b2f49fc8c707"
+  }
+}

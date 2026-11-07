@@ -8,7 +8,7 @@ export async function POST(request:Request){
   const reader=request.body?.getReader();if(!reader)throw new Error('missing_body');let size=0;const chunks:Uint8Array[]=[];
   while(true){const {done,value}=await reader.read();if(done)break;size+=value.length;if(size>4096){await reader.cancel();return Response.json({error:'Request too large.'},{status:413,headers});}chunks.push(value);}
   const body=JSON.parse(Buffer.concat(chunks).toString('utf8'));
-  const response=await fetch(new URL('/v1/owner/merchant',base),{method:'POST',headers:forwardHeaders(request,{'content-type':'application/json'}),body:JSON.stringify(body),redirect:'error',cache:'no-store',signal:AbortSignal.timeout(10000)});
+  const response=await fetch(new URL('/v1/owner/merchant',base),{method:'POST',headers:forwardHeaders(request,{'content-type':'application/json'}),body:JSON.stringify(body),redirect: 'manual',cache:'no-store',signal:AbortSignal.timeout(10000)});
   if(!response.ok)return Response.json({error:'Cannot prepare merchant access. Check the mandate owner, merchant registration and network.'},{status:response.status===400?400:503,headers});
   return Response.json(await response.json(),{headers});
  }catch{return Response.json({error:'Setup is unavailable. No transaction was sent.'},{status:503,headers});}

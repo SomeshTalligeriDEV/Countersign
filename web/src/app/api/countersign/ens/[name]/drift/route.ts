@@ -13,7 +13,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ name
   let chain = null;
   if (id && process.env.COUNTERSIGN_API_URL) {
     try {
-      const r = await fetch(new URL(`/v1/mandates/${id}`, process.env.COUNTERSIGN_API_URL), { headers: forwardHeaders(request), cache: 'no-store', redirect: 'error', signal: AbortSignal.timeout(10000) });
+      const r = await fetch(new URL(`/v1/mandates/${id}`, process.env.COUNTERSIGN_API_URL), { headers: forwardHeaders(request), cache: 'no-store', redirect: 'manual', signal: AbortSignal.timeout(30000) });
       const d = r.ok ? await r.json() : null;
       if (d?.chainId === 1874 && d.mandateId?.toLowerCase() === id.toLowerCase()) chain = d;
     } catch { chain = null; }

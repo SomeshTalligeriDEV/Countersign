@@ -1,0 +1,24 @@
+\begin{figure}[htbp]\centering
+\begin{tikzpicture}[x=1cm,y=1cm,>=Stealth,box/.style={draw,rounded corners,align=center,font=\small,text width=34mm,minimum height=12mm}]
+\node[box] (agent) at (0,0) {Agent key\\signed proposals};
+\node[box] (api) at (4.7,0) {API + SQLite\\identity/session state};
+\node[box] (relay) at (9.4,0) {Relayer + GasGuard\\sponsored submission};
+\node[box] (owner) at (0,-2) {Owner wallet\\exact approval signature};
+\node[box] (att) at (4.7,-2) {Separate attestor\\shared database trust};
+\node[box] (chain) at (9.4,-2) {Whitechain Mandate\\registry + token checks};
+\node[box] (world) at (0,-4) {World sandbox issuer\\authentication only};
+\node[box] (ens) at (4.7,-4) {Sepolia ENSv2\\identity / policy discovery};
+\node[box] (obs) at (9.4,-4) {Observer + merchant\\confirmed receipt};
+\node[box] (passport) at (4.7,-6) {Security Passport\\ordinary RPC comparisons};
+\draw[->] (agent)--node[above,font=\scriptsize]{intent}(api);
+\draw[->] (api)--(relay);
+\draw[->] (owner)--node[above,sloped,font=\scriptsize]{approval}(api);
+\draw[<->] (api)--node[right,font=\scriptsize]{stored digest}(att);
+\draw[->] (relay)--node[right,font=\scriptsize]{pay}(chain);
+\draw[->] (chain)--node[right,font=\scriptsize]{logs}(obs);
+\draw[->,dashed] (world.west) -- ++(-.4,0) |- (api.north);
+\draw[->,dashed] (ens)--(passport);
+\draw[->,dashed] (chain.west)--(7,-2)--(7,-6)--(passport.east);
+\end{tikzpicture}
+\caption{System and trust boundaries. Solid arrows carry signed requests, settlement calls or events; dashed arrows supply externally observed identity information. The owner, issuer, shared API/attestor database and chain are distinct trust assumptions. No ENS-to-Whitechain authority bridge exists.}\label{fig:architecture}
+\end{figure}

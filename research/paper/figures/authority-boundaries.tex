@@ -1,0 +1,13 @@
+\begin{figure}[htbp]\centering
+\begin{tikzpicture}[x=1cm,y=1cm,>=Stealth,
+ panel/.style={draw,rounded corners,align=left,font=\small,text width=39mm,minimum height=37mm,inner sep=3mm}]
+\node[panel,fill=blue!6] (ens) at (0,0) {\textbf{ENSv2 / Sepolia}\\Identity and discovery\\Scoped record writes\\Owner-controlled policy\\\textit{Not payment authority}};
+\node[panel,fill=orange!9] (world) at (4.8,0) {\textbf{World sandbox}\\Authentication context\\Backend validates token\\Owner signs exact action\\\textit{Not a payment signature}};
+\node[panel,fill=green!7] (pay) at (9.6,0) {\textbf{Whitechain / 1874}\\Agent + approval checks\\Limits, epoch and nonce\\Official-USDT transfer\\\textit{Execution authority}};
+\node[draw,rounded corners,align=center,font=\small,text width=125mm,minimum height=12mm,fill=black!3] (app) at (4.8,-3.3) {COUNTERSIGN application: correlate identity, preserve the exact intent,\\check signatures and policy; report incomplete evidence explicitly.};
+\draw[->,dashed] (ens.south)--(app.north west);
+\draw[->,dashed] (world.south)--(app.north);
+\draw[->] (app.north east)--(pay.south);
+\end{tikzpicture}
+\caption{Original authority map, derived from ENSv2 registry/resolver documentation~\cite{ensregistry,ensresolver}, World's application-owned action-approval boundary~\cite{worldstepup}, and the Whitechain testnet reference~\cite{whitechainnetwork}. Dashed edges carry identity observations; the solid edge submits a signed payment. No sponsor diagram or logo is reproduced, and no synchronous cross-chain authority is implied.}\label{fig:authority}
+\end{figure}

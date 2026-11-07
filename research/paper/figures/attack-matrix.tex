@@ -1,0 +1,14 @@
+\begin{table}[ht]\centering\small
+\begin{tabular}{p{.26\linewidth}p{.32\linewidth}p{.31\linewidth}}\toprule
+Attacker action & Enforced boundary & Evidence / residual risk\\\midrule
+Change amount or payout & Agent/owner digest and registry & Local tests; recorded mined reverts\\
+Reuse nonce/order & Contract replay maps & Local tests; order binding case\\
+Old epoch after revoke & Current policy equality & Local tests; recorded API rejection\\
+Forge identity state & Backend/attestor trust & Not solved by on-chain JWT verification\\
+Spend after ENS role edit & Whitechain policy unchanged & Not an immediate payment kill switch\\
+Replay webhook & Recipient event deduplication & Local tests; transport alone insufficient\\
+Delay broadcast/reorg & Deadline, observer hash checks & Availability/manual recovery remain\\
+Owner key compromise & Outside owner trust assumption & Wallet-wide protection not provided\\\bottomrule
+\end{tabular}
+\caption{Attack/defense matrix. Local tests, recorded live outcomes and non-guarantees are deliberately distinguished. Full scenario mapping is in the security artifact.}
+\end{table}

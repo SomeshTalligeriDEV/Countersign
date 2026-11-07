@@ -1,0 +1,16 @@
+\begin{figure}[htbp]\centering
+\begin{tikzpicture}[x=1cm,y=1cm,>=Stealth,box/.style={draw,rounded corners,align=center,font=\small,text width=36mm,minimum height=12mm}]
+\node[box] (a) at (0,0) {Unpaused\\epoch $e$};
+\node[box] (p) at (6,0) {Paused\\epoch $e$};
+\node[box] (b) at (0,-2.6) {Unpaused\\epoch $e+1$};
+\node[box] (q) at (6,-2.6) {Paused\\epoch $e+1$};
+\draw[->] (a) to[bend left=15] node[above,font=\small]{pause (epoch unchanged)} (p);
+\draw[->] (p) to[bend left=15] node[below,font=\small]{unpause} (a);
+\draw[->] (a)--node[left,font=\scriptsize,align=right]{revoke or\\epoch-changing update} (b);
+\draw[->] (p)--node[right,font=\scriptsize,align=left]{revoke or\\epoch-changing update} (q);
+\draw[->] (b) to[bend left=15] node[above,font=\scriptsize]{pause} (q);
+\draw[->] (q) to[bend left=15] node[below,font=\scriptsize]{unpause} (b);
+\node[align=center,font=\small,text width=115mm] at (3,-4) {Payment guard in any unpaused state: current epoch, $t<expiry$, $t\le deadline$, valid signatures, registry, budget, nonce and token checks.};
+\end{tikzpicture}
+\caption{Administrative transitions preserve the pause flag when changing epoch. Revoke invalidates old-epoch signatures but leaves fresh-epoch payments possible. Pause/unpause alone can revive an unexpired unused signature. Expiry is an execution guard, not a stored terminal state.}\label{fig:state}
+\end{figure}

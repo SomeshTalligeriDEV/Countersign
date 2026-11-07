@@ -1,0 +1,39 @@
+{
+  "engine": "tectonic",
+  "scope": "Local manuscript compilation only; no submission or visual acceptance",
+  "inputs": {
+    "main.tex": "4d4cbdd3230c617c6b61ac9636939ddbed58724bc39dad3f8d6ed5a00e802809",
+    "references.bib": "86d5fdae42be0bce955347f65cf85861b55c99f6cbd70cb8fc77ba7e70d40ae1",
+    "figures/approval.tex": "829d466a0f56826ea7fb1665c63f1b6278f8ab9cfd5742f658efc88b1d8cae90",
+    "figures/architecture.tex": "39e05e355b7aafad061eac79c0c474404ce462ce8c9797d1ce6c2e441686142b",
+    "figures/attack-matrix.tex": "49142f0f64c842249fe15bb8fcb2d79b8f93e1e41721d5536705a1ad1abe523b",
+    "figures/authority-boundaries.tex": "f44aafb6e900d312bf52480e04dcaa3973afd6eb89866ca9780c83d34bf4a473",
+    "figures/ens-boundary.tex": "3dae60aea9af9bd3618645949e2b2a87dded4ef7d19ae674e6a547a385967367",
+    "figures/gas.tex": "3b0ed37bf17271ba5df6a48b1b463cf5eefe05e5bbbba2f6db02b6e7ef8f43d5",
+    "figures/payment-sequence.tex": "e386ac4ea11ba8cef2df872c17575fc6d196a8d7c9737bf52c3d1adfdf571a22",
+    "figures/state-and-identity.tex": "6a9545284e57e033aa804a39817a3bff9a209e10ac54e5abc755ddf956354722",
+    "figures/verification-pipeline.tex": "11152b09682fb9ffa04da5d53cb8a63b086cd76dd5a9d5f1f9be183e569f51da"
+  },
+  "downloads_requested": false,
+  "commands": [
+    {
+      "argv": [
+        "tectonic",
+        "--only-cached",
+        "--untrusted",
+        "--keep-logs",
+        "--keep-intermediates",
+        "main.tex"
+      ],
+      "exit": 0,
+      "log": "command-1.txt"
+    }
+  ],
+  "status": "PASS",
+  "pdf_copied": true,
+  "visual_review": "NOT TESTED",
+  "tex_diagnostics": [],
+  "source_unchanged_at_install": true,
+  "pdf_sha256": "30d616e3c6ae7d1c9b992849717c9646206410d35ba14ed4cb00248113da1270",
+  "reader_pdf_sha256": "30d616e3c6ae7d1c9b992849717c9646206410d35ba14ed4cb00248113da1270"
+}

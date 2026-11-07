@@ -1,0 +1,5 @@
+configuration,call_region_gas,samples,environment
+A_direct_transfer,58236,1,LOCAL_MOCK_TOKEN
+B_erc20_allowance,59636,1,LOCAL_MOCK_TOKEN
+C_countersign_automatic,240671,1,LOCAL_MOCK_TOKEN
+D_countersign_human_fixture,258628,1,LOCAL_MOCK_TOKEN

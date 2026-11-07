@@ -1,0 +1,2927 @@
+[
+  {
+    "chapter": "THE PROBLEM",
+    "title": "Your agent. Your rules.",
+    "objects": [
+      {
+        "kind": "image",
+        "path": "assets/countersign-cover.png",
+        "x": 0,
+        "y": 0,
+        "w": 1600,
+        "h": 900
+      },
+      {
+        "kind": "rect",
+        "x": 0,
+        "y": 0,
+        "w": 680,
+        "h": 900,
+        "fill": "111B26",
+        "stroke": null,
+        "lw": 0
+      },
+      {
+        "kind": "rect",
+        "x": 65,
+        "y": 55,
+        "w": 94,
+        "h": 94,
+        "fill": "F7F1E4",
+        "stroke": null,
+        "lw": 0
+      },
+      {
+        "kind": "image",
+        "path": "assets/countersign-logo.png",
+        "x": 65,
+        "y": 55,
+        "w": 94,
+        "h": 94
+      },
+      {
+        "kind": "text",
+        "x": 182,
+        "y": 73,
+        "w": 450,
+        "h": 71.45,
+        "text": "COUNTERSIGN",
+        "size": 47,
+        "color": "FFFFFF",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "poly",
+        "points": [
+          [
+            65,
+            181
+          ],
+          [
+            365,
+            181
+          ],
+          [
+            353,
+            223
+          ],
+          [
+            65,
+            223
+          ]
+        ],
+        "fill": "39D8AE",
+        "stroke": null,
+        "lw": 2
+      },
+      {
+        "kind": "text",
+        "x": 79,
+        "y": 189,
+        "w": 270,
+        "h": 29,
+        "text": "01 / THE PROBLEM",
+        "size": 21,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 65,
+        "y": 265,
+        "w": 600,
+        "h": 286.1,
+        "text": "Your agent.\nYour rules.",
+        "size": 103,
+        "color": "FFFFFF",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 70,
+        "y": 529,
+        "w": 535,
+        "h": 102.5,
+        "text": "Let software request a purchase.\nKeep authority with the owner.",
+        "size": 35,
+        "color": "D8E4DE",
+        "bold": false,
+        "link": null
+      },
+      {
+        "kind": "line",
+        "x": 70,
+        "y": 662,
+        "x2": 602,
+        "y2": 662,
+        "color": "39D8AE",
+        "width": 4
+      },
+      {
+        "kind": "text",
+        "x": 70,
+        "y": 693,
+        "w": 540,
+        "h": 141.65,
+        "text": "Whitechain settles.\nWorld authenticates.\nENS makes identity discoverable.",
+        "size": 33,
+        "color": "FFFFFF",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 70,
+        "y": 834,
+        "w": 550,
+        "h": 37.7,
+        "text": "Somesh S. Talligeri • ETHGlobal Mumbai 2026",
+        "size": 22,
+        "color": "D8E4DE",
+        "bold": false,
+        "link": null
+      },
+      {
+        "kind": "rect",
+        "x": 1067,
+        "y": 714,
+        "w": 470,
+        "h": 122,
+        "fill": "111B26",
+        "stroke": null,
+        "lw": 0
+      },
+      {
+        "kind": "rect",
+        "x": 1060,
+        "y": 707,
+        "w": 470,
+        "h": 122,
+        "fill": "F7F1E4",
+        "stroke": "111B26",
+        "lw": 3
+      },
+      {
+        "kind": "text",
+        "x": 1085,
+        "y": 729,
+        "w": 420,
+        "h": 91.7,
+        "text": "“I can request.\nYou set the boundaries.”",
+        "size": 31,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      }
+    ],
+    "notes": "Countersign addresses a specific authorization problem: an autonomous agent should be allowed to request a purchase without receiving unrestricted control of a treasury. It combines a Whitechain spending-policy contract, fresh World sandbox authentication plus an exact owner signature, and ENSv2 identity discovery and scoped record administration. The illustrations are fictional explanatory artwork; they are not screenshots, identity proofs or evidence of deployed behavior. No claim of independent audit, production readiness or a new cryptographic primitive is made. Intended users are organizations and developers integrating bounded agent purchases, not holders of a new project token.",
+    "sources": [
+      "README.md",
+      "docs/PROTOCOL_SPECIFICATION.md",
+      "research/paper/main.tex"
+    ]
+  },
+  {
+    "chapter": "THE CAST",
+    "title": "Three protocols. One bounded payment.",
+    "objects": [
+      {
+        "kind": "rect",
+        "x": 0,
+        "y": 0,
+        "w": 1600,
+        "h": 900,
+        "fill": "F7F1E4",
+        "stroke": null,
+        "lw": 0
+      },
+      {
+        "kind": "poly",
+        "points": [
+          [
+            55,
+            33
+          ],
+          [
+            420,
+            33
+          ],
+          [
+            408,
+            75
+          ],
+          [
+            55,
+            75
+          ]
+        ],
+        "fill": "39D8AE",
+        "stroke": null,
+        "lw": 2
+      },
+      {
+        "kind": "text",
+        "x": 69,
+        "y": 41,
+        "w": 335,
+        "h": 29,
+        "text": "02 / THE CAST",
+        "size": 21,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 65,
+        "y": 96,
+        "w": 1470,
+        "h": 89.0,
+        "text": "Three protocols. One bounded payment.",
+        "size": 60,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 68,
+        "y": 174,
+        "w": 1464,
+        "h": 43.1,
+        "text": "Each component has a different job. No identity record or login can move funds by itself.",
+        "size": 26,
+        "color": "59635F",
+        "bold": false,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 65,
+        "y": 851,
+        "w": 1370,
+        "h": 33.650000000000006,
+        "text": "COUNTERSIGN / Whitechain + World + ENSv2 / 7 Nov 2026 / Sources in slide notes",
+        "size": 19,
+        "color": "59635F",
+        "bold": false,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 1490,
+        "y": 847,
+        "w": 55,
+        "h": 41.75,
+        "text": "02",
+        "size": 25,
+        "color": "59635F",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "rect",
+        "x": 72,
+        "y": 246,
+        "w": 466,
+        "h": 195,
+        "fill": "111B26",
+        "stroke": null,
+        "lw": 0
+      },
+      {
+        "kind": "rect",
+        "x": 65,
+        "y": 239,
+        "w": 466,
+        "h": 195,
+        "fill": "DDF4EA",
+        "stroke": "111B26",
+        "lw": 3
+      },
+      {
+        "kind": "text",
+        "x": 87,
+        "y": 255,
+        "w": 422,
+        "h": 36.35,
+        "text": "SETTLEMENT",
+        "size": 21,
+        "color": "59635F",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 87,
+        "y": 290,
+        "w": 422,
+        "h": 55.25,
+        "text": "Whitechain",
+        "size": 35,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 87,
+        "y": 348,
+        "w": 422,
+        "h": 80.9,
+        "text": "Mandate + registry enforce\nthe official-USDT transfer.",
+        "size": 27,
+        "color": "111B26",
+        "bold": false,
+        "link": null
+      },
+      {
+        "kind": "rect",
+        "x": 573,
+        "y": 246,
+        "w": 466,
+        "h": 195,
+        "fill": "111B26",
+        "stroke": null,
+        "lw": 0
+      },
+      {
+        "kind": "rect",
+        "x": 566,
+        "y": 239,
+        "w": 466,
+        "h": 195,
+        "fill": "F7F1E4",
+        "stroke": "111B26",
+        "lw": 3
+      },
+      {
+        "kind": "text",
+        "x": 588,
+        "y": 255,
+        "w": 422,
+        "h": 36.35,
+        "text": "HUMAN CHECKPOINT",
+        "size": 21,
+        "color": "59635F",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 588,
+        "y": 290,
+        "w": 422,
+        "h": 55.25,
+        "text": "World",
+        "size": 35,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 588,
+        "y": 348,
+        "w": 422,
+        "h": 80.9,
+        "text": "Fresh sandbox authentication;\nthe owner still signs the payment.",
+        "size": 27,
+        "color": "111B26",
+        "bold": false,
+        "link": null
+      },
+      {
+        "kind": "rect",
+        "x": 1074,
+        "y": 246,
+        "w": 466,
+        "h": 195,
+        "fill": "111B26",
+        "stroke": null,
+        "lw": 0
+      },
+      {
+        "kind": "rect",
+        "x": 1067,
+        "y": 239,
+        "w": 466,
+        "h": 195,
+        "fill": "F7F1E4",
+        "stroke": "111B26",
+        "lw": 3
+      },
+      {
+        "kind": "text",
+        "x": 1089,
+        "y": 255,
+        "w": 422,
+        "h": 36.35,
+        "text": "AGENT IDENTITY",
+        "size": 21,
+        "color": "59635F",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 1089,
+        "y": 290,
+        "w": 422,
+        "h": 55.25,
+        "text": "ENSv2",
+        "size": 35,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 1089,
+        "y": 348,
+        "w": 422,
+        "h": 80.9,
+        "text": "Discover the agent and inspect\nscoped record permissions.",
+        "size": 27,
+        "color": "111B26",
+        "bold": false,
+        "link": null
+      },
+      {
+        "kind": "rect",
+        "x": 72,
+        "y": 502,
+        "w": 335,
+        "h": 130,
+        "fill": "111B26",
+        "stroke": null,
+        "lw": 0
+      },
+      {
+        "kind": "rect",
+        "x": 65,
+        "y": 495,
+        "w": 335,
+        "h": 130,
+        "fill": "FFFFFF",
+        "stroke": "111B26",
+        "lw": 3
+      },
+      {
+        "kind": "text",
+        "x": 85,
+        "y": 516,
+        "w": 295,
+        "h": 47.150000000000006,
+        "text": "OWNER",
+        "size": 29,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 85,
+        "y": 560,
+        "w": 295,
+        "h": 40.400000000000006,
+        "text": "Sets limits + allowance",
+        "size": 24,
+        "color": "111B26",
+        "bold": false,
+        "link": null
+      },
+      {
+        "kind": "line",
+        "x": 405,
+        "y": 559,
+        "x2": 437,
+        "y2": 559,
+        "color": "111B26",
+        "width": 4
+      },
+      {
+        "kind": "poly",
+        "points": [
+          [
+            437,
+            559
+          ],
+          [
+            422.5928463623572,
+            565.9594485457797
+          ],
+          [
+            422.5928463623572,
+            552.0405514542203
+          ]
+        ],
+        "fill": "111B26",
+        "stroke": null,
+        "lw": 2
+      },
+      {
+        "kind": "rect",
+        "x": 451,
+        "y": 502,
+        "w": 335,
+        "h": 130,
+        "fill": "111B26",
+        "stroke": null,
+        "lw": 0
+      },
+      {
+        "kind": "rect",
+        "x": 444,
+        "y": 495,
+        "w": 335,
+        "h": 130,
+        "fill": "FFFFFF",
+        "stroke": "111B26",
+        "lw": 3
+      },
+      {
+        "kind": "text",
+        "x": 464,
+        "y": 516,
+        "w": 295,
+        "h": 47.150000000000006,
+        "text": "AGENT",
+        "size": 29,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 464,
+        "y": 560,
+        "w": 295,
+        "h": 40.400000000000006,
+        "text": "Signs exact intent",
+        "size": 24,
+        "color": "111B26",
+        "bold": false,
+        "link": null
+      },
+      {
+        "kind": "line",
+        "x": 784,
+        "y": 559,
+        "x2": 816,
+        "y2": 559,
+        "color": "111B26",
+        "width": 4
+      },
+      {
+        "kind": "poly",
+        "points": [
+          [
+            816,
+            559
+          ],
+          [
+            801.5928463623571,
+            565.9594485457797
+          ],
+          [
+            801.5928463623571,
+            552.0405514542203
+          ]
+        ],
+        "fill": "111B26",
+        "stroke": null,
+        "lw": 2
+      },
+      {
+        "kind": "rect",
+        "x": 830,
+        "y": 502,
+        "w": 335,
+        "h": 130,
+        "fill": "111B26",
+        "stroke": null,
+        "lw": 0
+      },
+      {
+        "kind": "rect",
+        "x": 823,
+        "y": 495,
+        "w": 335,
+        "h": 130,
+        "fill": "FFFFFF",
+        "stroke": "111B26",
+        "lw": 3
+      },
+      {
+        "kind": "text",
+        "x": 843,
+        "y": 516,
+        "w": 295,
+        "h": 47.150000000000006,
+        "text": "RELAYER",
+        "size": 29,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 843,
+        "y": 560,
+        "w": 295,
+        "h": 40.400000000000006,
+        "text": "Checks + pays gas",
+        "size": 24,
+        "color": "111B26",
+        "bold": false,
+        "link": null
+      },
+      {
+        "kind": "line",
+        "x": 1163,
+        "y": 559,
+        "x2": 1195,
+        "y2": 559,
+        "color": "111B26",
+        "width": 4
+      },
+      {
+        "kind": "poly",
+        "points": [
+          [
+            1195,
+            559
+          ],
+          [
+            1180.5928463623572,
+            565.9594485457797
+          ],
+          [
+            1180.5928463623572,
+            552.0405514542203
+          ]
+        ],
+        "fill": "111B26",
+        "stroke": null,
+        "lw": 2
+      },
+      {
+        "kind": "rect",
+        "x": 1209,
+        "y": 502,
+        "w": 335,
+        "h": 130,
+        "fill": "111B26",
+        "stroke": null,
+        "lw": 0
+      },
+      {
+        "kind": "rect",
+        "x": 1202,
+        "y": 495,
+        "w": 335,
+        "h": 130,
+        "fill": "FFFFFF",
+        "stroke": "111B26",
+        "lw": 3
+      },
+      {
+        "kind": "text",
+        "x": 1222,
+        "y": 516,
+        "w": 295,
+        "h": 47.150000000000006,
+        "text": "MANDATE",
+        "size": 29,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 1222,
+        "y": 560,
+        "w": 295,
+        "h": 40.400000000000006,
+        "text": "Enforces + transfers",
+        "size": 24,
+        "color": "111B26",
+        "bold": false,
+        "link": null
+      },
+      {
+        "kind": "rect",
+        "x": 72,
+        "y": 685,
+        "w": 710,
+        "h": 130,
+        "fill": "111B26",
+        "stroke": null,
+        "lw": 0
+      },
+      {
+        "kind": "rect",
+        "x": 65,
+        "y": 678,
+        "w": 710,
+        "h": 130,
+        "fill": "F7F1E4",
+        "stroke": "111B26",
+        "lw": 3
+      },
+      {
+        "kind": "text",
+        "x": 88,
+        "y": 696,
+        "w": 660,
+        "h": 49.85,
+        "text": "Merchant + SDK",
+        "size": 31,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 88,
+        "y": 742,
+        "w": 660,
+        "h": 44.45,
+        "text": "402 quote → confirmed receipt → deliver resource",
+        "size": 27,
+        "color": "111B26",
+        "bold": false,
+        "link": null
+      },
+      {
+        "kind": "rect",
+        "x": 817,
+        "y": 685,
+        "w": 723,
+        "h": 130,
+        "fill": "111B26",
+        "stroke": null,
+        "lw": 0
+      },
+      {
+        "kind": "rect",
+        "x": 810,
+        "y": 678,
+        "w": 723,
+        "h": 130,
+        "fill": "DDF4EA",
+        "stroke": "111B26",
+        "lw": 3
+      },
+      {
+        "kind": "text",
+        "x": 834,
+        "y": 696,
+        "w": 670,
+        "h": 49.85,
+        "text": "Observer + application",
+        "size": 31,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 834,
+        "y": 742,
+        "w": 670,
+        "h": 43.1,
+        "text": "Logs → status → signed webhooks / history / CSV",
+        "size": 26,
+        "color": "111B26",
+        "bold": false,
+        "link": null
+      }
+    ],
+    "notes": "The owner is the treasury: createMandate uses msg.sender, not an arbitrary funding-account parameter. The owner approves a limited allowance to Mandate and chooses agent, attestor, limits, merchants and expiry. A separate merchant application integrates @countersign/merchant; @countersign/agent signs exact intents. The facilitator validates, simulates and reserves GasGuard budget before relay. The observer projects actual events, with three successor blocks as an application confirmation policy rather than irreversible L1 finality. Signed webhooks, receipt history and CSV export support merchant integration. Refunds are bounded by paid amount and require the original payout account to authorize and fund them; there is no forced reversal. API, attestor and RPC trust remain explicit. The latest README reports Cloudflare web and a Render API/attestor container, with ephemeral storage and idle-sleep limitations.",
+    "sources": [
+      "contracts/src/Mandate.sol",
+      "contracts/src/MerchantRegistry.sol",
+      "apps/api/src/facilitator.mjs",
+      "packages/merchant/src/index.mjs",
+      "packages/agent/",
+      "apps/attestor/",
+      "deploy/render-start.sh"
+    ]
+  },
+  {
+    "chapter": "DISCOVER & DELEGATE",
+    "title": "A name is not spending authority.",
+    "objects": [
+      {
+        "kind": "rect",
+        "x": 0,
+        "y": 0,
+        "w": 1600,
+        "h": 900,
+        "fill": "F7F1E4",
+        "stroke": null,
+        "lw": 0
+      },
+      {
+        "kind": "poly",
+        "points": [
+          [
+            55,
+            33
+          ],
+          [
+            420,
+            33
+          ],
+          [
+            408,
+            75
+          ],
+          [
+            55,
+            75
+          ]
+        ],
+        "fill": "39D8AE",
+        "stroke": null,
+        "lw": 2
+      },
+      {
+        "kind": "text",
+        "x": 69,
+        "y": 41,
+        "w": 335,
+        "h": 29,
+        "text": "03 / DISCOVER & DELEGATE",
+        "size": 21,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 65,
+        "y": 96,
+        "w": 1470,
+        "h": 89.0,
+        "text": "A name is not spending authority.",
+        "size": 60,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 68,
+        "y": 174,
+        "w": 1464,
+        "h": 43.1,
+        "text": "ENSv2 makes identity and record-write permissions inspectable; Whitechain remains financially authoritative.",
+        "size": 26,
+        "color": "59635F",
+        "bold": false,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 65,
+        "y": 851,
+        "w": 1370,
+        "h": 33.650000000000006,
+        "text": "COUNTERSIGN / Whitechain + World + ENSv2 / 7 Nov 2026 / Sources in slide notes",
+        "size": 19,
+        "color": "59635F",
+        "bold": false,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 1490,
+        "y": 847,
+        "w": 55,
+        "h": 41.75,
+        "text": "03",
+        "size": 25,
+        "color": "59635F",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "rect",
+        "x": 72,
+        "y": 247,
+        "w": 595,
+        "h": 520,
+        "fill": "111B26",
+        "stroke": null,
+        "lw": 0
+      },
+      {
+        "kind": "rect",
+        "x": 65,
+        "y": 240,
+        "w": 595,
+        "h": 520,
+        "fill": "111B26",
+        "stroke": "111B26",
+        "lw": 3
+      },
+      {
+        "kind": "text",
+        "x": 94,
+        "y": 268,
+        "w": 533,
+        "h": 70.1,
+        "text": "countersign.eth",
+        "size": 46,
+        "color": "FFFFFF",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "line",
+        "x": 121,
+        "y": 335,
+        "x2": 121,
+        "y2": 382,
+        "color": "39D8AE",
+        "width": 5
+      },
+      {
+        "kind": "line",
+        "x": 121,
+        "y": 382,
+        "x2": 174,
+        "y2": 382,
+        "color": "39D8AE",
+        "width": 5
+      },
+      {
+        "kind": "text",
+        "x": 186,
+        "y": 351,
+        "w": 440,
+        "h": 53.900000000000006,
+        "text": "agent1.countersign.eth",
+        "size": 34,
+        "color": "39D8AE",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 94,
+        "y": 437,
+        "w": 530,
+        "h": 125.45,
+        "text": "UserRegistry\nDedicated PermissionedResolver\nEnhanced Access Control",
+        "size": 29,
+        "color": "FFFFFF",
+        "bold": false,
+        "link": null
+      },
+      {
+        "kind": "poly",
+        "points": [
+          [
+            95,
+            595
+          ],
+          [
+            405,
+            595
+          ],
+          [
+            393,
+            637
+          ],
+          [
+            95,
+            637
+          ]
+        ],
+        "fill": "F0B34F",
+        "stroke": null,
+        "lw": 2
+      },
+      {
+        "kind": "text",
+        "x": 109,
+        "y": 603,
+        "w": 280,
+        "h": 29,
+        "text": "SEPOLIA • 11155111",
+        "size": 21,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 95,
+        "y": 656,
+        "w": 522,
+        "h": 78.2,
+        "text": "Recorded setup + scoped grants.\nLive negative/revoke tests still open.",
+        "size": 26,
+        "color": "D8E4DE",
+        "bold": false,
+        "link": null
+      },
+      {
+        "kind": "rect",
+        "x": 715,
+        "y": 247,
+        "w": 825,
+        "h": 195,
+        "fill": "111B26",
+        "stroke": null,
+        "lw": 0
+      },
+      {
+        "kind": "rect",
+        "x": 708,
+        "y": 240,
+        "w": 825,
+        "h": 195,
+        "fill": "F7F1E4",
+        "stroke": "111B26",
+        "lw": 3
+      },
+      {
+        "kind": "text",
+        "x": 730,
+        "y": 256,
+        "w": 781,
+        "h": 36.35,
+        "text": "OWNER-CONTROLLED",
+        "size": 21,
+        "color": "59635F",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 730,
+        "y": 291,
+        "w": 781,
+        "h": 55.25,
+        "text": "Policy + administration",
+        "size": 35,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 730,
+        "y": 349,
+        "w": 781,
+        "h": 80.9,
+        "text": "Owner controls protected policy records and grants.\nThe agent cannot gain spending power by editing metadata.",
+        "size": 27,
+        "color": "111B26",
+        "bold": false,
+        "link": null
+      },
+      {
+        "kind": "rect",
+        "x": 715,
+        "y": 475,
+        "w": 825,
+        "h": 195,
+        "fill": "111B26",
+        "stroke": null,
+        "lw": 0
+      },
+      {
+        "kind": "rect",
+        "x": 708,
+        "y": 468,
+        "w": 825,
+        "h": 195,
+        "fill": "DDF4EA",
+        "stroke": "111B26",
+        "lw": 3
+      },
+      {
+        "kind": "text",
+        "x": 730,
+        "y": 484,
+        "w": 781,
+        "h": 36.35,
+        "text": "AGENT-SCOPED",
+        "size": 21,
+        "color": "59635F",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 730,
+        "y": 519,
+        "w": 781,
+        "h": 55.25,
+        "text": "Endpoint + context",
+        "size": 35,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 730,
+        "y": 577,
+        "w": 781,
+        "h": 80.9,
+        "text": "Scoped text-key roles cover agent-endpoint[web]\nand agent-context. Scope is resolver-wide, not per-name.",
+        "size": 27,
+        "color": "111B26",
+        "bold": false,
+        "link": null
+      },
+      {
+        "kind": "rect",
+        "x": 708,
+        "y": 699,
+        "w": 825,
+        "h": 111,
+        "fill": "111B26",
+        "stroke": null,
+        "lw": 0
+      },
+      {
+        "kind": "text",
+        "x": 733,
+        "y": 718,
+        "w": 774,
+        "h": 80.9,
+        "text": "Passport: compare pinned reads; show MISMATCH,\nSTALE, UNVERIFIED or RPC_ERROR honestly.",
+        "size": 27,
+        "color": "FFFFFF",
+        "bold": false,
+        "link": null
+      }
+    ],
+    "notes": "Recorded ENS identity: agent1.countersign.eth on Ethereum Sepolia chain 11155111. UserRegistry 0x4aDb9CecA5b9A70000C3F7Df5Af0831535f649Ca; PermissionedResolver 0x64b67a1903eD1923F98A3a74Cc4Ed539be40d456. Official ENSv2 documentation confirms that text-key roles apply across a resolver instance, not one name; a dedicated resolver is part of agent isolation. Endpoint/context keys follow draft ENSIP-26; countersign policy records are application-specific. Historical drift reported 7/8 comparisons: the merchant-set aggregate is missing because the deployed contract uses a mapping, not a directly comparable set hash. Do not manufacture 8/8. Missing governance/name binding also prevents whole-passport VERIFIED. The optional persistent monitor fails closed for affected relayed requests; it does not block direct Whitechain calls that satisfy contract policy. ENS revocation and Whitechain epoch changes are separate, non-atomic operations. Fork interfaces compile, but deployed-state negative/revocation execution remains unverified in saved acceptance records.",
+    "sources": [
+      "packages/ens/src/",
+      "packages/ens/fork/Delegation.t.sol",
+      "docs/proof/A15-ens-onchain.md",
+      "docs/release/ENS-MONITOR.md",
+      "https://docs.ens.domains/ensv2/permissioned-resolver/"
+    ]
+  },
+  {
+    "chapter": "AUTOMATIC PAYMENT",
+    "title": "0.50 USDT: request → signature → receipt.",
+    "objects": [
+      {
+        "kind": "rect",
+        "x": 0,
+        "y": 0,
+        "w": 1600,
+        "h": 900,
+        "fill": "F7F1E4",
+        "stroke": null,
+        "lw": 0
+      },
+      {
+        "kind": "poly",
+        "points": [
+          [
+            55,
+            33
+          ],
+          [
+            420,
+            33
+          ],
+          [
+            408,
+            75
+          ],
+          [
+            55,
+            75
+          ]
+        ],
+        "fill": "39D8AE",
+        "stroke": null,
+        "lw": 2
+      },
+      {
+        "kind": "text",
+        "x": 69,
+        "y": 41,
+        "w": 335,
+        "h": 29,
+        "text": "04 / AUTOMATIC PAYMENT",
+        "size": 21,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 65,
+        "y": 96,
+        "w": 1470,
+        "h": 89.0,
+        "text": "0.50 USDT: request → signature → receipt.",
+        "size": 60,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 68,
+        "y": 174,
+        "w": 1464,
+        "h": 43.1,
+        "text": "Example amount from recorded testnet payments. The current policy, not this illustration, decides execution.",
+        "size": 26,
+        "color": "59635F",
+        "bold": false,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 65,
+        "y": 851,
+        "w": 1370,
+        "h": 33.650000000000006,
+        "text": "COUNTERSIGN / Whitechain + World + ENSv2 / 7 Nov 2026 / Sources in slide notes",
+        "size": 19,
+        "color": "59635F",
+        "bold": false,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 1490,
+        "y": 847,
+        "w": 55,
+        "h": 41.75,
+        "text": "04",
+        "size": 25,
+        "color": "59635F",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "rect",
+        "x": 72,
+        "y": 249,
+        "w": 466,
+        "h": 215,
+        "fill": "111B26",
+        "stroke": null,
+        "lw": 0
+      },
+      {
+        "kind": "rect",
+        "x": 65,
+        "y": 242,
+        "w": 466,
+        "h": 215,
+        "fill": "F7F1E4",
+        "stroke": "111B26",
+        "lw": 3
+      },
+      {
+        "kind": "text",
+        "x": 87,
+        "y": 258,
+        "w": 422,
+        "h": 36.35,
+        "text": "01",
+        "size": 21,
+        "color": "59635F",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 87,
+        "y": 293,
+        "w": 422,
+        "h": 55.25,
+        "text": "Connect + configure",
+        "size": 35,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 87,
+        "y": 351,
+        "w": 422,
+        "h": 80.9,
+        "text": "Owner selects agent, merchants,\nlimits, expiry and limited allowance.",
+        "size": 27,
+        "color": "111B26",
+        "bold": false,
+        "link": null
+      },
+      {
+        "kind": "line",
+        "x": 537,
+        "y": 343,
+        "x2": 560,
+        "y2": 343,
+        "color": "111B26",
+        "width": 4
+      },
+      {
+        "kind": "poly",
+        "points": [
+          [
+            560,
+            343
+          ],
+          [
+            545.5928463623571,
+            349.9594485457797
+          ],
+          [
+            545.5928463623571,
+            336.0405514542203
+          ]
+        ],
+        "fill": "111B26",
+        "stroke": null,
+        "lw": 2
+      },
+      {
+        "kind": "rect",
+        "x": 573,
+        "y": 249,
+        "w": 466,
+        "h": 215,
+        "fill": "111B26",
+        "stroke": null,
+        "lw": 0
+      },
+      {
+        "kind": "rect",
+        "x": 566,
+        "y": 242,
+        "w": 466,
+        "h": 215,
+        "fill": "F7F1E4",
+        "stroke": "111B26",
+        "lw": 3
+      },
+      {
+        "kind": "text",
+        "x": 588,
+        "y": 258,
+        "w": 422,
+        "h": 36.35,
+        "text": "02",
+        "size": 21,
+        "color": "59635F",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 588,
+        "y": 293,
+        "w": 422,
+        "h": 55.25,
+        "text": "Merchant quotes",
+        "size": 35,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 588,
+        "y": 351,
+        "w": 422,
+        "h": 80.9,
+        "text": "HTTP 402 returns exact amount,\npayout, order and resource terms.",
+        "size": 27,
+        "color": "111B26",
+        "bold": false,
+        "link": null
+      },
+      {
+        "kind": "line",
+        "x": 1038,
+        "y": 343,
+        "x2": 1061,
+        "y2": 343,
+        "color": "111B26",
+        "width": 4
+      },
+      {
+        "kind": "poly",
+        "points": [
+          [
+            1061,
+            343
+          ],
+          [
+            1046.5928463623572,
+            349.9594485457797
+          ],
+          [
+            1046.5928463623572,
+            336.0405514542203
+          ]
+        ],
+        "fill": "111B26",
+        "stroke": null,
+        "lw": 2
+      },
+      {
+        "kind": "rect",
+        "x": 1074,
+        "y": 249,
+        "w": 466,
+        "h": 215,
+        "fill": "111B26",
+        "stroke": null,
+        "lw": 0
+      },
+      {
+        "kind": "rect",
+        "x": 1067,
+        "y": 242,
+        "w": 466,
+        "h": 215,
+        "fill": "DDF4EA",
+        "stroke": "111B26",
+        "lw": 3
+      },
+      {
+        "kind": "text",
+        "x": 1089,
+        "y": 258,
+        "w": 422,
+        "h": 36.35,
+        "text": "03",
+        "size": 21,
+        "color": "59635F",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 1089,
+        "y": 293,
+        "w": 422,
+        "h": 55.25,
+        "text": "Agent signs",
+        "size": 35,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 1089,
+        "y": 351,
+        "w": 422,
+        "h": 80.9,
+        "text": "EIP-712 binds chain, contract,\nnonce, epoch and payment terms.",
+        "size": 27,
+        "color": "111B26",
+        "bold": false,
+        "link": null
+      },
+      {
+        "kind": "rect",
+        "x": 72,
+        "y": 499,
+        "w": 466,
+        "h": 215,
+        "fill": "111B26",
+        "stroke": null,
+        "lw": 0
+      },
+      {
+        "kind": "rect",
+        "x": 65,
+        "y": 492,
+        "w": 466,
+        "h": 215,
+        "fill": "F7F1E4",
+        "stroke": "111B26",
+        "lw": 3
+      },
+      {
+        "kind": "text",
+        "x": 87,
+        "y": 508,
+        "w": 422,
+        "h": 36.35,
+        "text": "04",
+        "size": 21,
+        "color": "59635F",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 87,
+        "y": 543,
+        "w": 422,
+        "h": 55.25,
+        "text": "Relay preflight",
+        "size": 35,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 87,
+        "y": 601,
+        "w": 422,
+        "h": 80.9,
+        "text": "Verify, simulate and reserve\nbounded GasGuard capacity.",
+        "size": 27,
+        "color": "111B26",
+        "bold": false,
+        "link": null
+      },
+      {
+        "kind": "line",
+        "x": 537,
+        "y": 593,
+        "x2": 560,
+        "y2": 593,
+        "color": "111B26",
+        "width": 4
+      },
+      {
+        "kind": "poly",
+        "points": [
+          [
+            560,
+            593
+          ],
+          [
+            545.5928463623571,
+            599.9594485457797
+          ],
+          [
+            545.5928463623571,
+            586.0405514542203
+          ]
+        ],
+        "fill": "111B26",
+        "stroke": null,
+        "lw": 2
+      },
+      {
+        "kind": "rect",
+        "x": 573,
+        "y": 499,
+        "w": 466,
+        "h": 215,
+        "fill": "111B26",
+        "stroke": null,
+        "lw": 0
+      },
+      {
+        "kind": "rect",
+        "x": 566,
+        "y": 492,
+        "w": 466,
+        "h": 215,
+        "fill": "DDF4EA",
+        "stroke": "111B26",
+        "lw": 3
+      },
+      {
+        "kind": "text",
+        "x": 588,
+        "y": 508,
+        "w": 422,
+        "h": 36.35,
+        "text": "05",
+        "size": 21,
+        "color": "59635F",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 588,
+        "y": 543,
+        "w": 422,
+        "h": 55.25,
+        "text": "Contract settles",
+        "size": 35,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 588,
+        "y": 601,
+        "w": 422,
+        "h": 117.35000000000001,
+        "text": "Check policy + signature; transfer\nofficial USDT from owner to\npayout.",
+        "size": 27,
+        "color": "111B26",
+        "bold": false,
+        "link": null
+      },
+      {
+        "kind": "line",
+        "x": 1038,
+        "y": 593,
+        "x2": 1061,
+        "y2": 593,
+        "color": "111B26",
+        "width": 4
+      },
+      {
+        "kind": "poly",
+        "points": [
+          [
+            1061,
+            593
+          ],
+          [
+            1046.5928463623572,
+            599.9594485457797
+          ],
+          [
+            1046.5928463623572,
+            586.0405514542203
+          ]
+        ],
+        "fill": "111B26",
+        "stroke": null,
+        "lw": 2
+      },
+      {
+        "kind": "rect",
+        "x": 1074,
+        "y": 499,
+        "w": 466,
+        "h": 215,
+        "fill": "111B26",
+        "stroke": null,
+        "lw": 0
+      },
+      {
+        "kind": "rect",
+        "x": 1067,
+        "y": 492,
+        "w": 466,
+        "h": 215,
+        "fill": "F7F1E4",
+        "stroke": "111B26",
+        "lw": 3
+      },
+      {
+        "kind": "text",
+        "x": 1089,
+        "y": 508,
+        "w": 422,
+        "h": 36.35,
+        "text": "06",
+        "size": 21,
+        "color": "59635F",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 1089,
+        "y": 543,
+        "w": 422,
+        "h": 55.25,
+        "text": "Observe + deliver",
+        "size": 35,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 1089,
+        "y": 601,
+        "w": 422,
+        "h": 80.9,
+        "text": "Confirmed event → receipt,\nwebhook and merchant response.",
+        "size": 27,
+        "color": "111B26",
+        "bold": false,
+        "link": null
+      },
+      {
+        "kind": "rect",
+        "x": 65,
+        "y": 769,
+        "w": 1468,
+        "h": 56,
+        "fill": "111B26",
+        "stroke": null,
+        "lw": 0
+      },
+      {
+        "kind": "text",
+        "x": 87,
+        "y": 779,
+        "w": 1420,
+        "h": 43.1,
+        "text": "Agent needs no USDT or WBT for this path. Relayer pays execution gas; treasury setup still costs gas.",
+        "size": 26,
+        "color": "FFFFFF",
+        "bold": false,
+        "link": null
+      }
+    ],
+    "notes": "Automatic payments occur below the configured humanThreshold, never above hard perTx/period caps. At or above the threshold the contract requires additional approval. PaymentIntent fields: mandateId, merchantId, payout, registryVersion, amount, orderId, resourceHash, nonce, epoch, deadline. EIP-712 domain is Countersign version 1, runtime chain ID and verifying Mandate. Token identity is immutable deployment state. Runtime token decimals are read rather than assuming six in general code. Chain 1874 official USDT: 0xcedfB56113143d55b2358b8CFbB0dEB5Ad2f55a7. Mandate: 0x923298375911A173da34C715da2718c0c9889EbA. Registry: 0x2686f693A2C959568e650e0A5563E6244f2329E2. The deployed route uses approve + transferFrom; no successful permit/EIP-3009 flow or universal gasless onboarding is claimed. README at commit 5688b18 records the later 0.50 transfer linked below; this presentation pass could not freshly retrieve the RPC/explorer. Ledger persists transaction bytes/hash/nonce before broadcast; ambiguous submissions require reconciliation. One relayer signer/process and incomplete OP fee accounting remain limitations.",
+    "sources": [
+      "contracts/src/Mandate.sol",
+      "apps/api/src/relay-ledger.mjs",
+      "apps/api/src/gasguard.mjs",
+      "apps/api/src/observer.mjs",
+      "https://explorer.testnet.whitechain.io/tx/0x3b7fe78d21cf28f3fe883a04ed7617bba6a22f62889775da41ccd465c27009d9"
+    ]
+  },
+  {
+    "chapter": "HUMAN CHECKPOINT",
+    "title": "A login is not a payment approval.",
+    "objects": [
+      {
+        "kind": "rect",
+        "x": 0,
+        "y": 0,
+        "w": 1600,
+        "h": 900,
+        "fill": "F7F1E4",
+        "stroke": null,
+        "lw": 0
+      },
+      {
+        "kind": "poly",
+        "points": [
+          [
+            55,
+            33
+          ],
+          [
+            420,
+            33
+          ],
+          [
+            408,
+            75
+          ],
+          [
+            55,
+            75
+          ]
+        ],
+        "fill": "39D8AE",
+        "stroke": null,
+        "lw": 2
+      },
+      {
+        "kind": "text",
+        "x": 69,
+        "y": 41,
+        "w": 335,
+        "h": 29,
+        "text": "05 / HUMAN CHECKPOINT",
+        "size": 21,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 65,
+        "y": 96,
+        "w": 1470,
+        "h": 89.0,
+        "text": "A login is not a payment approval.",
+        "size": 60,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 68,
+        "y": 174,
+        "w": 1464,
+        "h": 43.1,
+        "text": "World authenticates the session. The owner and attestor bind their signatures to the exact payment.",
+        "size": 26,
+        "color": "59635F",
+        "bold": false,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 65,
+        "y": 851,
+        "w": 1370,
+        "h": 33.650000000000006,
+        "text": "COUNTERSIGN / Whitechain + World + ENSv2 / 7 Nov 2026 / Sources in slide notes",
+        "size": 19,
+        "color": "59635F",
+        "bold": false,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 1490,
+        "y": 847,
+        "w": 55,
+        "h": 41.75,
+        "text": "05",
+        "size": 25,
+        "color": "59635F",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "image",
+        "path": "assets/countersign-approval-comic.png",
+        "x": 65,
+        "y": 228,
+        "w": 1468,
+        "h": 500
+      },
+      {
+        "kind": "rect",
+        "x": 65,
+        "y": 618,
+        "w": 472,
+        "h": 111,
+        "fill": "F7F1E4",
+        "stroke": "111B26",
+        "lw": 3
+      },
+      {
+        "kind": "text",
+        "x": 82,
+        "y": 632,
+        "w": 435,
+        "h": 44.45,
+        "text": "01 / REVIEW",
+        "size": 27,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 82,
+        "y": 674,
+        "w": 435,
+        "h": 39.05,
+        "text": "Exact amount, merchant and payout",
+        "size": 23,
+        "color": "111B26",
+        "bold": false,
+        "link": null
+      },
+      {
+        "kind": "rect",
+        "x": 563,
+        "y": 618,
+        "w": 472,
+        "h": 111,
+        "fill": "F7F1E4",
+        "stroke": "111B26",
+        "lw": 3
+      },
+      {
+        "kind": "text",
+        "x": 580,
+        "y": 632,
+        "w": 435,
+        "h": 44.45,
+        "text": "02 / AUTHENTICATE",
+        "size": 27,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 580,
+        "y": 674,
+        "w": 435,
+        "h": 39.05,
+        "text": "Fresh World sandbox login + binding",
+        "size": 23,
+        "color": "111B26",
+        "bold": false,
+        "link": null
+      },
+      {
+        "kind": "rect",
+        "x": 1061,
+        "y": 618,
+        "w": 472,
+        "h": 111,
+        "fill": "F7F1E4",
+        "stroke": "111B26",
+        "lw": 3
+      },
+      {
+        "kind": "text",
+        "x": 1078,
+        "y": 632,
+        "w": 435,
+        "h": 44.45,
+        "text": "03 / COUNTERSIGN",
+        "size": 27,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 1078,
+        "y": 674,
+        "w": 435,
+        "h": 39.05,
+        "text": "Owner approval + separate attestation",
+        "size": 23,
+        "color": "111B26",
+        "bold": false,
+        "link": null
+      },
+      {
+        "kind": "rect",
+        "x": 65,
+        "y": 755,
+        "w": 1468,
+        "h": 70,
+        "fill": "111B26",
+        "stroke": null,
+        "lw": 0
+      },
+      {
+        "kind": "text",
+        "x": 88,
+        "y": 767,
+        "w": 1420,
+        "h": 43.1,
+        "text": "1.50 USDT sandbox-approved payment is recorded. Denied, expired or mismatched attempts must fail.",
+        "size": 26,
+        "color": "FFFFFF",
+        "bold": false,
+        "link": null
+      }
+    ],
+    "notes": "Historical proof A2-world-approval records a 1.50-USDT payment after a World sandbox sign-in, owner signature and attestor signing; command order-40 used a configured 1.50 price and 1.00 threshold. World sandbox identities are mocked test identities, not production personhood. OIDC authorization-code flow uses PKCE S256, max_age=0, random state, browser binding and a nonce combining stored approval digest with fresh randomness. jose/JWKS validates ID-token signature, issuer/audience, nonce, timestamps, subject and configured assurance. world_ok is not permission to pay. The owner signs PaymentApproval binding intentDigest, mandate, merchant, payout, amount, epoch and deadline; ERC-1271 owners are supported. The separate attestor reads/recomputes stored digests and signs WorldAttestation, including authTime. Contract MAX_AUTH_AGE is 300 seconds; API approval/freshness window is at most 120 seconds and intent deadlines still apply. The onchain contract trusts the attestor for identity interpretation; it does not validate a World token itself. Session/origin-checked cancellation cannot erase exported signatures. Failed/denied/expired/wrong_human/stale_auth paths include local fixtures; preserve the separate historical live refusal records. The artwork is explanatory, not a phone screenshot or successful live demonstration.",
+    "sources": [
+      "apps/api/src/world-oidc.mjs",
+      "apps/api/src/approvals.mjs",
+      "apps/api/src/owner-signature.mjs",
+      "apps/attestor/",
+      "docs/proof/A2-world-approval.md",
+      "https://auth.world.org/docs/guides/step-up",
+      "https://explorer.testnet.whitechain.io/tx/0x98fa814e805ab35e55124370539bc0c1889aef519d5c408800be2efc709cb531"
+    ]
+  },
+  {
+    "chapter": "THE DEFENSE",
+    "title": "Signed terms. Enforced limits. Explicit failures.",
+    "objects": [
+      {
+        "kind": "rect",
+        "x": 0,
+        "y": 0,
+        "w": 1600,
+        "h": 900,
+        "fill": "F7F1E4",
+        "stroke": null,
+        "lw": 0
+      },
+      {
+        "kind": "poly",
+        "points": [
+          [
+            55,
+            33
+          ],
+          [
+            420,
+            33
+          ],
+          [
+            408,
+            75
+          ],
+          [
+            55,
+            75
+          ]
+        ],
+        "fill": "39D8AE",
+        "stroke": null,
+        "lw": 2
+      },
+      {
+        "kind": "text",
+        "x": 69,
+        "y": 41,
+        "w": 335,
+        "h": 29,
+        "text": "06 / THE DEFENSE",
+        "size": 21,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 65,
+        "y": 96,
+        "w": 1470,
+        "h": 89.0,
+        "text": "Signed terms. Enforced limits. Explicit failures.",
+        "size": 60,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 68,
+        "y": 174,
+        "w": 1464,
+        "h": 43.1,
+        "text": "Local adversarial execution tests support these checks. Live evidence is narrower and separately labeled.",
+        "size": 26,
+        "color": "59635F",
+        "bold": false,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 65,
+        "y": 851,
+        "w": 1370,
+        "h": 33.650000000000006,
+        "text": "COUNTERSIGN / Whitechain + World + ENSv2 / 7 Nov 2026 / Sources in slide notes",
+        "size": 19,
+        "color": "59635F",
+        "bold": false,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 1490,
+        "y": 847,
+        "w": 55,
+        "h": 41.75,
+        "text": "06",
+        "size": 25,
+        "color": "59635F",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "rect",
+        "x": 72,
+        "y": 247,
+        "w": 466,
+        "h": 193,
+        "fill": "111B26",
+        "stroke": null,
+        "lw": 0
+      },
+      {
+        "kind": "rect",
+        "x": 65,
+        "y": 240,
+        "w": 466,
+        "h": 193,
+        "fill": "F7F1E4",
+        "stroke": "111B26",
+        "lw": 3
+      },
+      {
+        "kind": "poly",
+        "points": [
+          [
+            82,
+            256
+          ],
+          [
+            512,
+            256
+          ],
+          [
+            500,
+            298
+          ],
+          [
+            82,
+            298
+          ]
+        ],
+        "fill": "F0B34F",
+        "stroke": null,
+        "lw": 2
+      },
+      {
+        "kind": "text",
+        "x": 96,
+        "y": 264,
+        "w": 400,
+        "h": 29,
+        "text": "AMOUNT / AGENT",
+        "size": 21,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 88,
+        "y": 319,
+        "w": 420,
+        "h": 83.60000000000001,
+        "text": "Changed amount or wrong\nsigner",
+        "size": 28,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 88,
+        "y": 384,
+        "w": 420,
+        "h": 41.75,
+        "text": "BadIntentSig",
+        "size": 25,
+        "color": "C74D58",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "rect",
+        "x": 573,
+        "y": 247,
+        "w": 466,
+        "h": 193,
+        "fill": "111B26",
+        "stroke": null,
+        "lw": 0
+      },
+      {
+        "kind": "rect",
+        "x": 566,
+        "y": 240,
+        "w": 466,
+        "h": 193,
+        "fill": "F7F1E4",
+        "stroke": "111B26",
+        "lw": 3
+      },
+      {
+        "kind": "poly",
+        "points": [
+          [
+            583,
+            256
+          ],
+          [
+            1013,
+            256
+          ],
+          [
+            1001,
+            298
+          ],
+          [
+            583,
+            298
+          ]
+        ],
+        "fill": "F0B34F",
+        "stroke": null,
+        "lw": 2
+      },
+      {
+        "kind": "text",
+        "x": 597,
+        "y": 264,
+        "w": 400,
+        "h": 29,
+        "text": "PAYOUT / MERCHANT",
+        "size": 21,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 589,
+        "y": 319,
+        "w": 420,
+        "h": 83.60000000000001,
+        "text": "Changed payout or registry\nversion",
+        "size": 28,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 589,
+        "y": 384,
+        "w": 420,
+        "h": 41.75,
+        "text": "RegistryMismatch",
+        "size": 25,
+        "color": "C74D58",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "rect",
+        "x": 1074,
+        "y": 247,
+        "w": 466,
+        "h": 193,
+        "fill": "111B26",
+        "stroke": null,
+        "lw": 0
+      },
+      {
+        "kind": "rect",
+        "x": 1067,
+        "y": 240,
+        "w": 466,
+        "h": 193,
+        "fill": "F7F1E4",
+        "stroke": "111B26",
+        "lw": 3
+      },
+      {
+        "kind": "poly",
+        "points": [
+          [
+            1084,
+            256
+          ],
+          [
+            1514,
+            256
+          ],
+          [
+            1502,
+            298
+          ],
+          [
+            1084,
+            298
+          ]
+        ],
+        "fill": "F0B34F",
+        "stroke": null,
+        "lw": 2
+      },
+      {
+        "kind": "text",
+        "x": 1098,
+        "y": 264,
+        "w": 400,
+        "h": 29,
+        "text": "BUDGET",
+        "size": 21,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 1090,
+        "y": 319,
+        "w": 420,
+        "h": 83.60000000000001,
+        "text": "Per-payment or period cap\nexceeded",
+        "size": 28,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 1090,
+        "y": 384,
+        "w": 420,
+        "h": 41.75,
+        "text": "OverPerTx / OverPeriod",
+        "size": 25,
+        "color": "C74D58",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "rect",
+        "x": 72,
+        "y": 473,
+        "w": 466,
+        "h": 193,
+        "fill": "111B26",
+        "stroke": null,
+        "lw": 0
+      },
+      {
+        "kind": "rect",
+        "x": 65,
+        "y": 466,
+        "w": 466,
+        "h": 193,
+        "fill": "F7F1E4",
+        "stroke": "111B26",
+        "lw": 3
+      },
+      {
+        "kind": "poly",
+        "points": [
+          [
+            82,
+            482
+          ],
+          [
+            512,
+            482
+          ],
+          [
+            500,
+            524
+          ],
+          [
+            82,
+            524
+          ]
+        ],
+        "fill": "F0B34F",
+        "stroke": null,
+        "lw": 2
+      },
+      {
+        "kind": "text",
+        "x": 96,
+        "y": 490,
+        "w": 400,
+        "h": 29,
+        "text": "REPLAY",
+        "size": 21,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 88,
+        "y": 545,
+        "w": 420,
+        "h": 45.800000000000004,
+        "text": "Consumed nonce or paid order",
+        "size": 28,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 88,
+        "y": 610,
+        "w": 420,
+        "h": 41.75,
+        "text": "NonceUsed / AlreadyPaid",
+        "size": 25,
+        "color": "C74D58",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "rect",
+        "x": 573,
+        "y": 473,
+        "w": 466,
+        "h": 193,
+        "fill": "111B26",
+        "stroke": null,
+        "lw": 0
+      },
+      {
+        "kind": "rect",
+        "x": 566,
+        "y": 466,
+        "w": 466,
+        "h": 193,
+        "fill": "F7F1E4",
+        "stroke": "111B26",
+        "lw": 3
+      },
+      {
+        "kind": "poly",
+        "points": [
+          [
+            583,
+            482
+          ],
+          [
+            1013,
+            482
+          ],
+          [
+            1001,
+            524
+          ],
+          [
+            583,
+            524
+          ]
+        ],
+        "fill": "F0B34F",
+        "stroke": null,
+        "lw": 2
+      },
+      {
+        "kind": "text",
+        "x": 597,
+        "y": 490,
+        "w": 400,
+        "h": 29,
+        "text": "EPOCH",
+        "size": 21,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 589,
+        "y": 545,
+        "w": 420,
+        "h": 83.60000000000001,
+        "text": "Old signature after included\nrevoke",
+        "size": 28,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 589,
+        "y": 610,
+        "w": 420,
+        "h": 41.75,
+        "text": "StaleEpoch",
+        "size": 25,
+        "color": "C74D58",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "rect",
+        "x": 1074,
+        "y": 473,
+        "w": 466,
+        "h": 193,
+        "fill": "111B26",
+        "stroke": null,
+        "lw": 0
+      },
+      {
+        "kind": "rect",
+        "x": 1067,
+        "y": 466,
+        "w": 466,
+        "h": 193,
+        "fill": "F7F1E4",
+        "stroke": "111B26",
+        "lw": 3
+      },
+      {
+        "kind": "poly",
+        "points": [
+          [
+            1084,
+            482
+          ],
+          [
+            1514,
+            482
+          ],
+          [
+            1502,
+            524
+          ],
+          [
+            1084,
+            524
+          ]
+        ],
+        "fill": "F0B34F",
+        "stroke": null,
+        "lw": 2
+      },
+      {
+        "kind": "text",
+        "x": 1098,
+        "y": 490,
+        "w": 400,
+        "h": 29,
+        "text": "HUMAN CHECK",
+        "size": 21,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 1090,
+        "y": 545,
+        "w": 420,
+        "h": 83.60000000000001,
+        "text": "Missing owner or stale\nattestation",
+        "size": 28,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 1090,
+        "y": 610,
+        "w": 420,
+        "h": 41.75,
+        "text": "BadOwnerSig / StaleAuth",
+        "size": 25,
+        "color": "C74D58",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "rect",
+        "x": 65,
+        "y": 721,
+        "w": 1468,
+        "h": 104,
+        "fill": "111B26",
+        "stroke": null,
+        "lw": 0
+      },
+      {
+        "kind": "text",
+        "x": 88,
+        "y": 736,
+        "w": 1418,
+        "h": 75.5,
+        "text": "Boundaries matter: ENS changes are not a kill switch. Pause/unpause can revive unused signatures.\nRefunds need merchant consent and funds. RPC observations are not cryptographic state proofs.",
+        "size": 25,
+        "color": "FFFFFF",
+        "bold": false,
+        "link": null
+      }
+    ],
+    "notes": "pay() checks mandate existence, pause, signed deadline, mandate expiry, epoch, consumed nonce, paid order, merchant allowlist, active registry payout/version, perTx/period bounds, agent signature and threshold approvals before state updates and transfer. nonReentrant and SafeERC20 protect token-call behavior. Spending counters persist across limit/agent/attestor changes and refunds. Revoke increments epoch: it invalidates old-epoch authorizations after inclusion, but a fresh signature by the still-authorized agent can execute. Pause does not increment epoch; an unused unexpired signature may revive on unpause. API-level GasGuard rejection is not an onchain revert; a simulated revert is not a mined transaction either. Not every test label represents unique coverage: inherited Solidity tests repeat. The current evidence verifier validates file integrity separately from receipt/calldata, token events and reconstructible historical policy under RPC trust; unsupported historical ERC-1271 or ambiguous same-block state remains UNVERIFIED. Threats not solved include compromised owner keys, misleading trusted display, malicious merchant delivery, backend/attestor collusion, threshold splitting within budget and deep-reorg consequences. No independent audit or formal proof is claimed.",
+    "sources": [
+      "contracts/src/Mandate.sol",
+      "contracts/test/AdversarialEdges.t.sol",
+      "contracts/test/MandateInvariant.t.sol",
+      "packages/ens/src/payment-evidence.mjs",
+      "docs/release/SECURITY-REVIEW.md",
+      "docs/ASSUMPTIONS_AND_LIMITATIONS.md"
+    ]
+  },
+  {
+    "chapter": "THE EVIDENCE",
+    "title": "Inspect the proof. Keep the gaps visible.",
+    "objects": [
+      {
+        "kind": "rect",
+        "x": 0,
+        "y": 0,
+        "w": 1600,
+        "h": 900,
+        "fill": "111B26",
+        "stroke": null,
+        "lw": 0
+      },
+      {
+        "kind": "poly",
+        "points": [
+          [
+            55,
+            33
+          ],
+          [
+            420,
+            33
+          ],
+          [
+            408,
+            75
+          ],
+          [
+            55,
+            75
+          ]
+        ],
+        "fill": "39D8AE",
+        "stroke": null,
+        "lw": 2
+      },
+      {
+        "kind": "text",
+        "x": 69,
+        "y": 41,
+        "w": 335,
+        "h": 29,
+        "text": "07 / THE EVIDENCE",
+        "size": 21,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 65,
+        "y": 96,
+        "w": 1470,
+        "h": 89.0,
+        "text": "Inspect the proof. Keep the gaps visible.",
+        "size": 60,
+        "color": "FFFFFF",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 68,
+        "y": 174,
+        "w": 1464,
+        "h": 43.1,
+        "text": "A testnet systems-security implementation, not a production-readiness or prize guarantee.",
+        "size": 26,
+        "color": "C9D8D2",
+        "bold": false,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 65,
+        "y": 851,
+        "w": 1370,
+        "h": 33.650000000000006,
+        "text": "COUNTERSIGN / Whitechain + World + ENSv2 / 7 Nov 2026 / Sources in slide notes",
+        "size": 19,
+        "color": "C2D1CB",
+        "bold": false,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 1490,
+        "y": 847,
+        "w": 55,
+        "h": 41.75,
+        "text": "07",
+        "size": 25,
+        "color": "C2D1CB",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "rect",
+        "x": 65,
+        "y": 237,
+        "w": 466,
+        "h": 170,
+        "fill": "F7F1E4",
+        "stroke": null,
+        "lw": 0
+      },
+      {
+        "kind": "text",
+        "x": 89,
+        "y": 250,
+        "w": 415,
+        "h": 122.75000000000001,
+        "text": "157",
+        "size": 85,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 90,
+        "y": 354,
+        "w": 414,
+        "h": 37.7,
+        "text": "NODE TESTS • rerun this pass",
+        "size": 22,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "rect",
+        "x": 566,
+        "y": 237,
+        "w": 466,
+        "h": 170,
+        "fill": "F7F1E4",
+        "stroke": null,
+        "lw": 0
+      },
+      {
+        "kind": "text",
+        "x": 590,
+        "y": 250,
+        "w": 415,
+        "h": 122.75000000000001,
+        "text": "131",
+        "size": 85,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 591,
+        "y": 354,
+        "w": 414,
+        "h": 37.7,
+        "text": "SOLIDITY EXECUTIONS • recorded",
+        "size": 22,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "rect",
+        "x": 1067,
+        "y": 237,
+        "w": 466,
+        "h": 170,
+        "fill": "F7F1E4",
+        "stroke": null,
+        "lw": 0
+      },
+      {
+        "kind": "text",
+        "x": 1091,
+        "y": 250,
+        "w": 415,
+        "h": 122.75000000000001,
+        "text": "3",
+        "size": 85,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 1092,
+        "y": 354,
+        "w": 414,
+        "h": 37.7,
+        "text": "SHARED DIGEST VECTORS • recorded",
+        "size": 22,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "rect",
+        "x": 72,
+        "y": 454,
+        "w": 710,
+        "h": 298,
+        "fill": "111B26",
+        "stroke": null,
+        "lw": 0
+      },
+      {
+        "kind": "rect",
+        "x": 65,
+        "y": 447,
+        "w": 710,
+        "h": 298,
+        "fill": "F7F1E4",
+        "stroke": "111B26",
+        "lw": 3
+      },
+      {
+        "kind": "text",
+        "x": 89,
+        "y": 466,
+        "w": 660,
+        "h": 47.150000000000006,
+        "text": "RECORDED / REPORTED",
+        "size": 29,
+        "color": "111B26",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 89,
+        "y": 518,
+        "w": 660,
+        "h": 164.60000000000002,
+        "text": "Whitechain: official-USDT payments\nWorld: sandbox approval-to-payment\nENS: registry, resolver and scoped grants\nHosting + 2:39 video: latest README record",
+        "size": 29,
+        "color": "111B26",
+        "bold": false,
+        "link": null
+      },
+      {
+        "kind": "rect",
+        "x": 819,
+        "y": 454,
+        "w": 721,
+        "h": 298,
+        "fill": "111B26",
+        "stroke": null,
+        "lw": 0
+      },
+      {
+        "kind": "rect",
+        "x": 812,
+        "y": 447,
+        "w": 721,
+        "h": 298,
+        "fill": "F7F1E4",
+        "stroke": "111B26",
+        "lw": 3
+      },
+      {
+        "kind": "text",
+        "x": 837,
+        "y": 466,
+        "w": 668,
+        "h": 47.150000000000006,
+        "text": "STILL OPEN",
+        "size": 29,
+        "color": "C74D58",
+        "bold": true,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 837,
+        "y": 518,
+        "w": 666,
+        "h": 153.8,
+        "text": "ENS deployed-state negative/revoke tests\nBrowser: 35 passed / 5 failed; fixes pending rerun\nTwo historical demos remain 5/6 each\nResearch revision + independent review",
+        "size": 27,
+        "color": "111B26",
+        "bold": false,
+        "link": null
+      },
+      {
+        "kind": "text",
+        "x": 66,
+        "y": 786,
+        "w": 1460,
+        "h": 49.85,
+        "text": "Explore the source → github.com/SomeshTalligeriDEV/ETHGLOBAL",
+        "size": 31,
+        "color": "39D8AE",
+        "bold": true,
+        "link": "https://github.com/SomeshTalligeriDEV/ETHGLOBAL"
+      }
+    ],
+    "notes": "Current presentation pass reran npm test: 157 passed, zero failed/skipped, log presentation/evidence/node-tests.txt. The 131 Solidity executions and three cross-language vectors are from preserved release logs, not newly rerun for this deck; Solidity count includes inherited repetitions and benchmark cases. Human browser production build passed at an earlier checkout; 35 browser fixtures passed and 5 failed, with source fixes awaiting rerun. ENS fork compilation is distinct from execution. Two historical six-step runs remain 5/6; later standalone payments do not retroactively finish those runs. Latest README at 5688b18 reports Cloudflare frontend https://countersign.someshtalligeri12.workers.dev and Render API https://countersign-api-44lz.onrender.com, a 2:39 video, and a later 0.50 payment. Endpoint retrieval failed in this pass, so current uptime/video playback is unverified. Render notes disclose ephemeral disk and API/attestor co-location; process separation is not strong key isolation. The user supplied https://zenodo.org/records/24025815, but this pass could not retrieve its metadata/PDF; do not invent a DOI, deposited version, license or peer review. A local revision gives Whitechain, World and ENS equal architectural/evaluation attention. Historical gas observations remain single-case local mock-token measurements, not network benchmarks. AI assisted code/research/artwork/deck generation; artwork is original illustrative output. Prior-code creation dates, contributor rights and submission eligibility remain human responsibilities. Next action: inspect contracts and transaction evidence, complete missing live/browser tests, review the balanced paper and verify the intended published version.",
+    "sources": [
+      "presentation/evidence/node-tests.txt",
+      "docs/evidence/final-video-checks/local/checks.json",
+      "docs/evidence/acceptance/20261107T000728602239Z/results.json",
+      "README.md",
+      "research/PUBLICATION-STATUS.md",
+      "https://github.com/SomeshTalligeriDEV/ETHGLOBAL",
+      "https://zenodo.org/records/24025815"
+    ]
+  }
+]
