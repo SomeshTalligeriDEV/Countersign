@@ -1,5 +1,6 @@
 import Link from "next/link";
 import LiveStatus from "@/components/countersign/LiveStatus";
+import EnsIdentity from "@/components/countersign/EnsIdentity";
 import SiteNav, { CountUp } from "@/components/countersign/SiteNav";
 import { SITE_URL } from "@/lib/site";
 
@@ -16,13 +17,13 @@ const steps = [
   { t: "Owner sets the mandate", b: "Budget, per-payment cap, allowed merchants and an approval threshold, written on-chain from the owner console." },
   { t: "Agent signs exact terms", b: "The agent signs the precise amount, merchant and payout. Nothing is left for a relayer to fill in." },
   { t: "Relayer + GasGuard submit", b: "A relayer pays gas and forwards the signed payment; GasGuard keeps submission costs bounded." },
-  { t: "Contract enforces", b: "The Mandate contract checks every term and settles USDT, or reverts. Above the threshold it requires a World ID approval bound to that payment." },
+  { t: "Contract enforces", b: "The Mandate contract checks every term and settles USDT, or reverts. At or above the threshold it requires exact owner and attestor signatures after World sandbox authentication." },
 ];
 
 const pillars = [
   { k: "Settlement", name: "Whitechain", b: "USDT settles on Whitechain testnet (chain 1874). Mandate and MerchantRegistry are verified on the explorer.", href: `${EXPLORER}/address/${MANDATE}`, cta: "Mandate on explorer" },
-  { k: "Human approval", name: "World ID", b: "Payments above the threshold wait for a verified human to approve that exact transaction, not a blanket permission.", href: `${EXPLORER}/tx/${APPROVED_TX}`, cta: "Human-approved payment" },
-  { k: "Agent identity", name: "ENS", b: `The agent resolves as ${ENS_NAME} on ENSv2 Sepolia, with a live check that its published policy matches the contract.`, href: ENS_URL, cta: ENS_NAME },
+  { k: "Human approval", name: "World ID", b: "Threshold payments require World sandbox authentication and the owner’s signature on the exact payment. Sandbox identity is not production personhood.", href: `${EXPLORER}/tx/${APPROVED_TX}`, cta: "Human-approved payment" },
+  { k: "Agent identity", name: "ENS", b: `The agent resolves as ${ENS_NAME} on ENSv2 Sepolia, with RPC comparisons that report mismatches, missing fields and unavailable reads.`, href: ENS_URL, cta: ENS_NAME },
 ];
 
 const refusals = [
@@ -60,19 +61,10 @@ const jsonLd = [
 ];
 
 const stats = [
-  { v: 118, l: "contract tests" },
-  { v: 97, l: "API tests" },
+  { v: 131, l: "recorded Solidity test executions" },
+  { v: 157, l: "recorded Node tests" },
   { v: 1874, l: "Whitechain chain ID" },
   { v: 3, l: "primitives: Whitechain, World ID, ENS" },
-];
-
-// Real Mandate rules and settled payments (USDT); bars scaled to the $10 period budget.
-const bars = [
-  { k: "buy-report payment", v: 0.5 },
-  { k: "human-approved order", v: 1.5 },
-  { k: "approval threshold", v: 1 },
-  { k: "per-transaction cap", v: 2 },
-  { k: "period budget", v: 10 },
 ];
 
 export default function Home() {
@@ -89,8 +81,8 @@ export default function Home() {
           <p className="cs-trust cs-rise" style={{ "--d": "0s" } as React.CSSProperties}><span className="cs-trust-dot" aria-hidden="true" />Testnet · Whitechain · World ID · ENS</p>
           <h1 id="hero-title" className="cs-headline"><span>Spending mandates</span><span>for AI&nbsp;agents.</span></h1>
           <p className="cs-lede cs-rise" style={{ "--d": ".25s" } as React.CSSProperties}>
-            Your agent pays in USDT only inside limits a contract enforces. Anything bigger waits for a verified human to
-            countersign the exact payment.
+            Your agent pays in USDT only inside limits a contract enforces. Threshold payments require World sandbox authentication and the owner’s
+            signature over the exact payment.
           </p>
           <div className="cs-ctas cs-rise" style={{ "--d": ".35s" } as React.CSSProperties}>
             <Link href="/demo" className="cs-btn cs-btn-primary">Run the live demo</Link>
@@ -102,22 +94,18 @@ export default function Home() {
               <div key={s.l} className="cs-stat"><dt>{s.l}</dt><dd><CountUp to={s.v} /></dd></div>
             ))}
           </dl>
+          <p className="cs-muted">Local test checkpoint: 7 November 2026. Counts are recorded evidence, not live network activity.</p>
         </section>
+
+        <div className="cs-wrap cs-film-wrap">
+          <video className="cs-film" src="/media/countersign-overview.mp4" poster="/media/countersign-overview.jpg" autoPlay muted loop playsInline preload="metadata" aria-label="Countersign overview animation" />
+        </div>
 
         <div className="cs-wrap cs-term-wrap">
         <div className="cs-term">
-          <div className="cs-term-bar"><i /><i /><i /><span>{ENS_NAME} · live</span></div>
+          <div className="cs-term-bar"><i /><i /><i /><span>{ENS_NAME} · network observations</span></div>
           <LiveStatus />
-        {/* ponytail: static illustration of the flow, not live data; labelled as such. */}
-        <figure aria-label="Illustrative payment flow (not live data)">
-          <ol>
-            <li><span className="cs-tag">signed</span>agent signs exact amount, merchant, payout</li>
-            <li><span className="cs-tag">relayed</span>relayer + GasGuard submit to chain 1874</li>
-            <li><span className="cs-tag cs-tag-warn">over threshold</span>waiting for World ID approval</li>
-            <li><span className="cs-tag cs-tag-ok">settled</span>USDT paid, receipt on explorer</li>
-          </ol>
-          <figcaption>Illustrative flow, not live data · testnet</figcaption>
-        </figure>
+
         </div>
         </div>
 
@@ -126,17 +114,10 @@ export default function Home() {
           <p className="cs-eyebrow">Limits</p>
           <h2 id="limits" className="cs-twotone">Small payments, <span>hard limits.</span></h2>
           <p className="cs-lede">The agent pays small amounts for data; the Mandate contract caps every payment, the period budget and when a human must approve.</p>
-          <figure className="cs-bars">
-            <dl>
-              {bars.map(b => (
-                <div key={b.k}><dt>{b.k}</dt><dd><span style={{"--w": b.v / 10} as React.CSSProperties} /><b>${b.v.toFixed(2)}</b></dd></div>
-              ))}
-            </dl>
-            <figcaption>Every bar is enforced by the Mandate contract on Whitechain; anything past the cap reverts on-chain.</figcaption>
-          </figure>
+          <EnsIdentity name={ENS_NAME} />
           <div className="cs-bigstats">
-            <div><p className="cs-stat">6</p><p>Real USDT payments settled on Whitechain Sepolia, each with an explorer-verifiable transaction (docs/proof).</p></div>
-            <div><p className="cs-stat">5</p><p>Attacks refused on-chain: tampered amount, tampered payout, over budget, paused, over-refund.</p></div>
+            <div><h3>Recorded automatic payment</h3><p>0.50 official test USDT. Historical settlement, not a new payment.</p><Ext href={`${EXPLORER}/tx/0x68629137bf52b628824e92723b299d2b6dcf5703920eda318c4f402af1734021`} className="cs-link">Inspect recorded transaction ↗</Ext></div>
+            <div><h3>Recorded sandbox-approved payment</h3><p>1.50 official test USDT after sandbox authentication and exact owner approval.</p><Ext href={`${EXPLORER}/tx/${APPROVED_TX}`} className="cs-link">Inspect recorded transaction ↗</Ext></div>
           </div>
           </div>
         </section>
@@ -179,7 +160,7 @@ export default function Home() {
           <div>
             <p className="cs-eyebrow">Enforcement</p>
             <h2 id="refuses">What the contract refuses</h2>
-            <p className="cs-muted">Each of these is rejected on-chain, not by the app. Covered by 118 contract tests and 97 API tests.</p>
+            <p className="cs-muted">These checks are implemented in the payment contract. The latest local regression recorded 131 Solidity executions and 157 Node tests; live integration acceptance is still incomplete.</p>
           </div>
           <ul className="cs-refusals">
             {refusals.map(([t, b]) => (
@@ -192,7 +173,7 @@ export default function Home() {
         <section className="cs-sec" aria-labelledby="proof">
           <div className="cs-wrap">
           <p className="cs-eyebrow">Verify</p>
-          <h2 id="proof">Proof, on-chain</h2>
+          <h2 id="proof">Recorded on-chain evidence</h2>
           <dl className="cs-proof">
             {proof.map((p) => (
               <div key={p.l}>
