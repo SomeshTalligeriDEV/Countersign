@@ -6,7 +6,7 @@ Countersign combines ENSv2 agent identities and scoped record permissions with c
 
 This is a **testnet implementation and unpublished systems-security research artifact**. It is not independently audited, production-ready or a new cryptographic authorization primitive.
 
-[Source](https://github.com/SomeshTalligeriDEV/ETHGLOBAL) · [Project owner](https://github.com/SomeshTalligeriDEV) · [Research PDF](research/paper/COUNTERSIGN-Research-Paper.pdf) · [Security](SECURITY.md) · [Release evidence](docs/FINAL-RELEASE-REPORT.md)
+**[Live app](https://countersign.someshtalligeri12.workers.dev)** · [Live API](https://countersign-api-44lz.onrender.com/health/ready) · [Source](https://github.com/SomeshTalligeriDEV/ETHGLOBAL) · [Project owner](https://github.com/SomeshTalligeriDEV) · [Research PDF](research/paper/COUNTERSIGN-Research-Paper.pdf) · [Security](SECURITY.md) · [Release evidence](docs/FINAL-RELEASE-REPORT.md)
 
 ## Release status
 
@@ -23,31 +23,29 @@ This is a **testnet implementation and unpublished systems-security research art
 | Full demonstrations | Two historical six-step runs each reached **5/6** | Two fresh complete runs remain **NOT_RUN** |
 | Research | **20-page PDF, 25 references, eight vector figures**, clean source rebuild and internal page review | Author/rights/license confirmation and scientific sign-off; manuscript unpublished |
 
-The [acceptance matrix](docs/release/FINAL-GAP-MATRIX.md) is the detailed source of truth. New local features have not been deployed. The [recorded frontend](https://web-rouge-one-10.vercel.app) has not been freshly checked; its backend depends on the build laptop and a temporary tunnel. No production-ready or complete-live-release claim is made.
+The [acceptance matrix](docs/release/FINAL-GAP-MATRIX.md) is the detailed source of truth. No production-ready claim is made.
 
-## Demo Video: Coming Soon
+## Live deployment
 
-The 3-minute submission cut is the priority. The 5-minute version and publication work are deferred if time is limited. **No final video has been recorded or rendered.** [Recording URLs and local launcher](docs/proof/VIDEO-READY.md) · [Executable 3-minute video editor](video/README.md). No completed submission is claimed.
+| Component | URL | Host |
+|---|---|---|
+| Web app | https://countersign.someshtalligeri12.workers.dev | Cloudflare Workers (OpenNext), `web/wrangler.jsonc` |
+| API + attestor | https://countersign-api-44lz.onrender.com ([readiness](https://countersign-api-44lz.onrender.com/health/ready)) | Render, Docker (`apps/api/Dockerfile`, `deploy/render-start.sh`) |
+| Mirror | https://web-rouge-one-10.vercel.app | Vercel |
 
-## Final recording checkpoint
+Render's free tier sleeps when idle, so the first request can take about 50 s. Its disk is ephemeral: the observer rebuilds payment state from Whitechain after a restart. Keys are Render secret files, never frontend variables. The API and attestor run as separate processes in one container. That is a testnet convenience; production must isolate the attestor key.
 
-The latest agent-side run is [final-video-checks](docs/evidence/final-video-checks/results.json): local regression and ENS fork compilation PASS; RPC and localhost restrictions block live/fork/browser execution. The human's earlier production build passed, with 35 browser fixtures passing and 5 failing. Selector and contrast fixes are present, **awaiting a browser rerun**. The [fresh journey manifest](docs/proof/FINAL-RUN.md) contains no new payment claim.
+## Demo video
 
-| Sponsor | REAL, recorded earlier | FIXTURE / local only | Current live status |
-|---|---|---|---|
-| Whitechain | HISTORICAL official-USDT settlement and contract source verification | Adversarial contract tests use local mock tokens; API tests use fake RPCs | Fresh settlement NOT_RUN; current RPC blocked |
-| World | HISTORICAL sandbox sign-in followed by an approved payment | Signed local JWT fixtures, cancellation and failure paths | Fresh sandbox journey NOT_RUN; no production personhood claim |
-| ENS | HISTORICAL Sepolia registry/resolver, records and scoped grants | Passport/monitor tests use fixture RPCs; deployed-interface fork compiles | Current reads blocked; negative-permission/revocation fork execution unverified |
+Narrated 2:39 walkthrough recorded on 7 November 2026 (video link on the ETHGlobal submission page). The recording shows:
 
-Stable hosting has not been established. The local recording launcher uses the existing service configuration and real integrations, with settlement disabled by default:
+- landing page, live mandate read from Whitechain, and the ENSv2 passport with live ENS-vs-chain comparison;
+- **a fresh real 0.50 USDT payment made during the recording**: [tx 0x3b7fe78d…09d9](https://explorer.testnet.whitechain.io/tx/0x3b7fe78d21cf28f3fe883a04ed7617bba6a22f62889775da41ccd465c27009d9), gas sponsored by the relayer;
+- tampered-amount and redirected-payout attacks refused (`bad_intent_sig`, no transfer);
+- the World-approved 1.50 USDT payment ([tx 0x98fa814e…b531](https://explorer.testnet.whitechain.io/tx/0x98fa814e805ab35e55124370539bc0c1889aef519d5c408800be2efc709cb531)). This payment was recorded earlier, and the video labels it as such;
+- merchant receipts and signed webhooks.
 
-```sh
-node scripts/video-local.mjs --check
-npm --prefix web run build
-node scripts/video-local.mjs --run
-```
-
-The launcher does not create a public World callback or prove service health. The [recording checklist](docs/proof/VIDEO-READY.md) explains the explicit relay-enabled mode and the two required callback URIs. The attestor stays private on loopback; it must not be exposed publicly.
+Other real payments made on 7 November: [0xc79f0923…bfff](https://explorer.testnet.whitechain.io/tx/0xc79f0923082896c15041bfc3afb8024a3c919802ae3da38a5f3a480531bcfbff), [0x80c41d70…872d](https://explorer.testnet.whitechain.io/tx/0x80c41d70946df6061391e5e1bdb70f8ad74048be4f1e2c2ec43340a55a12872d).
 
 ## What Countersign protects
 
