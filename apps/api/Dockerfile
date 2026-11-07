@@ -25,6 +25,7 @@ COPY packages/ens/package.json ./packages/ens/package.json
 COPY packages/merchant ./packages/merchant
 COPY apps/api ./apps/api
 COPY apps/attestor ./apps/attestor
+COPY deploy/render-start.sh ./deploy/render-start.sh
 RUN mkdir /data && chown node:node /data
 ENV HOST=0.0.0.0 PORT=3001 DATABASE_PATH=/data/countersign.sqlite
 USER node
