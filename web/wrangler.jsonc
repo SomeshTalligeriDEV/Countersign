@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "countersign",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-09-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": { "directory": ".open-next/assets", "binding": "ASSETS" },
+  "vars": {
+    "COUNTERSIGN_API_URL": "https://countersign-api-44lz.onrender.com",
+    "COUNTERSIGN_PUBLIC_API_URL": "https://countersign-api-44lz.onrender.com",
+    "NEXT_PUBLIC_ENS_AGENT_NAME": "agent1.countersign.eth",
+    "ENS_SEPOLIA_RPC_URL": "https://ethereum-sepolia-rpc.publicnode.com"
+  }
+}

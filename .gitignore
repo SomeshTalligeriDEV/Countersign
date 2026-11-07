@@ -29,3 +29,34 @@ deploy/public.env
 .vercel
 .claude/
 skills-lock.json
+
+# Local inspection and generated research packaging (sources remain versioned)
+.playwright-mcp/
+research/countersign-artifact.zip
+research/paper/source-bundle.tar.gz
+research/paper/*.aux
+research/paper/*.bbl
+research/paper/*.blg
+research/paper/*.out
+research/paper/*.synctex.gz
+packages/ens/fork/out/
+packages/ens/fork/cache/
+# Generated handoff for a writable checkout; source files remain tracked individually
+docs/evidence/final/handoff/
+
+# Rebuildable paper intermediates; retain diagnostic logs, result manifests and the reader PDF.
+research/paper/quality/**/clean-source/
+research/paper/quality/**/main.aux
+research/paper/quality/**/main.bbl
+research/paper/quality/**/main.blg
+research/paper/quality/**/main.out
+research/paper/quality/**/main.pdf
+research/paper/quality/**/preexisting-reader.pdf
+# New release handoffs are archives of the source, not source inputs.
+docs/evidence/integration/handoff/
+.open-next/
+.wrangler/
+
+# Python build artifacts from local verification/video tooling
+__pycache__/
+*.pyc
